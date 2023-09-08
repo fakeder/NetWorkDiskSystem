@@ -161,19 +161,44 @@ function find(){
 }
 //发送验证码
 function askVerifyCode(){
+    let email=$("#input-email").val()
+    if (email === ''){
+        alert("请输入邮箱！")
+        return;
+    }
     Get('http://localhost:8080/verify-code',{
-        email:$("#input-email").val()
+        email:email
     }, function (data){
         alert(data.reason)
     })
 }
 //注册
 function register(){
+    let username=$("#username").val();
+    let password=$("#password").val();
+    let email=$("#input-email").val();
+    let verify=$("#verify").val();
+    if(username === ''){
+        alert("请输入用户名！")
+        return;
+    }
+    if (password === ''){
+        alert("请输入密码！")
+        return;
+    }
+    if(email === ''){
+        alert("请输入邮箱！")
+        return;
+    }
+    if(verify === ''){
+        alert("请输入验证码！")
+        return;
+    }
     post('http://localhost:8080/do-register',{
-        username:$("#username").val(),
-        password:$("#password").val(),
-        email:$("#input-email").val(),
-        verify:$("#verify").val()
+        username:username,
+        password:password,
+        email:email,
+        verify:verify
     },function (data){
         if(data.code===200){
             alert(data.reason)
