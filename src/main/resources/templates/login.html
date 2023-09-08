@@ -18,6 +18,8 @@
     <link rel="stylesheet" type="text/css" href="../static/assets/css/fonts.css">
     <link rel="stylesheet" type="text/css" href="../static/assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../static/assets/css/auth.css">
+    <script src="../static/assets/js/api.js"></script>
+    <script src="../static/assets/js/jquery.min.js"></script>
     <!-- Favicon Link -->
     <link rel="shortcut icon" type="image/png" href="../static/assets/images/favicon.png">
 </head>
@@ -33,7 +35,7 @@
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <div class="ad-auth-content">
-                        <form action="/do-login" method="post">
+                        <form>
                             <a href="index.html" class="ad-auth-logo">
                                 <img src="../static/assets/images/logo2.png" alt="" />
                             </a>
@@ -56,14 +58,14 @@
                             <div class="ad-other-feilds">
                                 <div class="ad-checkbox">
                                     <label>
-                                        <input type="checkbox" name="remember-me" class="ad-checkbox">
+                                        <input type="checkbox" name="rememberMe" class="ad-checkbox">
                                         <span>记住我</span>
                                     </label>
                                 </div>
                                 <a class="forgot-pws-btn" href="forgot-pws.html">忘记密码？</a>
                             </div>
                             <div class="ad-auth-btn">
-                                <button class="ad-btn ad-login-member">登录</button>
+                                <a href="javascript:login();" class="ad-btn ad-login-member">登录</a>
                             </div>
                         </form>
                         <p class="ad-register-text">没有账号? <a href="http://localhost:8080/register">点击注册</a></p>
