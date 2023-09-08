@@ -1,3 +1,30 @@
+function login(){
+    let username=$("#username").val();
+    let password=$("#password").val();
+    let rememberMe=$('input[name=rememberMe]').is(':checked');
+    if(username === ""){
+        alert("请输入用户名")
+        return;
+    }
+    if(password === ""){
+        alert("请输入密码")
+        return;
+    }
+    post('http://localhost:8080/do-login',{
+        username:username,
+        password:password,
+        rememberMe:rememberMe
+    },function (data) {
+        if(data.code === 200){
+            window.location="http://localhost:8080/index"
+        }else {
+            alert("用户名或密码错误！");
+            location.reload();
+            $("#username").val(username);
+        }
+    })
+}
+
 //文件重命名
 function rename(fid){
     $("#F"+fid).prop("disabled",false)

@@ -4,11 +4,13 @@ import com.example.networkdisksystem.entity.Users;
 import com.example.networkdisksystem.mapper.FileMapper;
 import com.example.networkdisksystem.mapper.FolderMapper;
 import com.example.networkdisksystem.mapper.UserMapper;
+import org.apache.kerby.util.Hex;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.annotation.Resource;
+import java.security.MessageDigest;
 import java.util.List;
 
 @SpringBootTest
@@ -25,11 +27,11 @@ class NetWorkDiskSystemApplicationTests {
 
     @Test
     void contextLoads() {
-        //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        //String encode = encoder.encode("123456");
-        //System.out.println(encode);
-        Users users=mapper.getUsersByUsername("梁志超");
-        System.out.println(users.toString());
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encode = encoder.encode("123456");
+        System.out.println(encoder.matches("123456", encode));
+       /* Users users=mapper.getUsersByUsername("梁志超");
+        System.out.println(users.toString());*/
 
     }
 
@@ -46,7 +48,6 @@ class NetWorkDiskSystemApplicationTests {
         System.out.println(aaa);*/
         fileMapper.getFileByIdAndFileName(9,"a").forEach(System.out::println);
     }
-
     @Test
     void test(){
         int upFolderIdByMid = folderMapper.getUpFolderIdByMid(1);
