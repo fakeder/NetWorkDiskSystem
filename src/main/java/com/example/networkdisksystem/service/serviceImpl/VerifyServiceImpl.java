@@ -39,13 +39,13 @@ public class VerifyServiceImpl implements VerifyService {
     }
 
     @Override
-    public boolean doVerify(String mail, String code) {//验证邮箱和验证码是否正确
+    public int doVerify(String mail, String code) {//验证邮箱和验证码是否正确
 
-        System.out.println("===============");
+        System.out.println("=======邮箱和验证码是否正确========");
         String email=template.opsForValue().get("verify:code:"+mail);//通过前段传递的邮箱获取验证码
-        if(email==null)return false;
-        if(!email.equals(code))return false;//验证验证码是否正确
+        if(email==null)return 0;
+        if(!email.equals(code))return 1;//验证验证码是否正确
         template.delete("verify:code:"+mail);//验证成功后删除缓存中的验证码
-        return true;
+        return 2;
     }
 }

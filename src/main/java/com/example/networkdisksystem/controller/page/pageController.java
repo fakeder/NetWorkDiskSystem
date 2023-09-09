@@ -68,7 +68,7 @@ public class pageController {
         System.out.println("======login=====");
         return "login";
     }
-    @RequestMapping("/register")
+    @RequestMapping("/register.html")
     public String register(){
         return "register";
     }
@@ -101,5 +101,10 @@ public class pageController {
         model.addAttribute("list",files);
 
         return "index";
+    }
+
+    @RequestMapping(value = "/forgot-pws.html",method = RequestMethod.GET)
+    public String forgot(){
+        return "forgot-pws";
     }
 }

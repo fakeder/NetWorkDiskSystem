@@ -26,10 +26,12 @@ public class LoginCheckFilter implements Filter {
             "/static/**",
             "/login/**",
             "/do-login",
-            "/register",
+            "/register.html",
             "/do-register",
             "/verify-code",
-            "/logout"
+            "/logout",
+            "/forgot-pws.html",
+            "/forgetPassword"
     };
 
     @Override

@@ -1,10 +1,12 @@
 package com.example.networkdisksystem.controller.function;
 
 import com.example.networkdisksystem.entity.R;
+import com.example.networkdisksystem.entity.Users;
 import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.RegisterService;
 import com.example.networkdisksystem.service.UserService;
 import com.example.networkdisksystem.service.VerifyService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,8 +59,17 @@ public class UserController {
         if(checkEmail!=0)return new R(403,"邮箱已被注册！");
         int checkUserName = userMapper.checkUserName(username);
         if(checkUserName!=0)return new R(403,"用户名已存在！");
-        if(!verifyService.doVerify(email,verify))return new R(403,"邮箱或验证码错误！");
-        registerService.register(username,password,email);
+        int flag = verifyService.doVerify(email, verify);
+        if(flag==0){
+            return new R(403,"验证码失效！");
+        }else if(flag ==1){
+            return new R(403,"验证码错误！");
+        }else if(flag == 2){
+            registerService.register(username,password,email);
+        }else {
+            return new R(403,"未知错误！");
+        }
+
         return new R(200,"注册成功！");
     }
 
@@ -89,5 +100,28 @@ public class UserController {
         response.addCookie(cookie_password);
 
         return "login";
+    }
+
+    //忘记密码
+    @RequestMapping(value = "/forgetPassword",method = RequestMethod.POST)
+    @ResponseBody
+    public R forgetPassword(String email,String verify,String password){
+        //1.判断验证码是否正确
+        int flag = verifyService.doVerify(email, verify);
+        if(flag==0){
+            return new R(403,"验证码失效！");
+        }else if(flag ==1) {
+            return new R(403, "验证码错误！");
+        }
+        //2.判断邮箱是否存在
+        Users user = userMapper.getUserByEmail(email);
+        if(user == null){
+            return new R(403,"该邮箱注册用户不存在！");
+        }
+        //3.重新设置密码
+        int uid = user.getUid();
+        password=new BCryptPasswordEncoder().encode(password);
+        userMapper.updatePassword(uid,password);
+        return new R(200,"密码设置成功！");
     }
 }
