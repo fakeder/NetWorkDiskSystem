@@ -18,9 +18,16 @@ public interface UserMapper {
 
     @Update("update user set usedSize=#{usedSize} where uid=#{uid}")
     int updateUsedSizeByUid(@Param("uid")int uid,@Param("usedSize") String usedSize);
+
     @Select("select count(email) from user where email=#{email}")
     int checkEmail(String email);
 
     @Select("select count(username) from user where username=#{username}")
     int checkUserName(String username);
+
+    @Select("select * from user where email=#{email}")
+    Users getUserByEmail(String email);
+
+    @Update("update user set password=#{password} where uid=#{uid}")
+    int updatePassword(@Param("uid") int uid,@Param("password") String password);
 }

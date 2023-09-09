@@ -161,7 +161,7 @@ function find(){
 }
 //发送验证码
 function askVerifyCode(){
-    let email=$("#input-email").val()
+    let email=$("#input-email").val();
     if (email === ''){
         alert("请输入邮箱！")
         return;
@@ -226,6 +226,44 @@ function mkdir(){
         }
     })
 }
+//忘记密码
+function forgetPassword(){
+    let password=$("#password").val();
+    let email=$("#input-email").val();
+    let verify=$("#verify").val();
+    if(email === ''){
+        alert("请输入邮箱！")
+        return;
+    }
+    if(verify === ''){
+        alert("请输入验证码！")
+        return;
+    }
+    if (password === ''){
+        alert("请输入密码！")
+        return;
+    }
+    post("http://localhost:8080/forgetPassword",{
+        email:email,
+        verify:verify,
+        password:password
+    },function (data){
+        if(data.code === 200){
+            alert(data.reason)
+            window.location="login.html "
+        }else {//失败
+            alert(data.reason)
+        }
+    })
+}
+
+
+
+
+
+
+
+
 
 function get(url, success){
     $.ajax({
