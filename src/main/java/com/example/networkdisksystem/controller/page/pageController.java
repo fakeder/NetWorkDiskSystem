@@ -7,6 +7,7 @@ import com.example.networkdisksystem.mapper.FileMapper;
 import com.example.networkdisksystem.mapper.FolderMapper;
 import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.service.FolderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
+@Slf4j
 public class pageController {
     @Resource
     FileService service;
@@ -73,6 +75,7 @@ public class pageController {
         return "register";
     }
 
+    //返回上一级目录
     @RequestMapping(value = "/commonback",method = RequestMethod.GET)
     public String commonBack(HttpSession session){
         System.out.println("==========返回=============");
@@ -103,8 +106,34 @@ public class pageController {
         return "index";
     }
 
+    //设置
     @RequestMapping(value = "/forgot-pws.html",method = RequestMethod.GET)
     public String forgot(){
         return "forgot-pws";
     }
+
+    //文件分享
+    @RequestMapping(value = "/fileShare",method = RequestMethod.GET)
+    public String fileShare(int Fid, String FileName, String FileSize, Model model, HttpSession session){
+        log.info("fid={}",Fid);
+        log.info("FileName={}",FileName);
+        log.info("fileSize={}",FileSize);
+        FileEntity file=new FileEntity();
+        file.setFileSize(FileSize);
+        file.setFileName(FileName);
+        file.setFid(Fid);
+        Users user = (Users) session.getAttribute("user");
+        model.addAttribute("file",file);
+        model.addAttribute("user",user);
+        return "fileShare";
+    }
+
+  //返回上一级目录
+  @RequestMapping(value = "/cancel",method = RequestMethod.GET)
+  public String cancel(HttpSession session){
+    System.out.println("==========取消=============");
+    //获取当前目录的mid
+    int mid = (int) session.getAttribute("mid");
+    return "redirect:index?mid="+mid;
+  }
 }

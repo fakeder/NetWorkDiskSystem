@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--[if !IE]><!-->
+<html lang="zxx">
+<!--<![endif]-->
+<!-- Begin Head -->
+
+<head>
+    <title>SplashDash</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="MobileOptimized" content="320">
+    <!--Start Style -->
+    <link rel="stylesheet" type="text/css" href="../static/assets/css/fonts.css">
+    <link rel="stylesheet" type="text/css" href="../static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/assets/css/icofont.min.css">
+	<link rel="stylesheet" href="../static/assets/css/swiper.min.css">
+    <!--Page Specific -->
+    <link rel="stylesheet" type="text/css" href="../static/assets/css/nice-select.css">
+    <!--Custom Style -->
+    <link rel="stylesheet" type="text/css" href="../static/assets/css/style.css">
+	<link rel="stylesheet" id="theme-change" type="text/css" href="#">
+    <!-- Favicon Link -->
+    <link rel="shortcut icon" type="image/png" href="../static/assets/images/favicon.png">
+    <script src="../static/assets/js/api.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+
+<body>
+<div class="loader">
+	  <div class="spinner">
+		<img src="../static/assets/images/loader.gif" alt=""/>
+	  </div> 
+	</div>
+    <!-- Main Body -->
+    <div class="page-wrapper">
+        <!-- Header Start -->
+        <header class="header-wrapper main-header">
+            <div class="header-inner-wrapper">
+                <div class="logo-wrapper">
+                    <a href="http://localhost:8080/index" class="admin-logo">
+                        <img src="../static/assets/images/logo.png" alt="">
+                    </a>
+                </div>
+                <div class="header-right">
+                    <div class="serch-wrapper">
+                        <form th:action="@{/find(find=${find})}" method="get">
+                            <input id="find" name="find" type="text" placeholder="查询...">
+                        </form>
+                        <a class="search-close" href="javascript:void(0);"><span class="icofont-close-line"></span></a>
+                    </div>
+                    <div class="header-left">
+                        <div class="header-links">
+                            <a href="javascript:void(0);" class="toggle-btn">
+                                <span></span>
+                            </a>
+                        </div>
+                        <div class="header-links search-link">
+                            <a class="search-toggle" href="javascript:void(0);">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve">
+                                    <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23
+                                    s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92
+                                    c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17
+                                    s-17-7.626-17-17S14.61,6,23.984,6z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="header-controls">
+                        <div class="user-info-wrapper header-links">
+                            <a href="javascript:void(0);" class="user-info">
+                                <img src="../static/assets/images/user.jpg" alt="" class="user-img">
+                                <div class="blink-animation">
+                                    <span class="blink-circle"></span>
+                                    <span class="main-circle"></span>
+                                </div>
+                            </a>
+                            <div class="user-info-box">
+                                <div class="drop-down-header">
+                                    <h4 th:text="${user.getUsername()}">John Brown</h4>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <a href="http://localhost:8080/logout">
+                                            <i class="fas fa-sign-out-alt"></i> 退出登录
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Sidebar Start -->
+        <aside class="sidebar-wrapper">
+            <div class="side-menu-wrap">
+                <ul class="main-menu">
+                    <li>
+                        <a href="javascript:void(0);" class="active">
+                            <span class="icon-menu feather-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            </span>
+                            <span class="menu-text">
+                                主页
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="index.html">
+                                    <span class="icon-dash">
+                                    </span>
+                                    <span class="menu-text">
+                                        Admin
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="user.html">
+                                    <span class="icon-dash">
+                                    </span>
+                                    <span class="menu-text">
+                                        User
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <!-- Container Start -->
+        <div class="page-wrapper">
+            <div class="main-content">
+                <!-- Page Title Start -->
+                <div class="row">
+                    <div class="col xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-title-wrapper">
+                            <div class="page-title-box">
+                                <h4 class="page-title">Setting</h4>
+                            </div>
+                            <div class="breadcrumb-list">
+                                <ul>
+                                    <li class="breadcrumb-link">
+                                        <a href="javascript:void(0);"><i class="fas fa-home mr-2"></i>Dashboard</a>
+                                    </li>
+                                    <li class="breadcrumb-link active">Setting</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Products view Start -->
+				      <div class="row">
+
+                <div class="col-xl-12">
+                  <form class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-6 col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">文件名</label>
+                            <input class="form-control" placeholder="文件名" th:value="${file.getFileName()}">
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-4"></div>
+
+                        <div class="col-sm-6 col-md-3">
+                          <div class="mb-3">
+                            <label class="form-label">文件大小</label>
+                              <br>
+                            <label class="form-label" th:text="${file.getFileSize()}"></label>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">过期时间</label>
+                            <select class="form-control btn-square" id="time">
+                              <option value="1">24小时</option>
+                              <option value="2">七天</option>
+                              <option value="3">一个月</option>
+                              <option value="4">永久</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-4"></div>
+                        <div class="col-sm-6 col-md-4"></div>
+
+                        <div class="col-sm-6 col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">下载次数</label>
+                            <select class="form-control btn-square" id="downloadType" onchange="downloadTypeChange()">
+                              <option value="0">永久</option>
+                              <option value="1">自定义</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-4"></div>
+
+                        <div class="col-sm-6 col-md-4">
+                          <div class="mb-3">
+                            <label class="form-label">自定义下载次数</label>
+                            <input id="downloadNumber" class="form-control" type="text" placeholder="自定义下载次数" data-bs-original-title="" title="" disabled>
+                          </div>
+                        </div>
+                      </div>
+                        <button class="btn btn-primary squer-btn" type="submit" data-bs-original-title="" title="">分享</button>
+                        <a class="btn btn-primary squer-btn" th:href="@{/cancel}">取消</a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <!-- Slide Setting Box -->
+
+<!-- Color Setting -->
+
+    <!-- Color Setting -->
+    <!-- Script Start -->
+    <script src="../static/assets/js/jquery.min.js"></script>
+    <script src="../static/assets/js/popper.min.js"></script>
+    <script src="../static/assets/js/bootstrap.min.js"></script>
+	<script src="../static/assets/js/swiper.min.js"></script>
+    <!-- Page Specific -->
+    <script src="../static/assets/js/nice-select.min.js"></script>
+    <!-- Custom Script -->
+    <script src="../static/assets/js/custom.js"></script>
+</body>
+
+</html>
