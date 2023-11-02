@@ -51,7 +51,7 @@ function rename(fid){
 }
 //文件夹重命名
 function folderRename(mid){
-    var oldFolderName=$("#m"+mid).text()
+    let oldFolderName=$("#m"+mid).text()
     $("#M"+mid).attr("type","text")
     $("#M"+mid).val(oldFolderName)
     $("#m"+mid).text('')
@@ -257,9 +257,25 @@ function forgetPassword(){
     })
 }
 
+//文件分享
+function share(Fid,FileName,FileSize){
+    get("http://localhost:8080/fileShare?Fid="+Fid+"&FileName="+FileName+"&FileSize="+FileSize,function (data){
+       if(data.code !== 200){
+           window.location="error.html"
+       }else {
+            window.location="fileShare.html"
+       }
+    })
+}
 
-
-
+function downloadTypeChange(){
+    let type=$("#downloadType option:selected").val();
+    if(type === "0"){
+        $("#downloadNumber").prop("disabled",true);
+    }else {
+        $("#downloadNumber").prop("disabled",false);
+    }
+}
 
 
 

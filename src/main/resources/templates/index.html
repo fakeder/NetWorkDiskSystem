@@ -179,8 +179,8 @@
                                                     <th></th>
                                                     <th></th>
                                                     <th></th>
-													<th>文件大小</th>
-													<th></th>
+													                          <th>文件大小</th>
+													                          <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -255,6 +255,10 @@
                                                                 </li>
                                                                 <li>
                                                                     <a th:href="'javascript:rename(\''+${files.getFid()}+'\');'"><i class="far fa-edit mr-2 "></i>重命名</a>
+                                                                </li>
+                                                                <li>
+                                                                   <!-- <a th:href="'javascript:share(\''+${files.getFid()}+'\',\''+${files.getFileName()}+'\',\''+${files.getFileSize()}+'\');'"><i class="far fa-edit mr-2 ">分享</i></a>-->
+                                                                    <a th:href="|@{/fileShare?Fid=}${files.getFid()}&FileName=${files.getFileName}&FileSize=${files.getFileSize}|"> <i class="far fa-edit mr-2 ">分享</i></a>
                                                                 </li>
                                                             </ul>
                                                         </div>

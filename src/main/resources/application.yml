@@ -10,3 +10,6 @@ spring:
     host: smtp.163.com
     username: zl1813890249@163.com
     password: RGQLGIKMKWGFGURY
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
