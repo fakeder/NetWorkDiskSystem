@@ -167,7 +167,8 @@
                         <div class="col-sm-6 col-md-4">
                           <div class="mb-3">
                             <label class="form-label">文件名</label>
-                            <input class="form-control" placeholder="文件名" th:value="${file.getFileName()}">
+                            <input id="fileName" class="form-control" placeholder="文件名" th:value="${file.getFileName()}">
+                            <input type="hidden" id="fileId" class="form-control" placeholder="文件名" th:value="${file.getFid()}">
                           </div>
                         </div>
 
@@ -177,14 +178,14 @@
                           <div class="mb-3">
                             <label class="form-label">文件大小</label>
                               <br>
-                            <label class="form-label" th:text="${file.getFileSize()}"></label>
+                            <label id="fileSize" class="form-label" th:text="${file.getFileSize()}"></label>
                           </div>
                         </div>
 
                         <div class="col-sm-6 col-md-4">
                           <div class="mb-3">
                             <label class="form-label">过期时间</label>
-                            <select class="form-control btn-square" id="time">
+                            <select class="form-control btn-square" id="expirationTime">
                               <option value="1">24小时</option>
                               <option value="2">七天</option>
                               <option value="3">一个月</option>
@@ -215,7 +216,7 @@
                           </div>
                         </div>
                       </div>
-                        <button class="btn btn-primary squer-btn" type="submit" data-bs-original-title="" title="">分享</button>
+                        <button class="btn btn-primary squer-btn" onclick="fileSharedComment()">分享</button>
                         <a class="btn btn-primary squer-btn" th:href="@{/cancel}">取消</a>
                     </div>
                   </form>
