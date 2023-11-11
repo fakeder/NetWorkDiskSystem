@@ -257,17 +257,7 @@ function forgetPassword(){
     })
 }
 
-//文件分享
-function share(Fid,FileName,FileSize){
-    get("http://localhost:8080/fileShare?Fid="+Fid+"&FileName="+FileName+"&FileSize="+FileSize,function (data){
-       if(data.code !== 200){
-           window.location="error.html"
-       }else {
-            window.location="fileShare.html"
-       }
-    })
-}
-
+//下载次数变换
 function downloadTypeChange(){
     let type=$("#downloadType option:selected").val();
     if(type === "0"){
@@ -275,6 +265,36 @@ function downloadTypeChange(){
     }else {
         $("#downloadNumber").prop("disabled",false);
     }
+}
+
+//文件分享表单提交
+function fileSharedComment(){
+    let Filename=$("#fileName").val();
+    let FileSize=$("#fileSize").text();
+    let ExpirationTime=$("#expirationTime").val();
+    let DownloadType=$("#downloadType").val();
+    let DownloadNumber;
+    if(DownloadType === '0'){
+        DownloadNumber=99999;
+    }else {
+        DownloadNumber=$("#downloadNumber").val();
+    }
+    post("http://localhost:8080/toFileShare",{
+        fileId:$("#fileId").val(),
+        filename:Filename,
+        fileSize:FileSize,
+        expirationTime:ExpirationTime,
+        downloadType:DownloadType,
+        downloadNumber:DownloadNumber
+    },function (data){
+        if(data.code === 200){
+            alert(data.reason);
+            get("http://localhost:8080/cancel")
+        }else {
+            alert(data.code);
+            window.location="error.html"
+        }
+    })
 }
 
 
