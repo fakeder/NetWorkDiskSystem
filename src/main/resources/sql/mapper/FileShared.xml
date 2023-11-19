@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.networkdisksystem.mapper.FileShareMapper">
+
+    <!--第一次录入表格信息 -->
+    <insert id="insertFileShareTable" parameterType="com.example.networkdisksystem.entity.FileShareEntity$FileShareEntityInput">
+        INSERT INTO file_share (uid,
+                                fid,
+                                filename,
+                                fileSize,
+                                startTime,
+                                expirationTime,
+                                downloadNumber,
+                                timeFlag,
+                                downloadFlag)
+        VALUES (#{uid},
+                #{fid},
+                #{fileName},
+                #{fileSize},
+                #{startTime},
+                <if test='expirationTime != null'>
+                    #{expirationTime},
+                </if>
+                #{downloadNumber},
+                #{timeFlag},
+                #{downloadFlag})
+    </insert>
+
+    <!-- 根据Uid fid 查询文件分享表 -->
+    <select id="getSharedByUIdAndFid" resultType="com.example.networkdisksystem.entity.FileShareEntity$FileShareEntityInput">
+        select * from file_share where uid = #{uid} and fid=#{fid} and `condition` = '0'
+    </select>
+
+    <!--设置shareCode-->
+    <update id="setShareCodeById">
+        update file_share set shareCode = #{shareCode} where shareId = #{shareId}
+    </update>
+</mapper>

@@ -11,10 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @Slf4j
@@ -92,6 +92,10 @@ public class pageController {
     public String find(@RequestParam("find") String find,HttpSession session,Model model){
         System.out.println("========find=========");
         System.out.println("查询文件的文件名："+find);
+        //如果传入""
+        if(Objects.isNull(find)||find.equals("")){
+          return "redirect:index";
+        }
         Users user = (Users) session.getAttribute("user");
         int userId=user.getUid();
         //获取文件
