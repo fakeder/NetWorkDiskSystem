@@ -11,5 +11,8 @@ spring:
     username: zl1813890249@163.com
     password: RGQLGIKMKWGFGURY
 mybatis:
+  #配置mapper xml文件的路径
+  mapper-locations: classpath:sql/mapper/*.xml
+  #开启SQL日志
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

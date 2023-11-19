@@ -1,17 +1,21 @@
 package com.example.networkdisksystem;
 
-import com.example.networkdisksystem.entity.Users;
+import com.example.networkdisksystem.entity.FileShareEntity;
 import com.example.networkdisksystem.mapper.FileMapper;
+import com.example.networkdisksystem.mapper.FileShareMapper;
 import com.example.networkdisksystem.mapper.FolderMapper;
 import com.example.networkdisksystem.mapper.UserMapper;
-import org.apache.kerby.util.Hex;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.annotation.Resource;
-import java.security.MessageDigest;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @SpringBootTest
 class NetWorkDiskSystemApplicationTests {
@@ -50,8 +54,38 @@ class NetWorkDiskSystemApplicationTests {
     }
     @Test
     void test(){
-        int upFolderIdByMid = folderMapper.getUpFolderIdByMid(1);
-        System.out.println(upFolderIdByMid);
+        /*int upFolderIdByMid = folderMapper.getUpFolderIdByMid(1);
+        System.out.println(upFolderIdByMid);*/
+      LocalDateTime now=LocalDateTime.now();
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+      System.out.println(now.format(formatter));
+      System.out.println();
+
+      Date date=new Date();
+      SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      System.out.println("今天的日期："+df.format(date));
+      System.out.println("两天前的日期：" + df.format(new Date(date.getTime() - 2 * 24 * 60 * 60 * 1000)));
+      System.out.println("三天后的日期：" + df.format(new Date(date.getTime() + 30L * 24 * 60 * 60 * 1000)));
+      System.out.println(1+2+""+3);
+    }
+
+    @Resource
+    RedisTemplate<String,String> redisTemplate;
+
+    @Resource
+    FileShareMapper fileShareMapper;
+
+    @Test
+    void MyBatisXMLTest(){
+      FileShareEntity.FileShareEntityInput sharedById = fileShareMapper.getSharedByUIdAndFid(9,58);
+      SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      FileShareEntity.FileShareEntityOutput fileShareEntityOutput=new FileShareEntity.FileShareEntityOutput();
+      BeanUtils.copyProperties(sharedById,fileShareEntityOutput);
+      fileShareEntityOutput.setStartTime(df.format(sharedById.getStartTime()));
+      fileShareEntityOutput.setExpirationTime(df.format(sharedById.getExpirationTime()));
+      System.out.println(fileShareEntityOutput);
+      //fileShareMapper.insertFileShareTable(0,0,"","",new Date(),new Date(),1 ,1 ,1);
+      //fileShareMapper.setShareCodeById(3,"123456789");
     }
 
 

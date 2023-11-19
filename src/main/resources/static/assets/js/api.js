@@ -267,6 +267,12 @@ function downloadTypeChange(){
     }
 }
 
+//文件分享
+function share(fid,filename,fileSize){
+    //alert("fid="+fid+"filename="+filename+"fileSize="+fileSize)
+    location.href="http://localhost:8080/fileShare?Fid="+fid+"&FileName="+filename+"&FileSize="+fileSize;
+}
+
 //文件分享表单提交
 function fileSharedComment(){
     let Filename=$("#fileName").val();
@@ -286,14 +292,8 @@ function fileSharedComment(){
         expirationTime:ExpirationTime,
         downloadType:DownloadType,
         downloadNumber:DownloadNumber
-    },function (data){
-        if(data.code === 200){
-            alert(data.reason);
-            get("http://localhost:8080/cancel")
-        }else {
-            alert(data.code);
-            window.location="error.html"
-        }
+    },function (R){
+        alert(R.reason);
     })
 }
 
@@ -318,7 +318,7 @@ function post(url, data, success){
     $.ajax({
         type: "post",
         url: url,
-        async: true,
+        async: false,
         data: data,
         dataType: 'json',
         xhrFields: {

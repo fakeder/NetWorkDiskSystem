@@ -1,15 +1,18 @@
 package com.example.networkdisksystem.controller.page;
 
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
+@Slf4j
 public class ErrorPage {
 
     @ExceptionHandler(Exception.class)
     @RequestMapping("/exception")
-    public String ExceptionPage(){
+    public String exceptionPage(Exception e){
+        log.error("错误信息"+e);
         return "error";
     }
 }
