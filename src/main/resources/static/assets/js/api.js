@@ -10,13 +10,13 @@ function login(){
         alert("请输入密码")
         return;
     }
-    post('http://localhost:8080/do-login',{
+    post('http://localhost:8080/user/do-login',{
         username:username,
         password:password,
         rememberMe:rememberMe
     },function (data) {
         if(data.code === 200){
-            window.location="http://localhost:8080/index"
+            window.location="http://localhost:8080/common/index"
         }else {
             alert("用户名或密码错误！");
             location.reload();
@@ -35,7 +35,7 @@ function rename(fid){
             location.reload()
             return;
         }
-        post('http://localhost:8080/rename',{
+        post('http://localhost:8080/file/rename',{
             filename:newFileName,
             Fid:fid
         },function (data){
@@ -64,7 +64,7 @@ function folderRename(mid){
             $("#M"+mid).attr("type","hidden")
             return;
         }
-        post('http://localhost:8080/folderRename',{
+        post('http://localhost:8080/folder/folderRename',{
             mid:mid,
             folderName:$("#M"+mid).val()
         },function (data){
@@ -92,7 +92,7 @@ function fileUpload(event){
         return;
     }
     $.ajax({
-        url: 'http://localhost:8080/fileUpload', // 请求的URL
+        url: 'http://localhost:8080/file/fileUpload', // 请求的URL
         type: 'POST',
         data: formData, // 发送的数据
         processData: false, // 不要对FormData进行处理
@@ -116,7 +116,7 @@ function fileUpload(event){
 }
 //文件下载
 function download(fid){
-    get('http://localhost:8080/download?fid='+fid,function (data){
+    get('http://localhost:8080/file/download?fid='+fid,function (data){
         if(data.code === 200){
             alert(data.reason)
         }else {
@@ -126,7 +126,7 @@ function download(fid){
 }
 //文件删除
 function deleteFile(fid){
-    get('http://localhost:8080/delete?fid='+fid,function (data){
+    get('http://localhost:8080/file/delete?fid='+fid,function (data){
         if (data.code === 200){
             alert(data.reason)
             location.reload()
@@ -138,7 +138,7 @@ function deleteFile(fid){
 }
 //文件夹删除
 function deleteFolder(mid){
-    post('http://localhost:8080/deleteFolder',{
+    post('http://localhost:8080/folder/deleteFolder',{
         mid:mid
     },function (data){
         if(data.code===200){
@@ -166,7 +166,7 @@ function askVerifyCode(){
         alert("请输入邮箱！")
         return;
     }
-    Get('http://localhost:8080/verify-code',{
+    Get('http://localhost:8080/user/verify-code',{
         email:email
     }, function (data){
         alert(data.reason)
@@ -194,7 +194,7 @@ function register(){
         alert("请输入验证码！")
         return;
     }
-    post('http://localhost:8080/do-register',{
+    post('http://localhost:8080/user/do-register',{
         username:username,
         password:password,
         email:email,
@@ -215,7 +215,7 @@ function mkdir(){
         alert("文件夹名称不能为空！")
         return;
     }
-    post('http://localhost:8080/mkdir',{
+    post('http://localhost:8080/folder/mkdir',{
         folder:folderName
     },function(data){
         if(data.code === 200){
@@ -243,7 +243,7 @@ function forgetPassword(){
         alert("请输入密码！")
         return;
     }
-    post("http://localhost:8080/forgetPassword",{
+    post("http://localhost:8080/user/forgetPassword",{
         email:email,
         verify:verify,
         password:password
@@ -270,7 +270,7 @@ function downloadTypeChange(){
 //文件分享
 function share(fid,filename,fileSize){
     //alert("fid="+fid+"filename="+filename+"fileSize="+fileSize)
-    location.href="http://localhost:8080/fileShare?Fid="+fid+"&FileName="+filename+"&FileSize="+fileSize;
+    location.href="http://localhost:8080/fileShare/fileShare?Fid="+fid+"&FileName="+filename+"&FileSize="+fileSize;
 }
 
 //文件分享表单提交
@@ -285,7 +285,7 @@ function fileSharedComment(){
     }else {
         DownloadNumber=$("#downloadNumber").val();
     }
-    post("http://localhost:8080/toFileShare",{
+    post("http://localhost:8080/fileShare/toFileShare",{
         fileId:$("#fileId").val(),
         filename:Filename,
         fileSize:FileSize,

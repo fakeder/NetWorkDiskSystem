@@ -1,4 +1,4 @@
-package com.example.networkdisksystem.controller.page;
+package com.example.networkdisksystem.controller.common;
 
 import com.example.networkdisksystem.entity.FileEntity;
 import com.example.networkdisksystem.entity.FolderEntity;
@@ -18,6 +18,7 @@ import java.util.Objects;
 
 @Controller
 @Slf4j
+@RequestMapping("/common")
 public class pageController {
     @Resource
     FileService service;
@@ -64,17 +65,6 @@ public class pageController {
     }
 
 
-
-    @RequestMapping("/login")
-    public String login(){
-        System.out.println("======login=====");
-        return "login";
-    }
-    @RequestMapping("/register.html")
-    public String register(){
-        return "register";
-    }
-
     //返回上一级目录
     @RequestMapping(value = "/commonback",method = RequestMethod.GET)
     public String commonBack(HttpSession session){
@@ -108,39 +98,6 @@ public class pageController {
         model.addAttribute("list",files);
 
         return "index";
-    }
-
-    //设置
-    @RequestMapping(value = "/forgot-pws.html",method = RequestMethod.GET)
-    public String forgot(){
-        return "forgot-pws";
-    }
-
-    //文件分享
-    @RequestMapping(value = "/fileShare",method = RequestMethod.GET)
-    public String fileShare(@RequestParam(value = "Fid",defaultValue = "-1" ) int Fid,
-                            @RequestParam(value = "FileName",defaultValue = "-1") String FileName,
-                            @RequestParam(value = "FileSize",defaultValue = "-1") String FileSize,
-                            Model model, HttpSession session){
-        log.info("======文件分享start======");
-        log.info("fid={}",Fid);
-        log.info("FileName={}",FileName);
-        log.info("fileSize={}",FileSize);
-
-        //文件分享页面提交bug，修复（原因未知，）
-        if(Fid==-1&&FileName.equals("-1")&&FileSize.equals("-1")){
-          return "redirect:cancel";
-        }
-
-        FileEntity file=new FileEntity();
-        file.setFileSize(FileSize);
-        file.setFileName(FileName);
-        file.setFid(Fid);
-        Users user = (Users) session.getAttribute("user");
-        model.addAttribute("file",file);
-        model.addAttribute("user",user);
-        log.info("=======文件分享end=======");
-        return "fileShare";
     }
 
   //返回上一级目录

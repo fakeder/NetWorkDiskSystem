@@ -1,4 +1,4 @@
-package com.example.networkdisksystem.controller.function;
+package com.example.networkdisksystem.controller.file;
 
 import com.example.networkdisksystem.entity.FileEntity;
 import com.example.networkdisksystem.entity.R;
@@ -25,6 +25,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 @Controller
+@RequestMapping("/file")
 public class FileController {
 
     @Resource

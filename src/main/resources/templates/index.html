@@ -45,7 +45,7 @@
                 </div>
                 <div class="header-right">
                     <div class="serch-wrapper">
-                        <form th:action="@{/find(find=${find})}" method="get">
+                        <form th:action="@{find(find=${find})}" method="get">
                             <input id="find" name="find" type="text" placeholder="查询...">
                         </form>
                         <a class="search-close" href="javascript:void(0);"><span class="icofont-close-line"></span></a>
@@ -82,7 +82,7 @@
                                 </div>
                                 <ul>
                                     <li>
-                                        <a href="http://localhost:8080/logout">
+                                        <a href="http://localhost:8080/user/logout">
                                             <i class="fas fa-sign-out-alt"></i> 退出登录
                                         </a>
                                     </li>
@@ -108,7 +108,7 @@
                         </a>
                         <ul class="sub-menu">
                             <li>
-                                <a href="fileShare.html">
+                                <a href="http://localhost:8080/fileShare/fileShare.html">
                                     <span class="icon-dash">
                                     </span>
                                     <span class="menu-text">
@@ -157,7 +157,7 @@
                 <!-- Products Orders Start -->
                 <div class="row">
                     <div>
-                        <a th:href="@{/commonback}" class="return-button">
+                        <a th:href="@{commonback}" class="return-button">
                             <i class="fas fa-arrow-left"></i>
                             返回
                         </a>
@@ -186,7 +186,7 @@
                                             <tbody>
                                                 <tr th:each="folders:${folders}">
                                                     <td>
-                                                        <a th:id="|m${folders.getMid()}|" th:href="|@{/index?mid=}${folders.getMid()}|" th:text="${folders.getFolderName()}" type="text"></a>
+                                                        <a th:id="|m${folders.getMid()}|" th:href="|@{index?mid=}${folders.getMid()}|" th:text="${folders.getFolderName()}" type="text"></a>
                                                         <input th:id="|M${folders.getMid()}|" type="hidden" placeholder="修改文件夹名称">
                                                     </td>
                                                     <td></td>

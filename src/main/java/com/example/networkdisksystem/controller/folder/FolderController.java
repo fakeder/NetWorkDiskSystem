@@ -1,4 +1,4 @@
-package com.example.networkdisksystem.controller.function;
+package com.example.networkdisksystem.controller.folder;
 
 import com.example.networkdisksystem.entity.R;
 import com.example.networkdisksystem.entity.Users;
@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@RequestMapping("/folder")
 public class FolderController {
 
     @Resource

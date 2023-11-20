@@ -47,7 +47,7 @@ public class SizeChange {
     }
 
     public static void main(String[] args) {
-        //System.out.println(formatFileSizeReverse("1.34 MB"));
+        System.out.println(formatFileSizeReverse("1.00 GB"));
         System.out.println(formatFileSize(535855104));
         //System.out.println(formatFileSize(1073741824));
         //System.out.println(500f/1024/1024);
