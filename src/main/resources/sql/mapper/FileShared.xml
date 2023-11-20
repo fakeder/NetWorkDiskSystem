@@ -35,4 +35,9 @@
     <update id="setShareCodeById">
         update file_share set shareCode = #{shareCode} where shareId = #{shareId}
     </update>
+
+
+    <select id="getFileShareByUid" parameterType="int" resultType="com.example.networkdisksystem.entity.FileShareEntity$FileShareEntityInput">
+        select * from file_share where uid = #{uid} order by  startTime desc;
+    </select>
 </mapper>

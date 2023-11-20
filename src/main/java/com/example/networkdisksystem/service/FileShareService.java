@@ -1,5 +1,9 @@
 package com.example.networkdisksystem.service;
 
+import com.example.networkdisksystem.entity.FileShareEntity;
+
+import java.util.List;
+
 /**
  * 文件分享..
  */
@@ -23,4 +27,11 @@ public interface FileShareService {
    * @param downloadNumber 下载次数
    */
   String FileShared(int uid,int fileId,String filename,String fileSize,int expirationTime,int downloadType,int downloadNumber);
+
+  /**
+   * 文件分享 FileShareEntityInput->FileShareEntityOutput.
+   * @param list 传入的FileShareEntityInput
+   * @return 转换返回FileShareEntityOutput
+   */
+  List<FileShareEntity.FileShareEntityOutput> showFileShare(int uid);
 }

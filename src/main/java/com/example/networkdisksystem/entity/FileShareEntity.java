@@ -32,19 +32,17 @@ public class FileShareEntity {
    */
   @Data
   public static class FileShareEntityOutput{
-    int shareId;
-    int uid;
-    int fid;
+    String shareCode;//分享码
     String fileName;
     String fileSize;
-    String startTime;
-    String expirationTime;
-    int downloadNumber;//下载次数
+    String startTime;//开始时间
+    String expirationTime;//结束时间
+    String downloadNumber;//下载次数
     int numberOfDownload;//被下载次数
-    int condition;//状态
-    String shareCode;//分享码
-    int timeFlag;
-    int downloadFlag;
+    String condition;//状态
+    String conditionClass;//状态class
+    String buttonClass;//按钮class
+    String buttonText;//按钮显示文件
   }
 
 }
