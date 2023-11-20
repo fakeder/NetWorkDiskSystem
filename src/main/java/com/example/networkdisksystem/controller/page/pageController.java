@@ -31,7 +31,7 @@ public class pageController {
     @Resource
     FileMapper fileMapper;
 
-    @RequestMapping(value = "/index",method = RequestMethod.GET)
+    @RequestMapping(value = {"/index","/index.html"},method = RequestMethod.GET)
     public String index(HttpSession session, Model model,@RequestParam(value = "mid",defaultValue = "0") int Mid){
         Users user = (Users) session.getAttribute("user");
         int mid=(int) session.getAttribute("mid");

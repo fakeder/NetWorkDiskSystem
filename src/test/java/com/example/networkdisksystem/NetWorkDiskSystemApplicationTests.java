@@ -77,6 +77,7 @@ class NetWorkDiskSystemApplicationTests {
 
     @Test
     void MyBatisXMLTest(){
+      fileShareMapper.getFileShareByUid(9).forEach(System.out::println);
       FileShareEntity.FileShareEntityInput sharedById = fileShareMapper.getSharedByUIdAndFid(9,58);
       SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
       FileShareEntity.FileShareEntityOutput fileShareEntityOutput=new FileShareEntity.FileShareEntityOutput();

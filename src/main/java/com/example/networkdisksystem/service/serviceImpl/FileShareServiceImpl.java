@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.example.networkdisksystem.util.DateToString;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -72,5 +74,54 @@ public class FileShareServiceImpl implements FileShareService {
     //将分享码插入表中
     mapper.setShareCodeById(shareId,sharedCode);
     return sharedCode;
+  }
+
+  @Override
+  public List<FileShareEntity.FileShareEntityOutput> showFileShare(int uid) {
+    //查询用户的文件分享信息
+    List<FileShareEntity.FileShareEntityInput> list = mapper.getFileShareByUid(uid);
+    //返回展示在页面上的文件分享信息
+    List<FileShareEntity.FileShareEntityOutput> fileShareEntityOutputList;
+
+    fileShareEntityOutputList=list.stream().map(item ->{
+      FileShareEntity.FileShareEntityOutput fileShareEntityOutput=new FileShareEntity.FileShareEntityOutput();
+      //分享码
+      fileShareEntityOutput.setShareCode(item.getShareCode());
+      //文件名
+      fileShareEntityOutput.setFileName(item.getFileName());
+      //文件大小
+      fileShareEntityOutput.setFileSize(item.getFileSize());
+      //开始时间
+      fileShareEntityOutput.setStartTime(DateToString.StringData(item.getStartTime()));
+      //过期时间
+      if(item.getTimeFlag()==4){
+        fileShareEntityOutput.setExpirationTime("永久");
+      }else {
+        fileShareEntityOutput.setExpirationTime(DateToString.StringData(item.getExpirationTime()));
+      }
+      //状态
+      if(item.getCondition()==0){
+        fileShareEntityOutput.setCondition("分享中");
+        fileShareEntityOutput.setConditionClass("mb-0 badge badge-success");
+        fileShareEntityOutput.setButtonText("停止分享");
+        fileShareEntityOutput.setButtonClass("mb-0 badge badge-primary");
+      }else {
+        fileShareEntityOutput.setCondition("已过期");
+        fileShareEntityOutput.setConditionClass("mb-0 badge badge-danger");
+        fileShareEntityOutput.setButtonText("删除记录");
+        fileShareEntityOutput.setButtonClass("mb-0 badge badge-danger");
+      }
+      //下载次数
+      if(item.getDownloadFlag()==0){
+        fileShareEntityOutput.setDownloadNumber("无限");
+      }else {
+        fileShareEntityOutput.setDownloadNumber(""+item.getDownloadNumber());
+      }
+      //被下载次数
+      fileShareEntityOutput.setNumberOfDownload(item.getNumberOfDownload());
+      return fileShareEntityOutput;
+    }).collect(Collectors.toList());
+
+    return fileShareEntityOutputList;
   }
 }

@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.List;
 
 @Mapper
 public interface FileShareMapper {
@@ -47,4 +48,11 @@ public interface FileShareMapper {
    */
   int setShareCodeById(@Param("shareId") int shareId,
                        @Param("shareCode") String shareCode);
+
+
+  /**
+   * 获取用户的文件分享信息.
+   * @param uid 用户id
+   */
+  List<FileShareEntity.FileShareEntityInput> getFileShareByUid(int uid);
 }
