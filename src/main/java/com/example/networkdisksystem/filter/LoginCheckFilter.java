@@ -24,14 +24,7 @@ public class LoginCheckFilter implements Filter {
     public static final AntPathMatcher PATH_MATCHER=new AntPathMatcher();
     public static String[] URL={
             "/static/**",
-            "/login/**",
-            "/do-login",
-            "/register.html",
-            "/do-register",
-            "/verify-code",
-            "/logout",
-            "/forgot-pws.html",
-            "/forgetPassword"
+            "/user/**"
     };
 
     @Override
@@ -80,7 +73,7 @@ public class LoginCheckFilter implements Filter {
         }
 
         log.info("用户未登录");
-        response.sendRedirect("/login");
+        response.sendRedirect("/user/login");
     }
 
     //判断传入的url是否在URL中
