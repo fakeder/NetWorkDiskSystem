@@ -55,4 +55,11 @@ public interface FileShareMapper {
    * @param uid 用户id
    */
   List<FileShareEntity.FileShareEntityInput> getFileShareByUid(int uid);
+
+  /**
+   * 查询用户搜索的文件名的文件.
+   * @param uid uid
+   * @param find 文件名
+   */
+  List<FileShareEntity.FileShareEntityInput> findFileShare(int uid,String find);
 }

@@ -12,7 +12,7 @@ public class ErrorPage {
     @ExceptionHandler(Exception.class)
     @RequestMapping("/exception")
     public String exceptionPage(Exception e){
-        log.error("错误信息");
+        log.error("错误信息:");
         e.printStackTrace();
         return "error";
     }
