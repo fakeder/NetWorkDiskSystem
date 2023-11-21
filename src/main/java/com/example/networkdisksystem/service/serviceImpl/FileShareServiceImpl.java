@@ -80,6 +80,22 @@ public class FileShareServiceImpl implements FileShareService {
   public List<FileShareEntity.FileShareEntityOutput> showFileShare(int uid) {
     //查询用户的文件分享信息
     List<FileShareEntity.FileShareEntityInput> list = mapper.getFileShareByUid(uid);
+    return InToOut(list);
+  }
+
+  @Override
+  public List<FileShareEntity.FileShareEntityOutput> findFileShare(int uid, String find) {
+    List<FileShareEntity.FileShareEntityInput> list = mapper.findFileShare(uid, find);
+    return InToOut(list);
+  }
+
+
+  /**
+   * 将FileShareEntityInput转化成FileShareEntityOutput
+   * @param list FileShareEntityInput
+   * @return FileShareEntityOutput
+   */
+  public List<FileShareEntity.FileShareEntityOutput> InToOut(List<FileShareEntity.FileShareEntityInput> list){
     //返回展示在页面上的文件分享信息
     List<FileShareEntity.FileShareEntityOutput> fileShareEntityOutputList;
 

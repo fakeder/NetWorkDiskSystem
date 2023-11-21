@@ -7,12 +7,10 @@ import com.example.networkdisksystem.service.FileShareService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @Controller
 @Slf4j
@@ -52,4 +50,13 @@ public class FileSharedController {
       return new R(400,"此文件处于分享中！");
     }
   }
+
+  @RequestMapping("/find")
+  public String find(@RequestParam(value = "find",required = false) String find){
+    if(Objects.isNull(find)||find.equals("")){
+      return "redirect:fileSharePage";
+    }
+    return "redirect:fileSharePage?find="+find;
+  }
+
 }
