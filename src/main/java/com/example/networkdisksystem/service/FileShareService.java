@@ -42,4 +42,19 @@ public interface FileShareService {
    * @return FileShareEntityOutput
    */
   List<FileShareEntity.FileShareEntityOutput> findFileShare(int uid,String find);
+
+  /**
+   * 停止分享
+   * @param shareId id
+   * @param shareCode 分享码
+   * @return
+   */
+  int stopSharing(int shareId,String shareCode);
+
+  /**
+   * 删除分享记录
+   * @param shareId id
+   * @return
+   */
+  int delShare(int shareId);
 }

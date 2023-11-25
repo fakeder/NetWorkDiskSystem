@@ -1,6 +1,7 @@
 package com.example.networkdisksystem;
 
 import com.example.networkdisksystem.entity.FileShareEntity;
+import com.example.networkdisksystem.entity.Users;
 import com.example.networkdisksystem.mapper.FileMapper;
 import com.example.networkdisksystem.mapper.FileShareMapper;
 import com.example.networkdisksystem.mapper.FolderMapper;
@@ -89,5 +90,15 @@ class NetWorkDiskSystemApplicationTests {
       //fileShareMapper.setShareCodeById(3,"123456789");
     }
 
+    @Test
+    void enumA(){
+      Users users=new Users();
+      users.setUsername(String.valueOf(a.梁志超));
+      System.out.println(users.getUsername().equals("梁志超"));
+      fileShareMapper.changeCondition(36,"1");
+    }
+    public enum a{
+      梁志超,AAA
+    }
 
 }

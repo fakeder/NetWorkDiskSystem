@@ -81,7 +81,7 @@
                   </div>
                   <ul>
                     <li>
-                      <a href="http://localhost:8080/user/logout">
+                      <a href="javascript:logout()">
                         <i class="fas fa-sign-out-alt"></i> 退出登录
                       </a>
                     </li>
@@ -330,7 +330,9 @@
                                                     <td>
                                                       <label th:text="${fileShare.getNumberOfDownload()}">已被下载次数</label>
                                                     </td>
-                                                    <td><button th:class="${fileShare.getButtonClass()}" th:text="${fileShare.getButtonText()}">按钮</button></td>
+                                                    <td><button th:class="${fileShare.getButtonClass()}" th:text="${fileShare.getButtonText()}"
+                                                                th:data1="${fileShare.getShareId()}" th:data2="${fileShare.getCondition()}" th:data3="${fileShare.getShareCode()}"
+                                                                th:onclick="|fileShareChange(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'))|">按钮</button></td>
                                                 </tr>
 
                                             </tbody>

@@ -32,6 +32,7 @@ public class FileShareEntity {
    */
   @Data
   public static class FileShareEntityOutput{
+    int shareId;
     String shareCode;//分享码
     String fileName;
     String fileSize;

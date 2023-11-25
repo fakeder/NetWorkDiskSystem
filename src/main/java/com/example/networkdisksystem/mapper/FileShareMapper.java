@@ -62,4 +62,19 @@ public interface FileShareMapper {
    * @param find 文件名
    */
   List<FileShareEntity.FileShareEntityInput> findFileShare(int uid,String find);
+
+  /**
+   * 更改状态
+   * @param shareId id
+   * @param condition 状态
+   * @return
+   */
+  int changeCondition(@Param("shareId") int shareId,@Param("condition") String condition);
+
+  /**
+   * 删除分享记录
+   * @param shareId id
+   * @return
+   */
+  int delShareById(int shareId);
 }

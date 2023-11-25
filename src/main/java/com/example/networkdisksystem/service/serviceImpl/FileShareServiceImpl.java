@@ -89,6 +89,20 @@ public class FileShareServiceImpl implements FileShareService {
     return InToOut(list);
   }
 
+  @Override
+  public int stopSharing(int shareId, String shareCode) {
+    //删除redis中的数据
+    template.delete("Time:"+shareCode);
+    //修改状态
+    mapper.changeCondition(shareId,"1");
+    return 1;
+  }
+
+  @Override
+  public int delShare(int shareId) {
+    return mapper.delShareById(shareId);
+  }
+
 
   /**
    * 将FileShareEntityInput转化成FileShareEntityOutput
@@ -101,6 +115,8 @@ public class FileShareServiceImpl implements FileShareService {
 
     fileShareEntityOutputList=list.stream().map(item ->{
       FileShareEntity.FileShareEntityOutput fileShareEntityOutput=new FileShareEntity.FileShareEntityOutput();
+      //id
+      fileShareEntityOutput.setShareId(item.getShareId());
       //分享码
       fileShareEntityOutput.setShareCode(item.getShareCode());
       //文件名
