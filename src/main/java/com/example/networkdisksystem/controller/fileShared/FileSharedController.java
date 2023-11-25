@@ -51,6 +51,11 @@ public class FileSharedController {
     }
   }
 
+  /**
+   * 分享记录查询（根据文件名）
+   * @param find 文件名
+   * @return
+   */
   @RequestMapping("/find")
   public String find(@RequestParam(value = "find",required = false) String find){
     if(Objects.isNull(find)||find.equals("")){
@@ -59,4 +64,29 @@ public class FileSharedController {
     return "redirect:fileSharePage?find="+find;
   }
 
+  /**
+   * 停止分享
+   * @param shareId id
+   * @param shareCode 分享码
+   * @return
+   */
+  @RequestMapping(value = "/stopSharing",method = RequestMethod.POST)
+  @ResponseBody
+  public R stopSharing(@RequestParam("shareId") int shareId,
+                       @RequestParam("shareCode") String shareCode){
+    service.stopSharing(shareId,shareCode);
+    return new R(200,"该文件已停止分享！");
+  }
+
+  /**
+   * 删除分享记录
+   * @param shareId id
+   * @return
+   */
+  @RequestMapping(value = "/delShare",method = RequestMethod.POST)
+  @ResponseBody
+  public R delShare(int shareId){
+    service.delShare(shareId);
+    return new R(200,"删除成功！");
+  }
 }

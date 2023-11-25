@@ -25,6 +25,12 @@ function login(){
     })
 }
 
+function logout(){
+    if(confirm("确定退出？")){
+        window.location="http://localhost:8080/user/logout"
+    }
+}
+
 //文件重命名
 function rename(fid){
     $("#F"+fid).prop("disabled",false)
@@ -126,30 +132,36 @@ function download(fid){
 }
 //文件删除
 function deleteFile(fid){
-    get('http://localhost:8080/file/delete?fid='+fid,function (data){
-        if (data.code === 200){
-            alert(data.reason)
-            location.reload()
-        }else {
-            alert("未知错误！删除失败！")
-            location.reload()
-        }
-    })
+    let flag=confirm("确定删除该文件？")
+    if(flag) {
+        get('http://localhost:8080/file/delete?fid=' + fid, function (data) {
+            if (data.code === 200) {
+                alert(data.reason)
+                location.reload()
+            } else {
+                alert("未知错误！删除失败！")
+                location.reload()
+            }
+        })
+    }
 }
 //文件夹删除
 function deleteFolder(mid){
-    post('http://localhost:8080/folder/deleteFolder',{
-        mid:mid
-    },function (data){
-        if(data.code===200){
-            alert(data.reason)
-            location.reload()
-        }else if(data.code===400){
-            alert(data.reason)
-        }else {
-            alert(data.reason)
-        }
-    })
+    let flag=confirm("确定删除该目录？")
+    if(flag) {
+        post('http://localhost:8080/folder/deleteFolder', {
+            mid: mid
+        }, function (data) {
+            if (data.code === 200) {
+                alert(data.reason)
+                location.reload()
+            } else if (data.code === 400) {
+                alert(data.reason)
+            } else {
+                alert(data.reason)
+            }
+        })
+    }
 }
 //查询
 function find(){
@@ -293,11 +305,38 @@ function fileSharedComment(){
         downloadType:DownloadType,
         downloadNumber:DownloadNumber
     },function (R){
-        alert(R.reason);
+        alert("分享码:"+R.reason);
     })
 }
 
+//文件分享记录更新
+function fileShareChange(shareId,Condition,shareCode) {
+    let text;
+    if(Condition === '分享中'){
+        text='确定停止分享?'
+    }else {
+        text='确定删除此条记录?'
+    }
+    let flag=confirm(text)
+    if(flag){
+        if(Condition === '分享中') {
+            post("http://localhost:8080/fileShare/stopSharing",{
+                shareId:shareId,
+                shareCode:shareCode
+            },function (data) {
+                alert(data.reason)
+            })
+        }else {
+            post("http://localhost:8080/fileShare/delShare",{
+                shareId:shareId
+            },function (data) {
+                alert(data.reason)
+            })
+        }
+        location.reload()
+    }
 
+}
 
 
 
