@@ -136,12 +136,12 @@ public class FileShareServiceImpl implements FileShareService {
         fileShareEntityOutput.setCondition("分享中");
         fileShareEntityOutput.setConditionClass("mb-0 badge badge-success");
         fileShareEntityOutput.setButtonText("停止分享");
-        fileShareEntityOutput.setButtonClass("mb-0 badge badge-primary");
+        fileShareEntityOutput.setButtonClass("mb-0 badge badge-warning toltiped");
       }else {
         fileShareEntityOutput.setCondition("已过期");
         fileShareEntityOutput.setConditionClass("mb-0 badge badge-danger");
         fileShareEntityOutput.setButtonText("删除记录");
-        fileShareEntityOutput.setButtonClass("mb-0 badge badge-danger");
+        fileShareEntityOutput.setButtonClass("mb-0 badge badge-danger toltiped");
       }
       //下载次数
       if(item.getDownloadFlag()==0){
