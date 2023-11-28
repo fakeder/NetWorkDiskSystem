@@ -32,6 +32,7 @@ public class pageController {
     @Resource
     FileMapper fileMapper;
 
+    //主页面列表
     @RequestMapping(value = {"/index","/index.html"},method = RequestMethod.GET)
     public String index(HttpSession session, Model model,@RequestParam(value = "mid",defaultValue = "0") int Mid){
         Users user = (Users) session.getAttribute("user");
@@ -99,13 +100,4 @@ public class pageController {
 
         return "index";
     }
-
-  //返回上一级目录
-  @RequestMapping(value = "/cancel",method = RequestMethod.GET)
-  public String cancel(HttpSession session){
-    System.out.println("==========取消=============");
-    //获取当前目录的mid
-    int mid = (int) session.getAttribute("mid");
-    return "redirect:index?mid="+mid;
-  }
 }

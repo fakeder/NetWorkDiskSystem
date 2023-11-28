@@ -1,13 +1,26 @@
+//文件分享页面跳转
+function share(fid,filename,fileSize){
+    //alert("fid="+fid+"filename="+filename+"fileSize="+fileSize)
+    //location.href="http://localhost:8080/fileShare/fileShare?Fid="+fid+"&FileName="+filename+"&FileSize="+fileSize;
+    $("#fileName").val(filename);
+    $("#fileId").val(fid);
+    $("#fileSize").text(fileSize)
+    $("#fileSharePage").modal('show')
+    $("#shareBtn").on('click',function (){
+        fileSharedComment();
+    })
+}
 //下载次数变换
 function downloadTypeChange(){
     let type=$("#downloadType option:selected").val();
     if(type === "0"){
+        $("#downloadNumber").val('无限制')
         $("#downloadNumber").prop("disabled",true);
     }else {
+        $("#downloadNumber").val('')
         $("#downloadNumber").prop("disabled",false);
     }
 }
-
 //文件分享表单提交
 function fileSharedComment(){
     let Filename=$("#fileName").val();
@@ -27,36 +40,11 @@ function fileSharedComment(){
         expirationTime:ExpirationTime,
         downloadType:DownloadType,
         downloadNumber:DownloadNumber
-    },function (R){
-        new Prompt("分享码:"+R.reason);
-    })
-}
-
-//文件分享记录更新
-function fileShareChange(shareId,Condition,shareCode) {
-    let text;
-    if(Condition === '分享中'){
-        text='确定停止分享?'
-    }else {
-        text='确定删除此条记录?'
-    }
-    let flag=confirm(text)
-    if(flag){
-        if(Condition === '分享中') {
-            post("http://localhost:8080/fileShare/stopSharing",{
-                shareId:shareId,
-                shareCode:shareCode
-            },function (data) {
-                new Prompt(data.reason)
-            })
+    },function (data){
+        if(data.code === 200){
+            new Prompt("分享码:"+data.reason);
         }else {
-            post("http://localhost:8080/fileShare/delShare",{
-                shareId:shareId
-            },function (data) {
-                new Prompt(data.reason)
-            })
+            new Prompt(data.reason);
         }
-        new TimeOutReload(1000)
-    }
-
+    })
 }
