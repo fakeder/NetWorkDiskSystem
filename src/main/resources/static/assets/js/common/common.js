@@ -89,14 +89,9 @@ function TimeOutReload(time){
         location.reload()
     },time)
 }
-
+//退出登录
 function logout(){
     new Warning("退出警告！","确定退出？",function (){
             window.location="http://localhost:8080/user/logout"
     })
-}
-//文件分享页面跳转
-function share(fid,filename,fileSize){
-    //alert("fid="+fid+"filename="+filename+"fileSize="+fileSize)
-    location.href="http://localhost:8080/fileShare/fileShare?Fid="+fid+"&FileName="+filename+"&FileSize="+fileSize;
 }

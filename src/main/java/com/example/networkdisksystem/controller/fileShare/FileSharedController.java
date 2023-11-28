@@ -1,6 +1,5 @@
-package com.example.networkdisksystem.controller.fileShared;
+package com.example.networkdisksystem.controller.fileShare;
 
-import com.example.networkdisksystem.entity.FileShareEntity;
 import com.example.networkdisksystem.entity.R;
 import com.example.networkdisksystem.entity.Users;
 import com.example.networkdisksystem.service.FileShareService;

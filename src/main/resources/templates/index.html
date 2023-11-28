@@ -301,9 +301,6 @@
                             </div>
                         </div>
                     </div>
-                  <button type="button" class="btn btn-primary squer-btn" data-toggle="modal" data-target="#warning">
-                    按钮
-                  </button>
                 </div>
 				<div class="ad-footer-btm">
 					<p>Copyright 2021 © SplashDash All Rights By <a href="http://www.bootstrapmb.com/">bootstrapmb</a>.</p>
@@ -311,6 +308,86 @@
             </div>
         </div>
     </div>
+    <!--文件分享弹窗-->
+    <div class="modal fade bd-example-modal-lg" id="fileSharePage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel02">文件分享</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12">
+              <form class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                      <div class="mb-3">
+                        <label class="form-label">文件名</label>
+                        <input id="fileName" class="form-control" placeholder="文件名">
+                        <input type="hidden" id="fileId" class="form-control" placeholder="ID">
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4"></div>
+
+                    <div class="col-sm-6 col-md-3">
+                      <div class="mb-3">
+                        <label class="form-label">文件大小</label>
+                        <br>
+                        <label id="fileSize" class="form-label"></label>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                      <div class="mb-3">
+                        <label class="form-label">过期时间</label>
+                        <select class="form-control btn-square" id="expirationTime">
+                          <option value="1">24小时</option>
+                          <option value="2">七天</option>
+                          <option value="3">一个月</option>
+                          <option value="4">永久</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4"></div>
+                    <div class="col-sm-6 col-md-4"></div>
+
+                    <div class="col-sm-6 col-md-4">
+                      <div class="mb-3">
+                        <label class="form-label">下载次数</label>
+                        <select class="form-control btn-square" id="downloadType" onchange="downloadTypeChange()">
+                          <option value="0">永久</option>
+                          <option value="1">自定义</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4"></div>
+
+                    <div class="col-sm-6 col-md-4">
+                      <div class="mb-3">
+                        <label class="form-label">自定义下载次数</label>
+                        <input id="downloadNumber" class="form-control" type="text" placeholder="自定义下载次数" data-bs-original-title="" title="" disabled value="无限制">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" id="shareBtn">分享</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
     <!--警告框-->
     <div class="modal fade" id="warning" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -487,6 +564,7 @@
   <script src="../static/assets/js/common/common.js"></script>
   <script src="../static/assets/js/file/file.js"></script>
   <script src="../static/assets/js/folder/folder.js"></script>
+  <script src="../static/assets/js/fileShare/fileSharePage.js"></script>
 </body>
 
 </html>

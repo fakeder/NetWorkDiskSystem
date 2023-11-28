@@ -51,8 +51,7 @@ function folderRename(mid){
 
 //文件夹删除
 function deleteFolder(mid){
-    let flag=confirm("确定删除该目录？")
-    if(flag) {
+    new Warning("删除目录","确定删除该目录吗？",function (){
         post('http://localhost:8080/folder/deleteFolder', {
             mid: mid
         }, function (data) {
@@ -65,5 +64,5 @@ function deleteFolder(mid){
                 new Prompt(data.reason)
             }
         })
-    }
+    })
 }
