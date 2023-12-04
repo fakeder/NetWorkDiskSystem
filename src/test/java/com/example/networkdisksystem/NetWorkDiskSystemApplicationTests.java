@@ -1,5 +1,6 @@
 package com.example.networkdisksystem;
 
+import com.example.networkdisksystem.config.FileConfig;
 import com.example.networkdisksystem.entity.FileShareEntity;
 import com.example.networkdisksystem.entity.Users;
 import com.example.networkdisksystem.mapper.FileMapper;
@@ -8,6 +9,7 @@ import com.example.networkdisksystem.mapper.FolderMapper;
 import com.example.networkdisksystem.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -99,6 +101,13 @@ class NetWorkDiskSystemApplicationTests {
     }
     public enum a{
       梁志超,AAA
+    }
+
+    @Autowired
+    FileConfig fileConfig;
+    @Test
+    void a(){
+      System.out.println(fileConfig.getWindowsUploadPath());
     }
 
 }

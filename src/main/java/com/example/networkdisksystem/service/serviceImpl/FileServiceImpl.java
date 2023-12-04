@@ -1,26 +1,35 @@
 package com.example.networkdisksystem.service.serviceImpl;
 
 import com.example.networkdisksystem.API.HadoopApi;
+import com.example.networkdisksystem.config.FileConfig;
 import com.example.networkdisksystem.entity.FileEntity;
 import com.example.networkdisksystem.mapper.FileMapper;
 import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.util.SizeChange;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.List;
 
 @Service
+@Slf4j
 public class FileServiceImpl implements FileService {
     @Resource
     FileMapper fileMapper;
 
     @Resource
     UserMapper userMapper;
+
+    @Autowired
+    FileConfig fileConfig;
 
 
     @Transactional
@@ -62,11 +71,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public int pullFile(String HDFSFilePath,int fid) {//文件下载
+    public String pullFile(String HDFSFilePath,int fid) {//文件下载
         String fileName= fileMapper.getFileNameByFid(fid);
         String[] f=fileName.split("\\.");
         HDFSFilePath=HDFSFilePath+fid+"."+f[f.length-1];
-        String windowsFilePath="F:/IOtest/HDFS/"+fileName;
+        String windowsFilePath=fileConfig.getWindowsUploadPath()+fileName;
         HadoopApi hadoopApi=new HadoopApi();
         try {
             hadoopApi.downlaod(HDFSFilePath,windowsFilePath);
@@ -74,7 +83,7 @@ public class FileServiceImpl implements FileService {
             throw new RuntimeException(e);
         }
         System.out.println("文件下载到"+windowsFilePath);
-        return 1;
+        return fileName;
     }
 
     @Override
@@ -111,4 +120,57 @@ public class FileServiceImpl implements FileService {
         return fileMapper.rename(filename,fid);
     }
 
+
+    @Override
+    public void downloadToClient(HttpServletRequest request, HttpServletResponse response,String fileName) {
+        String filePath = fileConfig.getWindowsUploadPath();
+        String filePathName = filePath + File.separator + fileName;
+        BufferedInputStream bins = null;
+        BufferedOutputStream bouts = null;
+        try {
+            //同一个窗口下载多次，清除空白流
+            response.reset();
+            File file = new File(filePathName);
+            if (!file.exists()) {
+                log.error("要下载的文件不存在：{}", filePathName);
+                return;
+            }
+            bins = new BufferedInputStream(new FileInputStream(filePathName));
+            bouts = new BufferedOutputStream(response.getOutputStream());
+            String userAgent = request.getHeader("USER-AGENT").toLowerCase();
+            // 如果是火狐浏览器
+            if (userAgent.contains("firefox")) {
+                fileName = new String(fileName.getBytes(), "ISO8859-1");
+            } else {
+                fileName = URLEncoder.encode(fileName, "UTF-8");
+            }
+            //设置发送到客户端的响应的内容类型
+            response.setContentType("application/download");
+            //指定客户端下载的文件的名称
+            response.setHeader("Content-disposition", "attachment;filename=" + fileName);
+            int len;
+            byte[] bytes = new byte[1024];
+            while ((len = bins.read(bytes)) != -1) {
+                bouts.write(bytes, 0, len);
+            }
+            //刷新流
+            bouts.flush();
+            log.info("下载完成");
+        } catch (IOException e) {
+            log.error("下载文件异常:{}", e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bouts != null) {
+                    bouts.close();
+                }
+                if (bins != null) {
+                    bins.close();
+                }
+            } catch (IOException e) {
+                log.error("关闭流异常", e);
+                e.printStackTrace();
+            }
+        }
+    }
 }

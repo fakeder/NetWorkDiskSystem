@@ -57,13 +57,7 @@ function fileUpload(event){
 }
 //文件下载
 function download(fid){
-    get('http://localhost:8080/file/download?fid='+fid,function (data){
-        if(data.code === 200){
-            new Prompt(data.reason)
-        }else {
-            new Prompt("未知错误！下载失败！")
-        }
-    })
+   window.location='http://localhost:8080/file/download?fid='+fid
 }
 //文件删除
 function deleteFile(fid){

@@ -1,10 +1,12 @@
 package com.example.networkdisksystem.controller.file;
 
+import com.example.networkdisksystem.config.FileConfig;
 import com.example.networkdisksystem.entity.FileEntity;
 import com.example.networkdisksystem.entity.R;
 import com.example.networkdisksystem.entity.Users;
 import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.util.SizeChange;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +32,11 @@ import java.util.List;
 @RequestMapping("/file")
 public class FileController {
 
-    @Resource
+    @Autowired
     FileService service;
+
+    @Autowired
+    FileConfig fileConfig;
 
     @Bean("multipartResolver") //注意这里Bean的名称是固定的，必须是multipartResolver
     public CommonsMultipartResolver commonsMultipartResolver(){
@@ -84,14 +91,14 @@ public class FileController {
                 }
             }
         }
-        String filePath="F:\\IOtest\\HDFS\\";
+        String filePath=fileConfig.getWindowsUploadPath();
         File fileObject=new File(filePath+filename);
         file.transferTo(fileObject);
         System.out.println("文件名："+file.getOriginalFilename());
         System.out.println("用户上传的文件保存到："+fileObject.getAbsolutePath());
 
         String widowsFilePath=fileObject.getAbsolutePath();
-        String HDFSFilePath="/HDFS/"+user.getUsername()+"/";
+        String HDFSFilePath=fileConfig.getHdfsUploadPath()+user.getUsername()+"/";
         //上传文件
         int upload = service.pushFile(mid, filename, widowsFilePath, HDFSFilePath, fileSize,usedSize, user.getUid());
         if (upload==0)return new R(500,"文件上传失败!");
@@ -101,14 +108,19 @@ public class FileController {
     //下载文件
     @RequestMapping(value = "/download",method = RequestMethod.GET)
     @ResponseBody
-    public R download(@RequestParam("fid") int fid,HttpSession session){
+    public void download(@RequestParam("fid") int fid,
+                      HttpSession session,
+                      HttpServletRequest request,
+                      HttpServletResponse response){
         System.out.println("fid:"+fid);
         Users user = (Users) session.getAttribute("user");
         String username = user.getUsername();
-        String HDFSFilePath="/HDFS/"+username+"/";
-        service.pullFile(HDFSFilePath, fid);
-        //return "redirect:index";
-        return new R(200,"下载成功！");
+        //hdfs文件名拼接
+        String HDFSFilePath=fileConfig.getHdfsUploadPath()+username+"/";
+        //将文件从hdfs下载到服务器端
+        String fileName = service.pullFile(HDFSFilePath, fid);
+        //将文件从服务器端下载到客户端
+        service.downloadToClient(request,response,fileName);
     }
 
     //删除文件
@@ -117,7 +129,7 @@ public class FileController {
     public R delete(@RequestParam("fid") int fid,HttpSession session){
         Users user = (Users) session.getAttribute("user");
         String username = user.getUsername();
-        String HDFSFilePath="/HDFS/"+username+"/";
+        String HDFSFilePath=fileConfig.getHdfsUploadPath()+username+"/";
         service.deleteFile(fid,HDFSFilePath);
         return new R(200,"删除成功！");
     }
