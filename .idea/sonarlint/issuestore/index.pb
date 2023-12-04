@@ -3,16 +3,8 @@ r
 Bsrc/main/java/com/example/networkdisksystem/util/DateToString.java,a\f\afcc0d3e0d478cdad3a6f010f539dd02bb3b6f7f
 |
 Lsrc/main/java/com/example/networkdisksystem/controller/common/ErrorPage.java,c\5\c51a3381876c08fbf9a7326003b572afb07463b0
-t
-Dsrc/main/java/com/example/networkdisksystem/service/FileService.java,f\e\fe6abfcab16e3ee3f7b86bfa1a18dbee87a48ded
-„
-Tsrc/main/java/com/example/networkdisksystem/service/serviceImpl/FileServiceImpl.java,6\1\61caa10b145aae29f078cd685ec1011669396179
-x
-Hsrc/main/java/com/example/networkdisksystem/filter/LoginCheckFilter.java,5\4\546a32a027daed6633edd5fe676ba9668207a05b
 w
 Gsrc/main/java/com/example/networkdisksystem/mapper/FileShareMapper.java,1\9\197b85b6f8821dfd91bfb4b5d085f233f6f63fc8
-‚
-Rsrc/test/java/com/example/networkdisksystem/NetWorkDiskSystemApplicationTests.java,4\6\46bc19d69f42a0044707d1394862fa9fab7fd71a
 }
 Msrc/main/java/com/example/networkdisksystem/NetWorkDiskSystemApplication.java,8\f\8f4af121c186b4f2d2e25f950e6c8d3ed68674d4
 ƒ
@@ -23,5 +15,5 @@ Isrc/main/java/com/example/networkdisksystem/service/FileShareService.java,e\0\
 Ysrc/main/java/com/example/networkdisksystem/service/serviceImpl/FileShareServiceImpl.java,8\1\81fed658316cea428eff7ce89ea012267ef72c75
 ƒ
 Ssrc/main/java/com/example/networkdisksystem/controller/file/FilePageController.java,6\b\6bdf370192d545cbf2e0ffa3e4dee538295d2ebd
-
-Osrc/main/java/com/example/networkdisksystem/controller/file/FileController.java,2\e\2eec5bc7e286938ea18932c343de8b4f557f903f
+Š
+Zsrc/main/java/com/example/networkdisksystem/controller/fileShare/FileSharedController.java,1\a\1abc0851ea2b1d6dc3314d871adbd853986db409
