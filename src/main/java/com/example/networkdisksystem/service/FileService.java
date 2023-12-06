@@ -22,14 +22,27 @@ public interface FileService {
     String pullFile(String HDFSFilePath, int fid);
 
     /**
-     * 获取路面下的所以文件
+     * 获取目录下的所以文件
      * @param mid mid
      * @return
      */
-    List<FileEntity> getFileNamesByMid(int mid);
+    List<FileEntity.FileInputEntity> getFileNamesByMid(int mid);
 
+    /**
+     * 删除文件
+     * @param fid fid
+     * @param HDFSFilePath hdfs地址
+     * @return
+     */
     int deleteFile(int fid,String HDFSFilePath);
 
+    /**
+     * 文件重命名
+     * @param filename 新文件名
+     * @param fid fid
+     * @param mid 目录id
+     * @return
+     */
     int rename(String filename,int fid,int mid);
 
     /**
@@ -39,4 +52,11 @@ public interface FileService {
      * @param fileName
      */
     void downloadToClient(HttpServletRequest request, HttpServletResponse response,String fileName);
+
+    /**
+     * DB录入/取得 -> 页面展示
+     * @param list
+     * @return
+     */
+    List<FileEntity.FileOutputEntity> fileInputChangeToOutput(List<FileEntity.FileInputEntity> list);
 }

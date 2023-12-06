@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.networkdisksystem.mapper.FolderMapper">
+
+    <insert id="insertMkdir">
+        insert into mkdir_table(uid,
+                                FolderName,
+                                UpFolderId,
+                                startTime)
+        values (#{uid},
+                #{FolderName},
+                #{UpFolderId},
+                #{startTime})
+    </insert>
+
+    <select id="getMidByUidAndUpMkdirId" resultType="integer">
+        select mid from mkdir_table where uid=#{uid} and UpFolderId=#{UpFolderId}
+    </select>
+
+    <select id="getFolderByUpMkdirId" resultType="com.example.networkdisksystem.entity.FolderEntity$FolderEntityInput">
+        select * from mkdir_table where UpFolderId=#{UpMkdirId}
+    </select>
+
+    <delete id="delete">
+        delete FROM mkdir_table where mid=#{mid}
+    </delete>
+
+    <update id="rename">
+        update mkdir_table set FolderName=#{FolderName} where mid=#{mid}
+    </update>
+
+    <select id="getUpFolderIdByMid" resultType="integer">
+        select UpFolderId from mkdir_table where mid=#{mid}
+    </select>
+
+    <select id="getFolderByIdAndFolderName" resultType="com.example.networkdisksystem.entity.FolderEntity$FolderEntityInput">
+        select * from mkdir_table where uid=#{uid} and FolderName like CONCAT('%',#{FolderName},'%')
+    </select>
+</mapper>

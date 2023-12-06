@@ -2,22 +2,27 @@ package com.example.networkdisksystem.service.serviceImpl;
 
 import com.example.networkdisksystem.API.HadoopApi;
 import com.example.networkdisksystem.config.FileConfig;
+import com.example.networkdisksystem.config.FileImage;
 import com.example.networkdisksystem.entity.FileEntity;
 import com.example.networkdisksystem.mapper.FileMapper;
 import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileService;
+import com.example.networkdisksystem.util.DateToString;
 import com.example.networkdisksystem.util.SizeChange;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -31,12 +36,15 @@ public class FileServiceImpl implements FileService {
     @Autowired
     FileConfig fileConfig;
 
+    @Autowired
+    FileImage fileImage;
+
 
     @Transactional
     @Override
     public int pushFile(int mid, String filename, String windowsFilePath, String HDFSFilePath,String fileSize,long usedSize,int uid) {//文件上传
         //文件表中插入数据
-        fileMapper.addFile(mid,filename,fileSize,uid);
+        fileMapper.addFile(mid,filename,fileSize,uid,new Date());
         //更新用户表信息
         String usedsize = SizeChange.formatFileSize(usedSize);
         userMapper.updateUsedSizeByUid(uid,usedsize);
@@ -87,8 +95,8 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<FileEntity> getFileNamesByMid(int mid) {//文件一览
-        List<FileEntity> fileNames = fileMapper.getFileByMid(mid);
+    public List<FileEntity.FileInputEntity> getFileNamesByMid(int mid) {//文件一览
+        List<FileEntity.FileInputEntity> fileNames = fileMapper.getFileByMid(mid);
         return fileNames;
     }
 
@@ -111,8 +119,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public int rename(String filename, int fid,int mid) {//修改文件名
-        List<FileEntity> files = fileMapper.getFileByMid(mid);
-        for (FileEntity file:files){
+        List<FileEntity.FileInputEntity> files = fileMapper.getFileByMid(mid);
+        for (FileEntity.FileInputEntity file:files){
             if(filename.equals(file.getFileName())){
                 return 0;
             }
@@ -172,5 +180,40 @@ public class FileServiceImpl implements FileService {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public List<FileEntity.FileOutputEntity> fileInputChangeToOutput(List<FileEntity.FileInputEntity> list) {
+        List<FileEntity.FileOutputEntity> fileOutputEntityList;
+        fileOutputEntityList=list.stream().map(item->{
+            FileEntity.FileOutputEntity fileOutput=new FileEntity.FileOutputEntity();
+            //fid
+            fileOutput.setFid(item.getFid());
+            //uid
+            fileOutput.setUid(item.getUid());
+            //mid
+            fileOutput.setMid(item.getMid());
+            //文件名
+            fileOutput.setFileName(item.getFileName());
+            //开始时间
+            fileOutput.setStartTime(DateToString.StringData(item.getStartTime()));
+            //修改时间
+            if(!ObjectUtils.isEmpty(item.getLastModifiedTime())){
+                fileOutput.setLastModifiedTime(DateToString.StringData(item.getLastModifiedTime()));
+            }
+            //文件大小
+            fileOutput.setFileSize(item.getFileSize());
+            //文件类型
+            String[] str=item.getFileName().split("\\.");
+            if(str.length<2){
+                fileOutput.setType("未知");
+            }else {
+                fileOutput.setType(str[str.length - 1]);
+            }
+            //文件图片
+            fileOutput.setFileImage(fileImage.getPath(str[str.length-1]));
+            return fileOutput;
+        }).collect(Collectors.toList());
+        return fileOutputEntityList;
     }
 }

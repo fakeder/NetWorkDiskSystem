@@ -70,12 +70,12 @@ public class FileController {
         //获取文件名
         String oldFilename = file.getOriginalFilename();
         //判断文件名是否重复
-        List<FileEntity> fileNames = service.getFileNamesByMid(mid);
+        List<FileEntity.FileInputEntity> fileNames = service.getFileNamesByMid(mid);
         int i=1;
         boolean flag=true;
         String filename=oldFilename;
         while(flag&&fileNames.size()>0){
-            for(FileEntity fileEntity:fileNames){
+            for(FileEntity.FileInputEntity fileEntity:fileNames){
                 if(filename.equals(fileEntity.getFileName())){
                     String[] f=oldFilename.split("\\.");
                     String fn=f[0];

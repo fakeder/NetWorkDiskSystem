@@ -206,25 +206,29 @@
                                                     <th>文件名</th>
                                                     <th></th>
                                                     <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-													                          <th>文件大小</th>
+                                                    <th>创建时间</th>
+                                                    <th>最近操作时间</th>
+                                                    <th>类型</th>
+													                          <th>大小</th>
 													                          <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr th:each="folders:${folders}">
                                                     <td>
+                                                        <span class="img-thumb ">
+                                                          <img src="../static/assets/images/my_images/文件夹.png" alt=" ">
+                                                        </span>
                                                         <a th:id="|m${folders.getMid()}|" th:href="|@{index?mid=}${folders.getMid()}|" th:text="${folders.getFolderName()}" type="text"></a>
                                                         <input th:id="|M${folders.getMid()}|" type="hidden" placeholder="修改文件夹名称">
                                                     </td>
+                                                    <td>
+                                                    </td>
                                                     <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td th:text="${folders.getStartTime()}"></td>
+                                                    <td th:text="${folders.getLastModifiedTime()}"></td>
+                                                    <td>文件夹</td>
+                                                    <td>-</td>
                                                     <td class="relative">
                                                     <a class="action-btn " href="javascript:void(0); ">
                                                         <svg class="default-size "  viewBox="0 0 341.333 341.333 ">
@@ -253,13 +257,17 @@
                                                 </tr>
                                                 <tr th:each="files:${list}">
                                                     <td>
-                                                        <input th:id="|F${files.getFid()}|" type="text" th:value="${files.getFileName()}" disabled="disabled" placeholder="文件名">
+                                                      <span class="img-thumb ">
+                                                          <img th:src="${files.getFileImage()}" alt=" ">
+                                                        </span>
+                                                      <label th:id="|F${files.getFid()}|" th:text="${files.getFileName()}" type="text" placeholder="文件名"></label>
+                                                      <input th:id="|f${files.getFid()}|" th:value="${files.getFileName()}" type="hidden" placeholder="修改文件名">
                                                     </td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td th:text="${files.getStartTime()}"></td>
+                                                    <td th:text="${files.getLastModifiedTime()}"></td>
+                                                    <td th:text="|${files.getType()}文件|"></td>
                                                     <td th:text="${files.getFileSize()}"></td>
                                                     <td class="relative">
                                                         <a class="action-btn " href="javascript:void(0); ">

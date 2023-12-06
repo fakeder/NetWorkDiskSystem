@@ -3,30 +3,70 @@ package com.example.networkdisksystem.mapper;
 import com.example.networkdisksystem.entity.FolderEntity;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
 public interface FolderMapper {
 
-    @Insert("insert into mkdir_table(uid,FolderName,UpFolderId) values (#{uid},#{FolderName},#{UpFolderId})")
-    int insertMkdir(@Param("uid") int uid,@Param("FolderName") String FolderName,@Param("UpFolderId") int UpFolderId);
+    /**
+     * 目录新增
+     * @param uid uid
+     * @param folderName 目录名称
+     * @param upFolderId 上级目录id
+     * @param startTime 创建时间
+     * @return 1:成功执行  0:执行失败
+     */
+    int insertMkdir(@Param("uid") int uid,
+                    @Param("FolderName") String folderName,
+                    @Param("UpFolderId") int upFolderId,
+                    @Param("startTime")Date startTime);
 
-    //仅在注册时使用UpFolderId=-1
-    @Select("select * from mkdir_table where uid=#{uid} and UpFolderId=#{UpFolderId}")
-    FolderEntity getFolderByUidAndUpMkdirId(@Param("uid") int uid, @Param("UpFolderId") int UpFolderId);
 
-    @Select("select * from mkdir_table where UpFolderId=#{UpMkdirId}")
-    List<FolderEntity> getFolderByUpMkdirId(int UpFolderId);
 
-    @Delete("delete FROM mkdir_table where mid=#{mid}")
+    /**
+     * 获取文件夹id  仅在注册时使用UpFolderId=-1.
+     * @param uid uid
+     * @param UpFolderId 上级目录
+     * @return
+     */
+    int getMidByUidAndUpMkdirId(@Param("uid") int uid, @Param("UpFolderId") int UpFolderId);
+
+    /**
+     * 根据上一级目录id获取目录
+     * @param UpFolderId 目录的上一级目录id
+     * @return
+     */
+    List<FolderEntity.FolderEntityInput> getFolderByUpMkdirId(int UpFolderId);
+
+    /**
+     * 根据mid删除目录
+     * @param mid mid
+     * @return
+     */
     int delete(int mid);
 
-    @Update("update mkdir_table set FolderName=#{FolderName} where mid=#{mid}")
+    /**
+     * 根据mid更新目录名称
+     * @param mid mid
+     * @param FolderName 目录名称
+     * @return
+     */
     int rename(@Param("mid") int mid,@Param("FolderName") String FolderName);
 
-    @Select("select UpFolderId from mkdir_table where mid=#{mid}")
+    /**
+     * 通过当前目录的mid获取上一级目录的mid.
+     * @param mid mid
+     * @return
+     */
     int getUpFolderIdByMid(int mid);
 
-    @Select("select * from mkdir_table where uid=#{uid} and FolderName like CONCAT('%',#{FolderName},'%')")
-    List<FolderEntity> getFolderByIdAndFolderName(@Param("uid") int uid ,@Param("FolderName") String FolderName);
+
+    /**
+     * 根据uid对目录id进行模糊匹配获取FolderEntity
+     * @param uid uid
+     * @param FolderName 目录名称
+     * @return 目录
+     */
+    List<FolderEntity.FolderEntityInput> getFolderByIdAndFolderName(@Param("uid") int uid ,@Param("FolderName") String FolderName);
 }

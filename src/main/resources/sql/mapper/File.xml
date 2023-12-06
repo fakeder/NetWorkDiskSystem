@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.networkdisksystem.mapper.FileMapper">
+
+    <insert id="addFile">
+        insert into file_table(mid,
+                               fileName,
+                               FileSize,
+                               uid,
+                               startTime)
+        values (#{mid},
+                #{fileName},
+                #{FileSize},
+                #{uid},
+                #{startTime})
+    </insert>
+    
+    <select id="getFileByMid" resultType="com.example.networkdisksystem.entity.FileEntity$FileInputEntity">
+        select * from file_table where mid=#{mid}
+    </select>
+
+    <select id="getFileIdByMidAndFileName" resultType="integer">
+        select fid from file_table where mid=#{mid} and fileName=#{fileName}
+    </select>
+
+    <delete id="deleteFile">
+        delete from file_table where fid=#{fid}
+    </delete>
+
+    <select id="getFileNameByFid" resultType="string">
+        select fileName from file_table where fid=#{fid}
+    </select>
+
+    <update id="rename">
+        update file_table set fileName=#{filename} where fid=#{fid}
+    </update>
+
+    <select id="getFileByIdAndFileName" resultType="com.example.networkdisksystem.entity.FileEntity$FileInputEntity">
+        select * from file_table where uid=#{uid} and fileName like concat('%',#{fileName},'%')
+    </select>
+</mapper>

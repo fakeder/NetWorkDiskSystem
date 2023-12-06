@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Date;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -30,9 +31,9 @@ public class RegisterServiceImpl implements RegisterService {
         //获取用户id
         int uid = mapper.getUsersByUsername(username).getUid();
         //文件夹表中插入数据
-        folderMapper.insertMkdir(uid,filepath,-1);
+        folderMapper.insertMkdir(uid,filepath,-1,new Date());
         //获取文件夹id
-        int mid = folderMapper.getFolderByUidAndUpMkdirId(uid, -1).getMid();
+        int mid = folderMapper.getMidByUidAndUpMkdirId(uid, -1);
         //向用户表中插入文件夹id
         mapper.setMkdirId(mid,uid);
 

@@ -3,35 +3,69 @@ package com.example.networkdisksystem.mapper;
 import com.example.networkdisksystem.entity.FileEntity;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
 public interface FileMapper {
-    @Insert("insert into file_table(mid,fileName,FileSize,uid) values (#{mid},#{fileName},#{FileSize},#{uid})")
+
+    /**
+     * 文件信息初始化录入
+     * @param mid mid
+     * @param fileName 文件名
+     * @param fileSize 文件大小
+     * @param uid uid
+     * @param startTime 开始时间
+     * @return 1:成功执行  0:执行失败
+     */
     int addFile(@Param("mid") int mid,
                 @Param("fileName") String fileName,
                 @Param("FileSize")String fileSize,
-                @Param("uid") int uid);
+                @Param("uid") int uid,
+                @Param("startTime")Date startTime);
 
-    @Results({
-            @Result(column = "fid", property = "fid"),
-            @Result(column = "mid", property = "mid"),
-            @Result(column = "fileName", property = "fileName")
-    })
-    @Select("select * from file_table where mid=#{mid}")
-    List<FileEntity> getFileByMid(int mid);
+    /**
+     * 获取文件夹下所有文件信息
+     * @param mid mid
+     * @return
+     */
+    List<FileEntity.FileInputEntity> getFileByMid(int mid);
 
-    @Select("select fid from file_table where mid=#{mid} and fileName=#{fileName}")
+    /**
+     * 根据mid和文件名获取文件id
+     * @param mid mid
+     * @param fileName 文件名
+     * @return fid
+     */
     int getFileIdByMidAndFileName(@Param("mid") int mid,@Param("fileName") String fileName);
-    @Delete("delete from file_table where fid=#{fid}")
+
+    /**
+     * 根据fid删除文件
+     * @param fid fid
+     * @return 1:成功执行  0:执行失败
+     */
     int deleteFile(int fid);
 
-    @Select("select fileName from file_table where fid=#{fid}")
+    /**
+     * 根据fid获取文件名
+     * @param fid fid
+     * @return 文件名
+     */
     String getFileNameByFid(int fid);
 
-    @Update("update file_table set fileName=#{filename} where fid=#{fid}")
+    /**
+     * 根据fid修改文件名
+     * @param filename 文件名
+     * @param fid fid
+     * @return 1:成功执行  0:执行失败
+     */
     int rename(@Param("filename") String filename,@Param("fid") int fid);
 
-    @Select("select * from file_table where uid=#{uid} and fileName like concat('%',#{fileName},'%')")
-    List<FileEntity> getFileByIdAndFileName(@Param("uid") int uid,@Param("fileName") String fileNmae);
+    /**
+     * 根据uid对filename进行模糊匹配查询文件
+     * @param uid uid
+     * @param fileName 文件名
+     * @return
+     */
+    List<FileEntity.FileInputEntity> getFileByIdAndFileName(@Param("uid") int uid,@Param("fileName") String fileName);
 }
