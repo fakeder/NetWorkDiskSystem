@@ -1,11 +1,17 @@
 //文件重命名
 function rename(fid){
-    $("#F"+fid).prop("disabled",false)
-    $("#F"+fid).change(function (){
-        let newFileName=$("#F"+fid).val().trim();
+    let filename=$("#F"+fid).text()
+    $("#F"+fid).text('')
+    $("#F"+fid).attr("type","hidden")
+
+    $("#f"+fid).attr("type","text")
+    $("#f"+fid).change(function (){
+        let newFileName=$("#f"+fid).val().trim();
         if(newFileName === ""){
             new Prompt("文件名不能为空！")
-            new TimeOutReload(1000)
+            $("#F"+fid).text(filename)
+            $("#F"+fid).attr("type","text")
+            $("#f"+fid).attr("type","hidden")
             return;
         }
         post('http://localhost:8080/file/rename',{

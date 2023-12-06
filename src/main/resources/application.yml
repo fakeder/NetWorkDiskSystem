@@ -18,10 +18,10 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 app:
   #服务器地址目录
-  windows-upload-path: F:\\IOtest\\HDFS\\
+  windows-upload-path: F:\\IOtest\\HDFS\\download
   #HDFS地址目录
   hdfs-upload-path: /HDFS/
   #限制文件类型
-  file-type-array: .png,.jpg,.jpeg,.txt,.zip,.rar,.pdf,.xml,.xls
+  file-type-array: .png,.jpg,.jpeg,.txt,.zip,.rar,.pdf,.xml,.xls,.doc,.docx
   #最大文件大小
   max-file-size: 8192

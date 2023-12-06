@@ -48,11 +48,15 @@ public class pageController {
         if (Mid>0) mid=Mid;
         System.out.println("^=============index============^");
         System.out.println("用户id:"+user.getUid()+" 用户名:"+user.getUsername()+" 当前目录id:"+mid);
-        //文件夹
-        List<FolderEntity> folders = folderService.getFolderByUpFolderId(mid);
+        //目录
+        List<FolderEntity.FolderEntityInput> folders = folderService.getFolderByUpFolderId(mid);
+        //目录 DB录入/取得 -> 页面展示
+        List<FolderEntity.FolderEntityOutput> outputList = folderService.FolderInputChangeToOutput(folders);
         //文件
-        List<FileEntity> list = service.getFileNamesByMid(mid);
-        model.addAttribute("folders",folders);
+        List<FileEntity.FileInputEntity> FileInputEntityList = service.getFileNamesByMid(mid);
+        // DB录入/取得 -> 页面展示
+        List<FileEntity.FileOutputEntity> list=service.fileInputChangeToOutput(FileInputEntityList);
+        model.addAttribute("folders",outputList);
         model.addAttribute("list",list);
         model.addAttribute("user",user);
 
@@ -90,13 +94,17 @@ public class pageController {
         Users user = (Users) session.getAttribute("user");
         int userId=user.getUid();
         //获取文件
-        List<FileEntity> files = fileMapper.getFileByIdAndFileName(userId, find);
+        List<FileEntity.FileInputEntity> FileInputEntityList = fileMapper.getFileByIdAndFileName(userId, find);
+        //文件 DB录入/取得 -> 页面展示
+        List<FileEntity.FileOutputEntity> list=service.fileInputChangeToOutput(FileInputEntityList);
         //获取文件夹
-        List<FolderEntity> folders = mapper.getFolderByIdAndFolderName(userId, find);
+        List<FolderEntity.FolderEntityInput> folders = mapper.getFolderByIdAndFolderName(userId, find);
+        //目录 DB录入/取得 -> 页面展示
+        List<FolderEntity.FolderEntityOutput> outputList = folderService.FolderInputChangeToOutput(folders);
 
         model.addAttribute("user",user);
         model.addAttribute("folders",folders);
-        model.addAttribute("list",files);
+        model.addAttribute("list",outputList);
 
         return "index";
     }

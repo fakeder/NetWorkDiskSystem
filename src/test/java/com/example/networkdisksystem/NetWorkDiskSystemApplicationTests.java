@@ -1,6 +1,7 @@
 package com.example.networkdisksystem;
 
 import com.example.networkdisksystem.config.FileConfig;
+import com.example.networkdisksystem.config.FileImage;
 import com.example.networkdisksystem.entity.FileShareEntity;
 import com.example.networkdisksystem.entity.Users;
 import com.example.networkdisksystem.mapper.FileMapper;
@@ -105,9 +106,12 @@ class NetWorkDiskSystemApplicationTests {
 
     @Autowired
     FileConfig fileConfig;
+
+    @Autowired
+    FileImage fileImage;
     @Test
     void a(){
-      System.out.println(fileConfig.getWindowsUploadPath());
+        System.out.println(folderMapper.getFolderByUpMkdirId(-1));
     }
 
 }
