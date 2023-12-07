@@ -130,7 +130,7 @@ public class FileController {
         Users user = (Users) session.getAttribute("user");
         String username = user.getUsername();
         String HDFSFilePath=fileConfig.getHdfsUploadPath()+username+"/";
-        service.deleteFile(fid,HDFSFilePath);
+        service.deleteFile(fid,HDFSFilePath,user);
         return new R(200,"删除成功！");
     }
 

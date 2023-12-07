@@ -4,6 +4,7 @@ import com.example.networkdisksystem.API.HadoopApi;
 import com.example.networkdisksystem.config.FileConfig;
 import com.example.networkdisksystem.config.FileImage;
 import com.example.networkdisksystem.entity.FileEntity;
+import com.example.networkdisksystem.entity.Users;
 import com.example.networkdisksystem.mapper.FileMapper;
 import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileService;
@@ -101,9 +102,10 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public int deleteFile(int fid,String HDFSFilePath) {//文件删除
+    public int deleteFile(int fid, String HDFSFilePath, Users user) {//文件删除
         //删除HDFS上的文件
-        String fileName= fileMapper.getFileNameByFid(fid);
+        FileEntity.FileInputEntity file= fileMapper.getFileById(fid);
+        String fileName=file.getFileName();
         String[] f=fileName.split("\\.");
         HDFSFilePath=HDFSFilePath+fid+"."+f[f.length-1];
         System.out.println(HDFSFilePath+"================");
@@ -114,7 +116,16 @@ public class FileServiceImpl implements FileService {
             throw new RuntimeException(e);
         }
         //删除表中数据
-        return fileMapper.deleteFile(fid);
+        fileMapper.deleteFile(fid);
+        //更新用户表中的UsedSize
+        long userSizeByte = SizeChange.formatFileSizeReverse( user.getUsedSize());
+        long fileSizeByte = SizeChange.formatFileSizeReverse(file.getFileSize());
+        //已用大小-文件大小
+        userSizeByte=userSizeByte-fileSizeByte;
+        //long -> string / 字节 -> B
+        String usedSize=SizeChange.formatFileSize(userSizeByte);
+        userMapper.updateUsedSizeByUid(user.getUid(),usedSize);
+        return 1;
     }
 
     @Override

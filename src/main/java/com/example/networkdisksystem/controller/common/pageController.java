@@ -103,8 +103,8 @@ public class pageController {
         List<FolderEntity.FolderEntityOutput> outputList = folderService.FolderInputChangeToOutput(folders);
 
         model.addAttribute("user",user);
-        model.addAttribute("folders",folders);
-        model.addAttribute("list",outputList);
+        model.addAttribute("folders",outputList);
+        model.addAttribute("list",list);
 
         return "index";
     }

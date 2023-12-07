@@ -1,6 +1,7 @@
 package com.example.networkdisksystem.service;
 
 import com.example.networkdisksystem.entity.FileEntity;
+import com.example.networkdisksystem.entity.Users;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,9 +33,10 @@ public interface FileService {
      * 删除文件
      * @param fid fid
      * @param HDFSFilePath hdfs地址
+     * @param user 用户信息
      * @return
      */
-    int deleteFile(int fid,String HDFSFilePath);
+    int deleteFile(int fid, String HDFSFilePath, Users user);
 
     /**
      * 文件重命名

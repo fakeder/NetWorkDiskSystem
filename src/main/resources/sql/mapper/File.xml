@@ -38,4 +38,8 @@
     <select id="getFileByIdAndFileName" resultType="com.example.networkdisksystem.entity.FileEntity$FileInputEntity">
         select * from file_table where uid=#{uid} and fileName like concat('%',#{fileName},'%')
     </select>
+
+    <select id="getFileById" resultType="com.example.networkdisksystem.entity.FileEntity$FileInputEntity">
+        select * from file_table where fid=#{fid}
+    </select>
 </mapper>
