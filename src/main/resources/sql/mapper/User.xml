@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.networkdisksystem.mapper.UserMapper">
+
+    <select id="getUsersByUsername" resultType="com.example.networkdisksystem.entity.Users">
+        select * from user where username=#{username}
+    </select>
+
+    <insert id="register">
+        insert into user(username,
+                         password,
+                         email)
+        values (#{username},
+                #{password},
+                #{email})
+    </insert>
+
+    <update id="setMkdirId">
+        update user set mid=#{mid} where uid=#{uid}
+    </update>
+
+    <update id="updateUsedSizeByUid">
+        update user set usedSize=#{usedSize} where uid=#{uid}
+    </update>
+
+    <select id="checkEmail" resultType="integer">
+        select count(email) from user where email=#{email}
+    </select>
+
+    <select id="checkUserName" resultType="integer">
+        select count(username) from user where username=#{username}
+    </select>
+
+    <select id="getUserByEmail" resultType="com.example.networkdisksystem.entity.Users">
+        select * from user where email=#{email}
+    </select>
+
+    <update id="updatePassword">
+        update user set password=#{password} where uid=#{uid}
+    </update>
+</mapper>

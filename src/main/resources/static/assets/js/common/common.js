@@ -95,6 +95,6 @@ function TimeOutReload(time){
 //退出登录
 function logout(){
     new Warning("退出警告！","确定退出？",function (){
-            window.location="http://localhost:8080/user/logout"
+            window.location=host+"/user/logout"
     })
 }
