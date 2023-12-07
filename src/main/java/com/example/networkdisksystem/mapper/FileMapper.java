@@ -68,4 +68,11 @@ public interface FileMapper {
      * @return
      */
     List<FileEntity.FileInputEntity> getFileByIdAndFileName(@Param("uid") int uid,@Param("fileName") String fileName);
+
+    /**
+     * 根据fid获取文件信息
+     * @param fid fid
+     * @return 文件信息
+     */
+    FileEntity.FileInputEntity getFileById(int fid);
 }
