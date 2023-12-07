@@ -8,6 +8,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.networkdisksystem.util.DateToString;
+import org.springframework.util.ObjectUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -94,7 +96,7 @@ public class FileShareServiceImpl implements FileShareService {
     //删除redis中的数据
     template.delete("Time:"+shareCode);
     //修改状态
-    mapper.changeCondition(shareId,"1");
+    mapper.changeCondition(shareId,1);
     return 1;
   }
 
@@ -129,6 +131,13 @@ public class FileShareServiceImpl implements FileShareService {
       if(item.getTimeFlag()==4){
         fileShareEntityOutput.setExpirationTime("永久");
       }else {
+        //当前日期大于限定日期（状态==分享中）
+        if(item.getCondition()==0
+          && !new Date().before(item.getExpirationTime())){
+          //状态:分享中->已过期
+          mapper.changeCondition(item.getShareId(),1);
+          item.setCondition(1);
+        }
         fileShareEntityOutput.setExpirationTime(DateToString.StringData(item.getExpirationTime()));
       }
       //状态

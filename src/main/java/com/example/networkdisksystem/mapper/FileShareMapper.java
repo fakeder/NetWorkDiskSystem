@@ -69,7 +69,7 @@ public interface FileShareMapper {
    * @param condition 状态
    * @return
    */
-  int changeCondition(@Param("shareId") int shareId,@Param("condition") String condition);
+  int changeCondition(@Param("shareId") int shareId,@Param("condition") int condition);
 
   /**
    * 删除分享记录
