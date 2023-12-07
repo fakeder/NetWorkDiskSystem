@@ -5,7 +5,7 @@ function mkdir(){
         new Prompt("文件夹名称不能为空！")
         return;
     }
-    post('http://localhost:8080/folder/mkdir',{
+    post(host+'/folder/mkdir',{
         folder:folderName
     },function(data){
         if(data.code === 200){
@@ -31,7 +31,7 @@ function folderRename(mid){
             $("#M"+mid).attr("type","hidden")
             return;
         }
-        post('http://localhost:8080/folder/folderRename',{
+        post(host+'/folder/folderRename',{
             mid:mid,
             folderName:$("#M"+mid).val()
         },function (data){
@@ -52,7 +52,7 @@ function folderRename(mid){
 //文件夹删除
 function deleteFolder(mid){
     new Warning("删除目录","确定删除该目录吗？",function (){
-        post('http://localhost:8080/folder/deleteFolder', {
+        post(host+'/folder/deleteFolder', {
             mid: mid
         }, function (data) {
             if (data.code === 200) {

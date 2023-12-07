@@ -10,13 +10,13 @@ function login(){
         new Prompt("请输入密码")
         return;
     }
-    post('http://localhost:8080/user/do-login',{
+    post(host+'/user/do-login',{
         username:username,
         password:password,
         rememberMe:rememberMe
     },function (data) {
         if(data.code === 200){
-            window.location="http://localhost:8080/common/index"
+            window.location=host+"/common/index"
         }else {
             new Prompt("用户名或密码错误！")
             $("#username").val(username);
@@ -42,7 +42,7 @@ function forgetPassword(){
         new Prompt("请输入密码！")
         return;
     }
-    post("http://localhost:8080/user/forgetPassword",{
+    post(host+"/user/forgetPassword",{
         email:email,
         verify:verify,
         password:password
@@ -62,7 +62,7 @@ function askVerifyCode(){
         new Prompt("请输入邮箱！")
         return;
     }
-    Get('http://localhost:8080/user/verify-code',{
+    Get(host+'/user/verify-code',{
         email:email
     }, function (data){
         new Prompt(data.reason)
@@ -90,7 +90,7 @@ function register(){
         new Prompt("请输入验证码！")
         return;
     }
-    post('http://localhost:8080/user/do-register',{
+    post(host+'/user/do-register',{
         username:username,
         password:password,
         email:email,

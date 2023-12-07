@@ -14,7 +14,7 @@ function rename(fid){
             $("#f"+fid).attr("type","hidden")
             return;
         }
-        post('http://localhost:8080/file/rename',{
+        post(host+'/file/rename',{
             filename:newFileName,
             Fid:fid
         },function (data){
@@ -39,7 +39,7 @@ function fileUpload(event){
         return;
     }
     $.ajax({
-        url: 'http://localhost:8080/file/fileUpload', // 请求的URL
+        url: host+'/file/fileUpload', // 请求的URL
         type: 'POST',
         data: formData, // 发送的数据
         processData: false, // 不要对FormData进行处理
@@ -63,12 +63,12 @@ function fileUpload(event){
 }
 //文件下载
 function download(fid){
-   window.location='http://localhost:8080/file/download?fid='+fid
+   window.location=host+'/file/download?fid='+fid
 }
 //文件删除
 function deleteFile(fid){
     Warning("删除文件","确定删除该文件？",function () {
-        get('http://localhost:8080/file/delete?fid=' + fid, function (data) {
+        get(host+'/file/delete?fid=' + fid, function (data) {
             if (data.code === 200) {
                 new Prompt(data.reason)
                 new TimeOutReload(1000)

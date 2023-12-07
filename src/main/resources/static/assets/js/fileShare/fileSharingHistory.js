@@ -10,14 +10,14 @@ function fileShareChange(shareId,Condition,shareCode) {
     }
     Warning(title,text,function (){
         if(Condition === '分享中') {
-            post("http://localhost:8080/fileShare/stopSharing",{
+            post(host+"/fileShare/stopSharing",{
                 shareId:shareId,
                 shareCode:shareCode
             },function (data) {
                 new Prompt(data.reason)
             })
         }else {
-            post("http://localhost:8080/fileShare/delShare",{
+            post(host+"/fileShare/delShare",{
                 shareId:shareId
             },function (data) {
                 new Prompt(data.reason)

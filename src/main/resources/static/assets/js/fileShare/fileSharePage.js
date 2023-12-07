@@ -1,7 +1,5 @@
 //文件分享页面跳转
 function share(fid,filename,fileSize){
-    //alert("fid="+fid+"filename="+filename+"fileSize="+fileSize)
-    //location.href="http://localhost:8080/fileShare/fileShare?Fid="+fid+"&FileName="+filename+"&FileSize="+fileSize;
     $("#fileName").val(filename);
     $("#fileId").val(fid);
     $("#fileSize").text(fileSize)
@@ -33,7 +31,7 @@ function fileSharedComment(){
     }else {
         DownloadNumber=$("#downloadNumber").val();
     }
-    post("http://localhost:8080/fileShare/toFileShare",{
+    post(host+"/fileShare/toFileShare",{
         fileId:$("#fileId").val(),
         filename:Filename,
         fileSize:FileSize,

@@ -83,7 +83,7 @@ public class FileServiceImpl implements FileService {
         String fileName= fileMapper.getFileNameByFid(fid);
         String[] f=fileName.split("\\.");
         HDFSFilePath=HDFSFilePath+fid+"."+f[f.length-1];
-        String windowsFilePath=fileConfig.getWindowsUploadPath()+fileName;
+        String windowsFilePath=fileConfig.getWindowsUploadPath()+"\\"+fileName;
         HadoopApi hadoopApi=new HadoopApi();
         try {
             hadoopApi.downlaod(HDFSFilePath,windowsFilePath);
@@ -174,6 +174,16 @@ public class FileServiceImpl implements FileService {
                 }
                 if (bins != null) {
                     bins.close();
+                }
+                // 创建一个新的File对象
+                File file = new File(filePathName);
+                // 检查文件是否存在
+                if (file.exists()) {
+                    // 删除文件
+                    file.delete();
+                    System.out.println("下载文件已成功删除.");
+                } else {
+                    System.out.println("文件不存在.");
                 }
             } catch (IOException e) {
                 log.error("关闭流异常", e);
