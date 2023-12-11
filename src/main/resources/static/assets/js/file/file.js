@@ -68,14 +68,23 @@ function download(fid){
 //文件删除
 function deleteFile(fid){
     Warning("删除文件","确定删除该文件？",function () {
-        get(host+'/file/delete?fid=' + fid, function (data) {
-            if (data.code === 200) {
-                new Prompt(data.reason)
-                new TimeOutReload(1000)
+        post(host+"/fileShare/fileShareCheck",{
+            fid:fid
+        },function (data){
+            if(data.code === 200){
+                get(host+'/file/delete?fid=' + fid, function (data) {
+                    if (data.code === 200) {
+                        new Prompt(data.reason)
+                        new TimeOutReload(1000)
+                    } else {
+                        new Prompt("未知错误！删除失败！")
+                        new TimeOutReload(1000)
+                    }
+                })
             } else {
-                new Prompt("未知错误！删除失败！")
-                new TimeOutReload(1000)
+                new Prompt(data.reason);
             }
         })
+
     })
 }

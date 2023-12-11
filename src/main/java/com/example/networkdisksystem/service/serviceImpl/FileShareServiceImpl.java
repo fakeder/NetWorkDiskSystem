@@ -28,12 +28,12 @@ public class FileShareServiceImpl implements FileShareService {
   FileShareMapper mapper;
 
   @Override
-  public boolean fileShareCheck(int uid, int fid) {
+  public String fileShareCheck(int uid, int fid) {
     FileShareEntity.FileShareEntityInput sharedByUIdAndFid = mapper.getSharedByUIdAndFid(uid, fid);
     if(Objects.isNull(sharedByUIdAndFid)){
-      return true;
+      return null;
     }else {
-      return false;
+      return sharedByUIdAndFid.getShareCode();
     }
   }
 
