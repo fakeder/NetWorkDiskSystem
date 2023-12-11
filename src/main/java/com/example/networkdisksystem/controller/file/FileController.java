@@ -146,4 +146,25 @@ public class FileController {
         if(flag==1) return new R(200,"修改成功！");
         else return new R(400,"文件名重复");
     }
+
+    /**
+     * 文件提取 直接下载文件
+     * @param fid fid
+     * @param username 用户名
+     * @param request
+     * @param response
+     */
+    @RequestMapping(value = "/fileExtractionDownload",method = RequestMethod.GET)
+    @ResponseBody
+    public void fileExtractionDownload(@RequestParam("fid") int fid,
+                                       @RequestParam("username") String username,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response){
+        //hdfs文件名拼接
+        String HDFSFilePath=fileConfig.getHdfsUploadPath()+username+"/";
+        //将文件从hdfs下载到服务器端
+        String fileName = service.pullFile(HDFSFilePath, fid);
+        //将文件从服务器端下载到客户端
+        service.downloadToClient(request,response,fileName);
+    }
 }

@@ -33,12 +33,13 @@ function fileExtraction(){
 function fileExtractionDownload(){
     let fid=$("#fileExtractionFid").val();
     let shareCode=$("#shareCode").val();
+    let username=$("#fileExtractionUserName").text();
     post(host+"/fileExtraction/updateNumberOfDownload",{
         fid:fid,
         shareCode:shareCode
     },function (data){
         if(data.code === 200){
-            download(fid);
+            window.location=host+'/file/fileExtractionDownload?fid='+fid+"&username="+username;
         } else {
           new Prompt(data.reason);
         }
