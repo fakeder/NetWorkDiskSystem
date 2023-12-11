@@ -45,3 +45,31 @@ function fileExtractionDownload(){
         }
     })
 }
+
+function fileExtractionSave(){
+    let fid=$("#fileExtractionFid").val();
+    let shareCode=$("#shareCode").val();
+    let username=$("#fileExtractionUserName").text();
+    let fileName=$("#fileExtractionFileName").text();
+    let fileSize=$("#fileExtractionSize").text();
+    post(host+"/fileExtraction/updateNumberOfDownload",{
+        fid:fid,
+        shareCode:shareCode
+    },function (data){
+        if(data.code === 200){
+            post(host+"/fileExtraction/saveToCurrentDirectory",{
+                fid:fid,
+                username:username,
+                fileName:fileName,
+                fileSize:fileSize
+            },function (data){
+                new Prompt(data.reason)
+                if(data.code === 200){
+                    new TimeOutReload(1000);
+                }
+            })
+        } else {
+            new Prompt(data.reason);
+        }
+    })
+}

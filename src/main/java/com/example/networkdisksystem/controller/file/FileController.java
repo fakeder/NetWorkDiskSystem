@@ -5,6 +5,7 @@ import com.example.networkdisksystem.entity.FileEntity;
 import com.example.networkdisksystem.entity.R;
 import com.example.networkdisksystem.entity.Users;
 import com.example.networkdisksystem.service.FileService;
+import com.example.networkdisksystem.util.Naming;
 import com.example.networkdisksystem.util.SizeChange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -71,26 +72,8 @@ public class FileController {
         String oldFilename = file.getOriginalFilename();
         //判断文件名是否重复
         List<FileEntity.FileInputEntity> fileNames = service.getFileNamesByMid(mid);
-        int i=1;
-        boolean flag=true;
-        String filename=oldFilename;
-        while(flag&&fileNames.size()>0){
-            for(FileEntity.FileInputEntity fileEntity:fileNames){
-                if(filename.equals(fileEntity.getFileName())){
-                    String[] f=oldFilename.split("\\.");
-                    String fn=f[0];
-                    for(int j=1;j<f.length-1;j++){
-                        fn=fn+"."+f[i];
-                    }
-                    filename=fn+"("+i+")."+f[f.length-1];
-                    i++;
-                    flag=true;
-                    break;
-                }else {
-                    flag=false;
-                }
-            }
-        }
+        String filename= Naming.fileNaming(fileNames,oldFilename);
+        //文件上传到服务器地址
         String filePath=fileConfig.getWindowsUploadPath();
         File fileObject=new File(filePath+filename);
         file.transferTo(fileObject);
