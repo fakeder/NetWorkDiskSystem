@@ -10,4 +10,12 @@ public interface FileExtractionService {
      * @return
      */
     FileExtractionEntity checkShareCode(String shareCode);
+
+    /**
+     * 更新文件被下载次数
+     * @param shareCode 提取码
+     * @param fid 文件id
+     * @return true:更新成功   false:更新失败（到达限定下载次数）
+     */
+    boolean updateShareNumberOfDownload(String shareCode,int fid);
 }

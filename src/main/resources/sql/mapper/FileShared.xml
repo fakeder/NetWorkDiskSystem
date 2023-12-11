@@ -56,4 +56,8 @@
     <select id="getFileShareEntityInputByShareCodeAndFid" resultType="com.example.networkdisksystem.entity.FileShareEntity$FileShareEntityInput">
         select * from file_share where shareCode=#{shareCode} and fid=#{fid}
     </select>
+
+    <update id="updateNumberOfDownload">
+        update file_share set numberOfDownload=#{numberOfDownload} where shareId=#{shareId}
+    </update>
 </mapper>

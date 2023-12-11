@@ -16,6 +16,7 @@ function fileExtraction(){
             $("#fileExtractionFileName").text(data.fileName);
             $("#fileExtractionSize").text(data.fileSize);
             $("#fileExtractionTime").text(data.time);
+            $("#fileExtractionFid").val(data.fid);
             $("#fileExtraction").modal('show');
         } else {
             $("#fileExtractionUserName").text("");
@@ -25,6 +26,21 @@ function fileExtraction(){
             $("#fileExtractionSize").text("");
             $("#fileExtractionTime").text("");
             new Prompt(data.reason)
+        }
+    })
+}
+//直接下载到本地
+function fileExtractionDownload(){
+    let fid=$("#fileExtractionFid").val();
+    let shareCode=$("#shareCode").val();
+    post(host+"/fileExtraction/updateNumberOfDownload",{
+        fid:fid,
+        shareCode:shareCode
+    },function (data){
+        if(data.code === 200){
+            download(fid);
+        } else {
+          new Prompt(data.reason);
         }
     })
 }
