@@ -77,4 +77,13 @@ public interface FileShareMapper {
    * @return
    */
   int delShareById(int shareId);
+
+    /**
+     * 通过fid,分享码获取文件分享类
+     * @param shareCode 分享码
+     * @param fid fid
+     * @return 文件分享类
+     */
+  FileShareEntity.FileShareEntityInput getFileShareEntityInputByShareCodeAndFid(@Param("shareCode") String shareCode,
+                                                                                @Param("fid") Integer fid);
 }

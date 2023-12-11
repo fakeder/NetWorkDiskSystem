@@ -38,4 +38,8 @@
     <update id="updatePassword">
         update user set password=#{password} where uid=#{uid}
     </update>
+
+    <select id="getUserById" resultType="com.example.networkdisksystem.entity.Users">
+        select * from user where uid=#{uid}
+    </select>
 </mapper>

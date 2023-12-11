@@ -46,10 +46,3 @@ function fileSharedComment(){
         }
     })
 }
-//文件提取
-function fileExtraction(){
-    let shareCode=$("#shareCode").val();
-    if(shareCode === ''){
-        new Prompt("提取码为空");
-    }
-}

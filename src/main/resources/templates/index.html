@@ -90,7 +90,9 @@
                             </a>
                             <div class="user-info-box">
                                 <div class="drop-down-header">
-                                    <h4 th:text="${user.getUsername()}">John Brown</h4>
+                                    <h4 th:text="|用户:${user.getUsername()}|">John Brown</h4>
+                                    <h4 >已用容量/总用量</h4>
+                                    <h5 th:text="|${user.getUsedSize()}/${user.getTotalSize()}|"></h5>
                                 </div>
                                 <ul>
                                     <li>
@@ -214,6 +216,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <!--目录-->
                                                 <tr th:each="folders:${folders}">
                                                     <td>
                                                         <span class="img-thumb ">
@@ -225,8 +228,8 @@
                                                     <td>
                                                     </td>
                                                     <td></td>
-                                                    <td th:text="${folders.getStartTime()}"></td>
-                                                    <td th:text="${folders.getLastModifiedTime()}"></td>
+                                                    <td th:text="${folders.getStartTime()}">-</td>
+                                                    <td th:text="${folders.getLastModifiedTime()}">-</td>
                                                     <td>文件夹</td>
                                                     <td>-</td>
                                                     <td class="relative">
@@ -255,20 +258,21 @@
                                                     </div>
                                                 </td>
                                                 </tr>
+                                                <!--文件-->
                                                 <tr th:each="files:${list}">
                                                     <td>
                                                       <span class="img-thumb ">
                                                           <img th:src="${files.getFileImage()}" alt=" ">
-                                                        </span>
+                                                      </span>
                                                       <label th:id="|F${files.getFid()}|" th:text="${files.getFileName()}" type="text" placeholder="文件名"></label>
                                                       <input th:id="|f${files.getFid()}|" th:value="${files.getFileName()}" type="hidden" placeholder="修改文件名">
                                                     </td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td th:text="${files.getStartTime()}"></td>
-                                                    <td th:text="${files.getLastModifiedTime()}"></td>
-                                                    <td th:text="|${files.getType()}文件|"></td>
-                                                    <td th:text="${files.getFileSize()}"></td>
+                                                    <td th:text="${files.getStartTime()}">-</td>
+                                                    <td th:text="${files.getLastModifiedTime()}">-</td>
+                                                    <td th:text="|${files.getType()}文件|">-</td>
+                                                    <td th:text="${files.getFileSize()}">-</td>
                                                     <td class="relative">
                                                         <a class="action-btn " href="javascript:void(0); ">
                                                             <svg class="default-size "  viewBox="0 0 341.333 341.333 ">
@@ -426,7 +430,63 @@
       </div>
     </div>
   </div>
-    <!-- Slide Setting Box -->
+  <!-- -->
+  <div class="modal fade" id="fileExtraction" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle5">文件提取</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <style>
+              .parent {
+                  text-align: center;
+              }
+          </style>
+          <div>
+            <div class="parent">
+              <h3>
+                <label>来源:</label>
+                <span class="img-thumb ">
+                  <img src="" alt=" " id="fileExtractionUserImage">
+                </span>
+                <label id="fileExtractionUserName">梁志超</label>
+              </h3>
+            </div>
+            <hr>
+            <div class="parent">
+              <h3>
+                <label>文件:</label>
+                <span class="img-thumb ">
+                <img src="" alt=" " id="fileExtractionFileImage">
+                </span>
+                <label id="fileExtractionFileName">a.txt</label>
+              </h3>
+              <div>
+                <label>文件大小:</label>
+                <label id="fileExtractionSize">0 B</label>
+              </div>
+            </div>
+            <hr>
+            <div class="parent">
+              <label>该文件将于</label>
+              <label id="fileExtractionTime">2023-12-07 19:50:07</label>
+              <label>过期</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="effect-btn btn btn-success mt-2 mr-2" data-dismiss="modal">下载到本地</button>
+          <button type="button" class="effect-btn btn btn-primary mt-2 mr-2" data-dismiss="modal">保存到网盘当前目录下</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide Setting Box -->
     <div class="slide-setting-box">
     <div class="slide-setting-holder">
       <div class="setting-box-head">
@@ -570,6 +630,7 @@
   <script src="../static/assets/js/file/file.js"></script>
   <script src="../static/assets/js/folder/folder.js"></script>
   <script src="../static/assets/js/fileShare/fileSharePage.js"></script>
+  <script src="../static/assets/js/fileShare/fileExtraction.js"></script>
 </body>
 
 </html>
