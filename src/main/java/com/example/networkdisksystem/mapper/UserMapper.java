@@ -68,4 +68,11 @@ public interface UserMapper {
      * @return 1:成功执行  0:执行失败
      */
     int updatePassword(@Param("uid") int uid,@Param("password") String password);
+
+    /**
+     * 通过uid获取用户
+     * @param uid uid
+     * @return Users
+     */
+    Users getUserById(int uid);
 }

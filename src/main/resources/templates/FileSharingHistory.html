@@ -91,7 +91,9 @@
                 </a>
                 <div class="user-info-box">
                   <div class="drop-down-header">
-                    <h4 th:text="${user.getUsername()}">John Brown</h4>
+                    <h4 th:text="|用户:${user.getUsername()}|">John Brown</h4>
+                    <h4 >已用容量/总用量</h4>
+                    <h5 th:text="|${user.getUsedSize()}/${user.getTotalSize()}|"></h5>
                   </div>
                   <ul>
                     <li>
