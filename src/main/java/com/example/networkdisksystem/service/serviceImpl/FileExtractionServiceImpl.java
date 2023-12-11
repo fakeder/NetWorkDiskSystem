@@ -1,18 +1,23 @@
 package com.example.networkdisksystem.service.serviceImpl;
 
+import com.example.networkdisksystem.API.HadoopApi;
 import com.example.networkdisksystem.config.FileConfig;
 import com.example.networkdisksystem.config.FileImage;
 import com.example.networkdisksystem.entity.FileExtractionEntity;
 import com.example.networkdisksystem.entity.FileShareEntity;
 import com.example.networkdisksystem.entity.Users;
+import com.example.networkdisksystem.mapper.FileMapper;
 import com.example.networkdisksystem.mapper.FileShareMapper;
 import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileExtractionService;
 import com.example.networkdisksystem.util.DateToString;
+import com.example.networkdisksystem.util.SizeChange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.Objects;
 
 @Service
@@ -27,6 +32,8 @@ public class FileExtractionServiceImpl implements FileExtractionService {
     @Autowired
     FileShareMapper fileShareMapper;
 
+    @Autowired
+    FileMapper fileMapper;
     @Autowired
     UserMapper userMapper;
 
@@ -110,5 +117,30 @@ public class FileExtractionServiceImpl implements FileExtractionService {
             fileShareMapper.changeCondition(fileShareEntity.getShareId(), 1);
         }
         return true;
+    }
+
+    @Override
+    public int saveFile(String fileName, int mid, int uid, String fileSize,long usedSize,
+                        String HDFSFilePath1,String HDFSFilePath2,String tempPath) {
+        //文件表中插入信息
+        fileMapper.addFile(mid,fileName,fileSize,uid,new Date());
+        //更新用户表信息
+        String usedsize = SizeChange.formatFileSize(usedSize);
+        userMapper.updateUsedSizeByUid(uid,usedsize);
+        //获取文件id
+        int fid = fileMapper.getFileIdByMidAndFileName(mid, fileName);
+        //将文件上传到HDFS上
+        //获取文件后缀
+        String[] f=fileName.split("\\.");
+        //将文件重命名为 /HDFS/用户名/fid.xxx
+        HDFSFilePath1=HDFSFilePath1+fid+"."+f[f.length-1];
+        //hdfs文件复制
+        HadoopApi hadoopApi=new HadoopApi();
+        try {
+            hadoopApi.copy(HDFSFilePath2, tempPath, HDFSFilePath1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 1;
     }
 }

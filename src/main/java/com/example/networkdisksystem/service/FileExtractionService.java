@@ -18,4 +18,18 @@ public interface FileExtractionService {
      * @return true:更新成功   false:更新失败（到达限定下载次数）
      */
     boolean updateShareNumberOfDownload(String shareCode,int fid);
+
+    /**
+     * 将分享保存到网盘当前目录下.
+     * @param fileName 文件名
+     * @param mid 目录id
+     * @param uid 用户id
+     * @param fileSize 文件大小
+     * @param usedSize 已使用大小
+     * @param HDFSFilePath1 提取文件用户地址
+     * @param HDFSFilePath2 分享文件用户地址
+     * @param tempPath 临时路径
+     * @return
+     */
+    int saveFile(String fileName,int mid,int uid,String fileSize,long usedSize,String HDFSFilePath1,String HDFSFilePath2,String tempPath);
 }

@@ -5,6 +5,7 @@ import com.example.networkdisksystem.mapper.FolderMapper;
 import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.service.FolderService;
 import com.example.networkdisksystem.util.DateToString;
+import com.example.networkdisksystem.util.Naming;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -24,21 +25,7 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public int CreateFolder(String folderName, int mid, int uid) {
         List<FolderEntity.FolderEntityInput> folders = mapper.getFolderByUpMkdirId(mid);
-        int i=1;
-        String f_name=folderName;
-        boolean flag=true;
-        while(flag&&folders.size()>0){
-            for (FolderEntity.FolderEntityInput folder:folders){
-                if(folderName.equals(folder.getFolderName())){
-                    folderName=f_name+"("+i+")";
-                    i++;
-                    flag=true;
-                    break;
-                }else {
-                    flag=false;
-                }
-            }
-        }
+        folderName= Naming.folderNaming(folders,folderName);
         return mapper.insertMkdir(uid, folderName, mid,new Date());
     }
 
