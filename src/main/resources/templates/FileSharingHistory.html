@@ -343,9 +343,7 @@
                                                         <label th:class="${fileShare.getConditionClass()}" th:text="${fileShare.getCondition()}">状态</label>
                                                     </td>
                                                     <td th:text="${fileShare.getDownloadNumber()}">次数</td>
-                                                    <td>
-                                                      <label th:text="${fileShare.getNumberOfDownload()}">已被下载次数</label>
-                                                    </td>
+                                                    <td th:text="${fileShare.getNumberOfDownload()}">已被下载次数</td>
                                                     <td><button th:class="${fileShare.getButtonClass()}" th:text="${fileShare.getButtonText()}"
                                                                 th:data1="${fileShare.getShareId()}" th:data2="${fileShare.getCondition()}" th:data3="${fileShare.getShareCode()}"
                                                                 th:onclick="|fileShareChange(this.getAttribute('data1'),this.getAttribute('data2'),this.getAttribute('data3'))|">按钮</button></td>

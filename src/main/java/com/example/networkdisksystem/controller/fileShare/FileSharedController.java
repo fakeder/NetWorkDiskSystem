@@ -20,6 +20,20 @@ public class FileSharedController {
   FileShareService service;
 
 
+    /**
+     * 文件分享存在check，判断文件是否在分享中
+     * @param fid fid
+     * @param session session
+     */
+  @RequestMapping(value = "/fileShareCheck",method = RequestMethod.POST)
+  @ResponseBody
+  public R fileShareCheck(@RequestParam("fid") int fid,
+                          HttpSession session){
+      Users user = (Users) session.getAttribute("user");
+      String shareCode = service.fileShareCheck(user.getUid(), fid);
+      if(Objects.isNull(shareCode)) return new R(200,"文件不在分享中");
+      else return new R(400,"该文件处于分享中,分享码:"+shareCode);
+  }
   /**
    * 文件分享（分享）
    * @param fileId 文件id
@@ -39,15 +53,9 @@ public class FileSharedController {
                       @RequestParam("downloadType") int downloadType,
                       @RequestParam("downloadNumber") int downloadNumber) {
     Users user = (Users) session.getAttribute("user");
-    //检查是否已经在分享中
-    boolean check = service.fileShareCheck(user.getUid(), fileId);
-    if(check) {
-      String shareCode =
+    String shareCode =
         service.FileShared(user.getUid(), fileId, filename, fileSize, expirationTime, downloadType, downloadNumber);
-      return new R(200, shareCode);
-    }else {
-      return new R(400,"此文件处于分享中！");
-    }
+    return new R(200, shareCode);
   }
 
   /**

@@ -1,11 +1,19 @@
 //文件分享页面跳转
 function share(fid,filename,fileSize){
-    $("#fileName").val(filename);
-    $("#fileId").val(fid);
-    $("#fileSize").text(fileSize)
-    $("#fileSharePage").modal('show')
-    $("#shareBtn").on('click',function (){
-        fileSharedComment();
+    post(host+"/fileShare/fileShareCheck",{
+        fid:fid
+    },function (data){
+        if(data.code === 200){
+            $("#fileName").val(filename);
+            $("#fileId").val(fid);
+            $("#fileSize").text(fileSize)
+            $("#fileSharePage").modal('show')
+            $("#shareBtn").on('click',function (){
+                fileSharedComment();
+            })
+        } else {
+          new Prompt(data.reason);
+        }
     })
 }
 //下载次数变换

@@ -10,11 +10,11 @@ import java.util.List;
 public interface FileShareService {
 
   /**
-   * 文件分享列表中是否存在.
+   * 文件分享列表中是否存在,存在则返回分享码.
    * @param uid 用户id
    * @param fid 文件id
    */
-  boolean fileShareCheck(int uid,int fid);
+  String fileShareCheck(int uid,int fid);
 
   /**
    * 文件分享表单提交写入文件文件分享表
