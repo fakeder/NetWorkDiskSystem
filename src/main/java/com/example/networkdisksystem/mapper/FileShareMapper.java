@@ -86,4 +86,13 @@ public interface FileShareMapper {
      */
   FileShareEntity.FileShareEntityInput getFileShareEntityInputByShareCodeAndFid(@Param("shareCode") String shareCode,
                                                                                 @Param("fid") Integer fid);
+
+    /**
+     * 更新文件分享下载次数
+     * @param numberOfDownload 下载次数
+     * @param shareId id
+     * @return
+     */
+  int updateNumberOfDownload(@Param("numberOfDownload") int numberOfDownload,
+                             @Param("shareId") int shareId);
 }

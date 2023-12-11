@@ -76,4 +76,39 @@ public class FileExtractionServiceImpl implements FileExtractionService {
 
         return fileExtraction;
     }
+
+    @Override
+    public boolean updateShareNumberOfDownload(String shareCode, int fid) {
+        //获取文件分享信息
+        FileShareEntity.FileShareEntityInput fileShareEntity =
+            fileShareMapper.getFileShareEntityInputByShareCodeAndFid(shareCode, fid);
+        //判断状态，文件下载次数是否达到最大限定次数
+        int condition = fileShareEntity.getCondition();
+        if(condition==1){
+            return false;
+        }
+        //限定下载次数
+        int downloadNumber = fileShareEntity.getDownloadNumber();
+        //已下载次数
+        int numberOfDownload = fileShareEntity.getNumberOfDownload();
+        //更新前判断 已下载次数>=限定下载次数
+        if(numberOfDownload>=downloadNumber){
+            //删除redis中数据
+            template.delete("Time:"+shareCode);
+            //更改状态为已过期
+            fileShareMapper.changeCondition(fileShareEntity.getShareId(),1);
+            return false;
+        }
+        numberOfDownload+=1;
+        //更新已下载次数
+        fileShareMapper.updateNumberOfDownload(numberOfDownload,fileShareEntity.getShareId());
+        //更新后判断 已下载次数>=限定下载次数
+        if(numberOfDownload>=downloadNumber) {
+            //删除redis中数据
+            template.delete("Time:" + shareCode);
+            //更改状态为已过期
+            fileShareMapper.changeCondition(fileShareEntity.getShareId(), 1);
+        }
+        return true;
+    }
 }
