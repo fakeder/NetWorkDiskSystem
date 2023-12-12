@@ -11,6 +11,7 @@ import com.example.networkdisksystem.mapper.FileShareMapper;
 import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileExtractionService;
 import com.example.networkdisksystem.util.DateToString;
+import com.example.networkdisksystem.util.Naming;
 import com.example.networkdisksystem.util.SizeChange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -130,14 +131,13 @@ public class FileExtractionServiceImpl implements FileExtractionService {
         //获取文件id
         int fid = fileMapper.getFileIdByMidAndFileName(mid, fileName);
         //将文件上传到HDFS上
-        //获取文件后缀
-        String[] f=fileName.split("\\.");
-        //将文件重命名为 /HDFS/用户名/fid.xxx
-        HDFSFilePath1=HDFSFilePath1+fid+"."+f[f.length-1];
+        //将文件重命名为 /HDFS/用户名/fid
+        HDFSFilePath1=HDFSFilePath1+fid;
         //hdfs文件复制
         HadoopApi hadoopApi=new HadoopApi();
         try {
             hadoopApi.copy(HDFSFilePath2, tempPath, HDFSFilePath1);
+            System.out.println("文件已成功复制到hdfs上");
         } catch (Exception e) {
             e.printStackTrace();
         }

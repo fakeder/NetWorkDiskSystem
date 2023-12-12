@@ -18,7 +18,7 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 app:
   #服务器地址目录
-  windows-upload-path: F:\\IOtest\\HDFS\\download
+  windows-upload-path: F:\\IOtest\\HDFS\\download\\
   #HDFS地址目录
   hdfs-upload-path: /HDFS/
   #限制文件类型

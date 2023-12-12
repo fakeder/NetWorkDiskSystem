@@ -21,10 +21,16 @@ public class Naming {
                 if(filename.equals(fileEntity.getFileName())){
                     String[] f=oldFilename.split("\\.");
                     String fn=f[0];
+                    //将这种文件a.b.c.pdf 连接成==》a.b.c
                     for(int j=1;j<f.length-1;j++){
                         fn=fn+"."+f[i];
                     }
-                    filename=fn+"("+i+")."+f[f.length-1];
+                    //添加文件后缀a.xxx 没有后则不添加
+                    if(f.length>=2){
+                        filename=fn+"("+i+")."+f[f.length-1];
+                    } else {
+                        filename=fn+"("+i+")";
+                    }
                     i++;
                     flag=true;
                     break;
@@ -36,6 +42,13 @@ public class Naming {
         return filename;
     }
 
+
+    /**
+     * 目录重命名（重复）
+     * @param folders 当前目录下的目录list
+     * @param folderName 目录名
+     * @return 变更目录名
+     */
     public static String folderNaming(List<FolderEntity.FolderEntityInput> folders,String folderName){
         int i=1;
         String f_name=folderName;

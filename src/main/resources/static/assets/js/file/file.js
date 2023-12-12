@@ -38,6 +38,8 @@ function fileUpload(event){
         new Prompt("请选择要上传的文件！")
         return;
     }
+    $("#uploadBtn").text("上传中...");
+    $("#uploadBtn").attr("disabled",true);
     $.ajax({
         url: host+'/file/fileUpload', // 请求的URL
         type: 'POST',
