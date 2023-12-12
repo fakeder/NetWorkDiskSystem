@@ -9,6 +9,7 @@ import com.example.networkdisksystem.mapper.FileMapper;
 import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.util.DateToString;
+import com.example.networkdisksystem.util.Naming;
 import com.example.networkdisksystem.util.SizeChange;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +54,12 @@ public class FileServiceImpl implements FileService {
         int fid = fileMapper.getFileIdByMidAndFileName(mid, filename);
 
         //将文件上传到HDFS上
-            //获取文件后缀
-        String[] f=filename.split("\\.");
-            //将文件重命名为 /HDFS/用户名/fid.xxx
-        HDFSFilePath=HDFSFilePath+fid+"."+f[f.length-1];
+            //将文件重命名为 /HDFS/用户名/fid
+        HDFSFilePath=HDFSFilePath+fid;
         HadoopApi hadoopApi=new HadoopApi();
         try {
             hadoopApi.Uplaod(windowsFilePath,HDFSFilePath);
+            System.out.println("文件上传成功！文件上传到hdfs路径："+HDFSFilePath);
         } catch (Exception e) {
             System.out.println("文件上传到HDFS的过程中发生异常");
             return 0;
@@ -82,16 +82,15 @@ public class FileServiceImpl implements FileService {
     @Override
     public String pullFile(String HDFSFilePath,int fid) {//文件下载
         String fileName= fileMapper.getFileNameByFid(fid);
-        String[] f=fileName.split("\\.");
-        HDFSFilePath=HDFSFilePath+fid+"."+f[f.length-1];
-        String windowsFilePath=fileConfig.getWindowsUploadPath()+"\\"+fileName;
+        HDFSFilePath=HDFSFilePath+fid;
+        String windowsFilePath=fileConfig.getWindowsUploadPath()+fileName;
         HadoopApi hadoopApi=new HadoopApi();
         try {
             hadoopApi.downlaod(HDFSFilePath,windowsFilePath);
+            System.out.println("hdfs文件下载到服务器路径："+windowsFilePath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("文件下载到"+windowsFilePath);
         return fileName;
     }
 
@@ -105,13 +104,12 @@ public class FileServiceImpl implements FileService {
     public int deleteFile(int fid, String HDFSFilePath, Users user) {//文件删除
         //删除HDFS上的文件
         FileEntity.FileInputEntity file= fileMapper.getFileById(fid);
-        String fileName=file.getFileName();
-        String[] f=fileName.split("\\.");
-        HDFSFilePath=HDFSFilePath+fid+"."+f[f.length-1];
+        HDFSFilePath=HDFSFilePath+fid;
         System.out.println(HDFSFilePath+"================");
         HadoopApi hadoopApi=new HadoopApi();
         try {
             hadoopApi.Del(HDFSFilePath);
+            System.out.println("hdfs文件删除成功！被删除文件为："+HDFSFilePath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -143,7 +141,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public void downloadToClient(HttpServletRequest request, HttpServletResponse response,String fileName) {
         String filePath = fileConfig.getWindowsUploadPath();
-        String filePathName = filePath + File.separator + fileName;
+        String filePathName = filePath + fileName;
         BufferedInputStream bins = null;
         BufferedOutputStream bouts = null;
         try {

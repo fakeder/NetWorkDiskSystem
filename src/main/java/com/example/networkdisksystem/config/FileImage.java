@@ -14,6 +14,7 @@ public class FileImage {
         imageMapping.put("png",Path+"图片.png");
         imageMapping.put("jpg",Path+"图片.png");
         imageMapping.put("jpeg",Path+"图片.png");
+        imageMapping.put("csv",Path+"excel.png");
         imageMapping.put("xls",Path+"excel.png");
         imageMapping.put("xlsx",Path+"excel.png");
         imageMapping.put("mp3",Path+"mp3.png");
