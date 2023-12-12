@@ -5,9 +5,11 @@ import com.example.networkdisksystem.entity.FolderEntity;
 import com.example.networkdisksystem.entity.Users;
 import com.example.networkdisksystem.mapper.FileMapper;
 import com.example.networkdisksystem.mapper.FolderMapper;
+import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.service.FolderService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +34,14 @@ public class pageController {
     @Resource
     FileMapper fileMapper;
 
+    @Autowired
+    UserMapper userMapper;
+
     //主页面列表
     @RequestMapping(value = {"/index","/index.html"},method = RequestMethod.GET)
     public String index(HttpSession session, Model model,@RequestParam(value = "mid",defaultValue = "0") int Mid){
         Users user = (Users) session.getAttribute("user");
+        user=userMapper.getUserById(user.getUid());
         int mid=(int) session.getAttribute("mid");
         /*int mid=0;
         //从session中获取，如果没有获取到就是登录后的第一次进入，重user中获取mid
