@@ -33,7 +33,6 @@
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <div class="ad-auth-content">
-                        <form>
                             <a href="index.html" class="ad-auth-logo">
                                 <img src="../static/assets/images/logo2.png" alt="" />
                             </a>
@@ -55,7 +54,7 @@
                                     </div>
                                 </div>
                                 <div class="col-5">
-                                    <a href="javascript:askVerifyCode();" class="ad-btn ad-login-member">获取验证码</a>
+                                    <button id="message" onclick="askVerifyCode()" class="ad-btn ad-login-member">获取验证码</button>
                                 </div>
                             </div>
                             <div class="ad-auth-feilds">
@@ -65,10 +64,9 @@
                                 </div>
                             </div>
                             <div class="ad-auth-btn">
-                                <a href="javascript:forgetPassword();" class="ad-btn ad-login-member">确定</a>
+                                <button onclick="forgetPassword()" class="ad-btn ad-login-member">确定</button>
                             </div>
                             <p class="ad-register-text">已有账户? <a href="login.html">登录</a></p>
-                        </form>
                     </div>
                 </div>
             </div>

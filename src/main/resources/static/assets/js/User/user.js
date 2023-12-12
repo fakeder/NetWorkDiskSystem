@@ -62,6 +62,7 @@ function askVerifyCode(){
         new Prompt("请输入邮箱！")
         return;
     }
+    sendMessage("message")
     Get(host+'/user/verify-code',{
         email:email
     }, function (data){
@@ -103,4 +104,25 @@ function register(){
             new Prompt(data.reason)
         }
     })
+}
+
+//点击按钮后60秒倒计时
+function sendMessage(btn) {
+    const count = 60; // 间隔函数，1秒执行
+    let InterVal; // timer变量，控制时间
+    // 按钮点击倒计时，限制点击
+    let curCount = count;
+    //设置button效果，开始计时
+    $("#"+btn).attr("disabled",true);
+    $("#"+btn).text(curCount + "秒再获取");
+    InterVal = window.setInterval(function (){
+        if (curCount == 0) {
+            window.clearInterval(InterVal); //停止计时器
+            $("#"+btn).attr("disabled",false); //启用按钮
+            $("#message").text("重新发送");
+        } else {
+            curCount--;
+            $("#"+btn).text(curCount + "秒再获取");
+        }
+    }, 1000); //启动计时器，1秒执行一次
 }
