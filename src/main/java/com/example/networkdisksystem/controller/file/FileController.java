@@ -83,9 +83,12 @@ public class FileController {
         String widowsFilePath=fileObject.getAbsolutePath();
         String HDFSFilePath=fileConfig.getHdfsUploadPath()+user.getUsername()+"/";
         //上传文件
-        int upload = service.pushFile(mid, filename, widowsFilePath, HDFSFilePath, fileSize,usedSize, user.getUid());
-        if (upload==0)return new R(500,"文件上传失败!");
-        else return new R(200,"文件上传成功！");
+        try{
+            service.pushFile(mid, filename, widowsFilePath, HDFSFilePath, fileSize,usedSize, user.getUid());
+            return new R(200,"文件上传成功！");
+        } catch (Exception e){
+            return new R(500,"文件上传失败!");
+        }
     }
 
     //下载文件
@@ -113,8 +116,12 @@ public class FileController {
         Users user = (Users) session.getAttribute("user");
         String username = user.getUsername();
         String HDFSFilePath=fileConfig.getHdfsUploadPath()+username+"/";
-        service.deleteFile(fid,HDFSFilePath,user);
-        return new R(200,"删除成功！");
+        try {
+            service.deleteFile(fid, HDFSFilePath, user);
+            return new R(200, "删除成功！");
+        }catch (Exception e){
+            return new R(500, "删除失败！");
+        }
     }
 
     //修改文件名

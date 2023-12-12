@@ -139,7 +139,9 @@ public class FileExtractionServiceImpl implements FileExtractionService {
             hadoopApi.copy(HDFSFilePath2, tempPath, HDFSFilePath1);
             System.out.println("文件已成功复制到hdfs上");
         } catch (Exception e) {
+            System.out.println("文件复制到hdfs上失败！");
             e.printStackTrace();
+            throw new RuntimeException("文件复制到hdfs上失败！");
         }
         return 1;
     }

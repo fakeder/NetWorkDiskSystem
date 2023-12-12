@@ -62,19 +62,21 @@ public class FileServiceImpl implements FileService {
             System.out.println("文件上传成功！文件上传到hdfs路径："+HDFSFilePath);
         } catch (Exception e) {
             System.out.println("文件上传到HDFS的过程中发生异常");
-            return 0;
-        }
-        // 指定要删除的文件路径
-        String filePath = windowsFilePath;
-        // 创建一个新的File对象
-        File file = new File(filePath);
-        // 检查文件是否存在
-        if (file.exists()) {
-            // 删除文件
-            file.delete();
-            System.out.println("文件已成功删除.");
-        } else {
-            System.out.println("文件不存在.");
+            e.printStackTrace();
+            throw new RuntimeException("文件上传到HDFS的过程中发生异常");
+        }finally {
+            // 指定要删除的文件路径
+            String filePath = windowsFilePath;
+            // 创建一个新的File对象
+            File file = new File(filePath);
+            // 检查文件是否存在
+            if (file.exists()) {
+                // 删除文件
+                file.delete();
+                System.out.println("文件已成功删除.");
+            } else {
+                System.out.println("文件不存在.");
+            }
         }
         return 1;
     }
@@ -89,7 +91,9 @@ public class FileServiceImpl implements FileService {
             hadoopApi.downlaod(HDFSFilePath,windowsFilePath);
             System.out.println("hdfs文件下载到服务器路径："+windowsFilePath);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("hdfs文件下载到服务器失败！");
+            e.printStackTrace();
+            throw new RuntimeException("hdfs文件下载到服务器失败！");
         }
         return fileName;
     }
@@ -111,7 +115,9 @@ public class FileServiceImpl implements FileService {
             hadoopApi.Del(HDFSFilePath);
             System.out.println("hdfs文件删除成功！被删除文件为："+HDFSFilePath);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("hdfs文件删除失败！被删除文件为："+HDFSFilePath);
+            e.printStackTrace();
+            throw new RuntimeException("hdfs文件删除失败！被删除文件为："+HDFSFilePath);
         }
         //删除表中数据
         fileMapper.deleteFile(fid);
