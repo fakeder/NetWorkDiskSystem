@@ -3,6 +3,7 @@ package com.example.networkdisksystem.controller.fileShare;
 import com.example.networkdisksystem.entity.FileEntity;
 import com.example.networkdisksystem.entity.FileShareEntity;
 import com.example.networkdisksystem.entity.Users;
+import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileShareService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class  FileSharePageController {
   @Autowired
   FileShareService service;
 
+  @Autowired
+  UserMapper userMapper;
+
   /**
    * 文件分享页面展示.
    * @param find 要模糊查找的文件名
@@ -32,6 +36,7 @@ public class  FileSharePageController {
   @RequestMapping(value = {"/fileSharePage","/fileShare.html"},method = RequestMethod.GET)
   public String fileSharePage(HttpSession session, Model model, @RequestParam(value = "find",required = false) String find){
     Users user = (Users) session.getAttribute("user");
+    user=userMapper.getUserById(user.getUid());
     model.addAttribute("user",user);
     List<FileShareEntity.FileShareEntityOutput> list;
     if(Objects.isNull(find)||find.equals("")) {
@@ -40,6 +45,7 @@ public class  FileSharePageController {
       list= service.findFileShare(user.getUid(), find);
     }
     model.addAttribute("list",list);
+    session.setAttribute("user",user);
     return "FileSharingHistory";
   }
 }
