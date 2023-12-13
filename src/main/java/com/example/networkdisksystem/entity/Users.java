@@ -10,6 +10,8 @@ public class Users {
     String email;
     int mid;
     String totalSize;
+    long totalSizeByte;
     String usedSize;
+    long usedSizeByte;
     int VIPFlag;
 }

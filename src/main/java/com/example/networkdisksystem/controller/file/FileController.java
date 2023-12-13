@@ -58,15 +58,14 @@ public class FileController {
         long size = file.getSize();//上传文件大小
         String fileSize=SizeChange.formatFileSize(size);
         System.out.println("上传文件大小:"+fileSize+"  字节大小"+size);
-        long usedSize =SizeChange.formatFileSizeReverse(user.getUsedSize());//用户已用容量
-        System.out.println("用户已用容量:"+user.getUsedSize()+"  字节大小:"+usedSize);
-        long totalSize = SizeChange.formatFileSizeReverse(user.getTotalSize());//用户总容量
-        System.out.println("用户总容量:"+user.getTotalSize()+"  字节大小:"+totalSize);
-        if(totalSize<usedSize+size) {
+        System.out.println("用户已用容量:"+user.getUsedSize()+"  字节大小:"+user.getUsedSizeByte());
+        System.out.println("用户总容量:"+user.getTotalSize()+"  字节大小:"+user.getTotalSizeByte());
+        long usedSize;
+        if(user.getTotalSizeByte()< user.getUsedSizeByte()+size) {
             System.out.println("该用户网盘容量已满！");
             return new R(400, "网盘容量已满，请购买网盘容量或充值VIP");
         }else {
-            usedSize=usedSize+size;
+            usedSize=user.getUsedSizeByte()+size;
         }
         //获取文件名
         String oldFilename = file.getOriginalFilename();
@@ -84,7 +83,7 @@ public class FileController {
         String HDFSFilePath=fileConfig.getHdfsUploadPath()+user.getUsername()+"/";
         //上传文件
         try{
-            service.pushFile(mid, filename, widowsFilePath, HDFSFilePath, fileSize,usedSize, user.getUid());
+            service.pushFile(mid, filename, widowsFilePath, HDFSFilePath, fileSize,size,usedSize, user.getUid());
             return new R(200,"文件上传成功！");
         } catch (Exception e){
             return new R(500,"文件上传失败!");

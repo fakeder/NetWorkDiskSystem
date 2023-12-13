@@ -1,5 +1,5 @@
 //文件分享页面跳转
-function share(fid,filename,fileSize){
+function share(fid,filename,fileSize,fileSizeByte){
     post(host+"/fileShare/fileShareCheck",{
         fid:fid
     },function (data){
@@ -7,6 +7,7 @@ function share(fid,filename,fileSize){
             $("#fileName").val(filename);
             $("#fileId").val(fid);
             $("#fileSize").text(fileSize)
+            $("#fileSizeByte").val(fileSizeByte)
             $("#fileSharePage").modal('show')
             $("#shareBtn").on('click',function (){
                 fileSharedComment();
@@ -31,6 +32,7 @@ function downloadTypeChange(){
 function fileSharedComment(){
     let Filename=$("#fileName").val();
     let FileSize=$("#fileSize").text();
+    let FileSizeByte=$("#fileSizeByte").val();
     let ExpirationTime=$("#expirationTime").val();
     let DownloadType=$("#downloadType").val();
     let DownloadNumber;
@@ -43,6 +45,7 @@ function fileSharedComment(){
         fileId:$("#fileId").val(),
         filename:Filename,
         fileSize:FileSize,
+        fileSizeByte:FileSizeByte,
         expirationTime:ExpirationTime,
         downloadType:DownloadType,
         downloadNumber:DownloadNumber

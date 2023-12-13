@@ -6,11 +6,13 @@
         insert into file_table(mid,
                                fileName,
                                FileSize,
+                               FileSizeByte,
                                uid,
                                startTime)
         values (#{mid},
                 #{fileName},
                 #{FileSize},
+                #{FileSizeByte},
                 #{uid},
                 #{startTime})
     </insert>

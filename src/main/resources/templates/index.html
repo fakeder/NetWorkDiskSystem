@@ -299,7 +299,7 @@
                                                                     <a th:href="'javascript:rename(\''+${files.getFid()}+'\');'"><i class="far fa-edit mr-2 "></i>重命名</a>
                                                                 </li>
                                                                 <li>
-                                                                    <a th:href="'javascript:share(\''+${files.getFid()}+'\',\''+${files.getFileName()}+'\',\''+${files.getFileSize()}+'\');'"><i class="far fa-edit mr-2 ">分享</i></a>
+                                                                    <a th:href="'javascript:share(\''+${files.getFid()}+'\',\''+${files.getFileName()}+'\',\''+${files.getFileSize()}+'\',\''+${files.getFileSizeByte()}+'\');'"><i class="far fa-edit mr-2 ">分享</i></a>
                                                                    <!-- <a th:href="|@{/fileShare?Fid=}${files.getFid()}&FileName=${files.getFileName}&FileSize=${files.getFileSize}|"> <i class="far fa-edit mr-2 ">分享</i></a>-->
                                                                 </li>
                                                             </ul>
@@ -348,6 +348,7 @@
                         <label class="form-label">文件大小</label>
                         <br>
                         <label id="fileSize" class="form-label"></label>
+                        <input type="hidden" id="fileSizeByte">
                       </div>
                     </div>
 
@@ -468,6 +469,7 @@
               <div>
                 <label>文件大小:</label>
                 <label id="fileExtractionSize">0 B</label>
+                <input id="fileExtractionSizeByte" type="hidden" value="0">
               </div>
             </div>
             <hr>

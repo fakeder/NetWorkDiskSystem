@@ -16,7 +16,8 @@ public class FileShareEntity {
     int uid;
     int fid;
     String fileName;
-    String fileSize;
+    String fileSize;//文件大小（B）
+    long fileSizeByte;//文件大小（字节）
     Date startTime;
     Date expirationTime;
     int downloadNumber;//下载次数
@@ -35,7 +36,8 @@ public class FileShareEntity {
     int shareId;
     String shareCode;//分享码
     String fileName;
-    String fileSize;
+    String fileSize;//文件大小（B）
+    long fileSizeByte;//文件大小（字节）
     String startTime;//开始时间
     String expirationTime;//结束时间
     String downloadNumber;//下载次数

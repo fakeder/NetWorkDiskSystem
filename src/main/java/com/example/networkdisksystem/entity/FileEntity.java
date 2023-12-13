@@ -16,6 +16,7 @@ public class FileEntity {
         int mid;
         String fileName;
         String fileSize;
+        long fileSizeByte;
         int uid;
         Date startTime;//创建时间
         Date lastModifiedTime;//修改时间
@@ -31,6 +32,7 @@ public class FileEntity {
         int mid;
         String fileName;
         String fileSize;
+        long fileSizeByte;
         int uid;
         String startTime;//创建时间
         String lastModifiedTime;//修改时间

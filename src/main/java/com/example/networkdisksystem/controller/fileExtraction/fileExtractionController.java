@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/fileExtraction")
@@ -80,14 +78,15 @@ public class fileExtractionController {
                                     @RequestParam("fid") int fid,
                                     @RequestParam("fileName") String fileName,
                                     @RequestParam("fileSize") String fileSize,
+                                    @RequestParam("fileSizeByte") long fileSizeByte,
                                     HttpSession session){
         //判断用户网盘容量
-        long fileSizeByte = SizeChange.formatFileSizeReverse(fileSize);
+        //long fileSizeByte = SizeChange.formatFileSizeReverse(fileSize);
         log.info("提取文件大小：{} | 转换成字节大小：{}",fileSize,fileSizeByte);
         Users user = (Users) session.getAttribute("user");
-        long usedSize = SizeChange.formatFileSizeReverse(user.getUsedSize());
+        long usedSize = user.getUsedSizeByte();
         log.info("用户已使用：{} | 转换成字节大小：{}",user.getUsedSize(),usedSize);
-        long totalSize = SizeChange.formatFileSizeReverse(user.getTotalSize());
+        long totalSize = user.getTotalSizeByte();
         log.info("用户总容量：{} | 转换成字节大小：{}",user.getTotalSize(),totalSize);
         usedSize=usedSize+fileSizeByte;
         if(usedSize>totalSize) return new R(400,"网盘容量已满，请购买网盘容量或充值VIP");
@@ -103,7 +102,7 @@ public class fileExtractionController {
         //下载到服务器临时地址
         String tempPath=fileConfig.getWindowsUploadPath() +fileName;
         try{
-           service.saveFile(fileName, mid, user.getUid(), fileSize, usedSize, HDFSFilePath1, HDFSFilePath2, tempPath);
+           service.saveFile(fileName, mid, user.getUid(), fileSize, fileSizeByte,usedSize, HDFSFilePath1, HDFSFilePath2, tempPath);
             return new R(200,"文件已成功保存到当前目录下");
         }catch (Exception e){
             return new R(500,"文件已保存到当前目录下发生未知错误,保存失败!");

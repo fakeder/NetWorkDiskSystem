@@ -32,13 +32,15 @@ public interface UserMapper {
      */
     int setMkdirId(@Param("mid") int mid,@Param("uid") int uid);
 
+
     /**
      * 更新已使用大小
      * @param uid uid
-     * @param usedSize 已使用大小
+     * @param usedSize 已使用大小 (B)
+     * @param usedSizeByte 已使用大小 (字节)
      * @return
      */
-    int updateUsedSizeByUid(@Param("uid")int uid,@Param("usedSize") String usedSize);
+    int updateUsedSizeByUid(@Param("uid")int uid,@Param("usedSize") String usedSize,@Param("usedSizeByte") long usedSizeByte);
 
     /**
      * 统计注册邮箱个数（判断是否重复）

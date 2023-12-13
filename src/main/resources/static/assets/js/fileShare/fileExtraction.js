@@ -15,6 +15,7 @@ function fileExtraction(){
             $("#fileExtractionFileImage").attr("src",data.fileImage);
             $("#fileExtractionFileName").text(data.fileName);
             $("#fileExtractionSize").text(data.fileSize);
+            $("#fileExtractionSizeByte").val(data.fileSizeByte);
             $("#fileExtractionTime").text(data.time);
             $("#fileExtractionFid").val(data.fid);
             $("#fileExtraction").modal('show');
@@ -24,6 +25,7 @@ function fileExtraction(){
             $("#fileExtractionFileImage").attr("src","");
             $("#fileExtractionFileName").text("");
             $("#fileExtractionSize").text("");
+            $("#fileExtractionSizeByte").val(0);
             $("#fileExtractionTime").text("");
             new Prompt(data.reason)
         }
@@ -46,12 +48,14 @@ function fileExtractionDownload(){
     })
 }
 
+//保存到网盘当前目录下
 function fileExtractionSave(){
     let fid=$("#fileExtractionFid").val();
     let shareCode=$("#shareCode").val();
     let username=$("#fileExtractionUserName").text();
     let fileName=$("#fileExtractionFileName").text();
     let fileSize=$("#fileExtractionSize").text();
+    let fileSizeByte=$("#fileExtractionSizeByte").val();
     post(host+"/fileExtraction/updateNumberOfDownload",{
         fid:fid,
         shareCode:shareCode
@@ -61,7 +65,8 @@ function fileExtractionSave(){
                 fid:fid,
                 username:username,
                 fileName:fileName,
-                fileSize:fileSize
+                fileSize:fileSize,
+                fileSizeByte:fileSizeByte
             },function (data){
                 new Prompt(data.reason)
                 if(data.code === 200){

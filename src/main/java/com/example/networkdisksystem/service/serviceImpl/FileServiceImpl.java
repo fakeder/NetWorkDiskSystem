@@ -44,12 +44,13 @@ public class FileServiceImpl implements FileService {
 
     @Transactional
     @Override
-    public int pushFile(int mid, String filename, String windowsFilePath, String HDFSFilePath,String fileSize,long usedSize,int uid) {//文件上传
+    public int pushFile(int mid, String filename, String windowsFilePath, String HDFSFilePath,
+                        String fileSize,long fileSizeByte,long usedSize,int uid) {//文件上传
         //文件表中插入数据
-        fileMapper.addFile(mid,filename,fileSize,uid,new Date());
+        fileMapper.addFile(mid,filename,fileSize,fileSizeByte,uid,new Date());
         //更新用户表信息
         String usedsize = SizeChange.formatFileSize(usedSize);
-        userMapper.updateUsedSizeByUid(uid,usedsize);
+        userMapper.updateUsedSizeByUid(uid,usedsize,usedSize);
         //获取文件id
         int fid = fileMapper.getFileIdByMidAndFileName(mid, filename);
 
@@ -119,16 +120,16 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
             throw new RuntimeException("hdfs文件删除失败！被删除文件为："+HDFSFilePath);
         }
-        //删除表中数据
-        fileMapper.deleteFile(fid);
         //更新用户表中的UsedSize
-        long userSizeByte = SizeChange.formatFileSizeReverse( user.getUsedSize());
-        long fileSizeByte = SizeChange.formatFileSizeReverse(file.getFileSize());
+        long userSizeByte = user.getUsedSizeByte();
+        long fileSizeByte = file.getFileSizeByte();
         //已用大小-文件大小
         userSizeByte=userSizeByte-fileSizeByte;
         //long -> string / 字节 -> B
         String usedSize=SizeChange.formatFileSize(userSizeByte);
-        userMapper.updateUsedSizeByUid(user.getUid(),usedSize);
+        userMapper.updateUsedSizeByUid(user.getUid(),usedSize,userSizeByte);
+        //删除表中数据
+        fileMapper.deleteFile(fid);
         return 1;
     }
 
@@ -226,8 +227,10 @@ public class FileServiceImpl implements FileService {
             if(!ObjectUtils.isEmpty(item.getLastModifiedTime())){
                 fileOutput.setLastModifiedTime(DateToString.StringData(item.getLastModifiedTime()));
             }
-            //文件大小
+            //文件大小 (B)
             fileOutput.setFileSize(item.getFileSize());
+            //文件大小 (字节)
+            fileOutput.setFileSizeByte(item.getFileSizeByte());
             //文件类型
             String[] str=item.getFileName().split("\\.");
             if(str.length<2){

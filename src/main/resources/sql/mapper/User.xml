@@ -20,7 +20,7 @@
     </update>
 
     <update id="updateUsedSizeByUid">
-        update user set usedSize=#{usedSize} where uid=#{uid}
+        update user set usedSize=#{usedSize},usedSizeByte=#{usedSizeByte} where uid=#{uid}
     </update>
 
     <select id="checkEmail" resultType="integer">

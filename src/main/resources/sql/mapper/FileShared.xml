@@ -8,6 +8,7 @@
                                 fid,
                                 filename,
                                 fileSize,
+                                fileSizeByte,
                                 startTime,
                                 expirationTime,
                                 downloadNumber,
@@ -17,6 +18,7 @@
                 #{fid},
                 #{fileName},
                 #{fileSize},
+                #{fileSizeByte},
                 #{startTime},
                 <if test='expirationTime != null'>
                     #{expirationTime},

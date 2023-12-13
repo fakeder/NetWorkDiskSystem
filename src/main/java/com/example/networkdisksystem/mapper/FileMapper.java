@@ -14,6 +14,7 @@ public interface FileMapper {
      * @param mid mid
      * @param fileName 文件名
      * @param fileSize 文件大小
+     * @param fileSizeByte 文件大小（字节大小）
      * @param uid uid
      * @param startTime 开始时间
      * @return 1:成功执行  0:执行失败
@@ -21,6 +22,7 @@ public interface FileMapper {
     int addFile(@Param("mid") int mid,
                 @Param("fileName") String fileName,
                 @Param("FileSize")String fileSize,
+                @Param("FileSizeByte") long fileSizeByte,
                 @Param("uid") int uid,
                 @Param("startTime")Date startTime);
 

@@ -15,7 +15,8 @@ public interface FileShareMapper {
    * @param uid 用户id
    * @param fid 文件id
    * @param fileName 文件名
-   * @param fileSize 文件大小
+   * @param fileSize 文件大小（B）
+   * @param fileSizeByte 文件大小 (字节)
    * @param startTime 开始时间
    * @param expirationTime 结束时间
    * @param downloadNumber 限定下载次数
@@ -26,6 +27,7 @@ public interface FileShareMapper {
                            @Param("fid") int fid,
                            @Param("fileName") String fileName,
                            @Param("fileSize") String fileSize,
+                           @Param("fileSizeByte") long fileSizeByte,
                            @Param("startTime")Date startTime,
                            @Param("expirationTime") Date expirationTime,
                            @Param("downloadNumber") int downloadNumber,
