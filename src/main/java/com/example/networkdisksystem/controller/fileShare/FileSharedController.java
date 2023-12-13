@@ -49,12 +49,13 @@ public class FileSharedController {
                       @RequestParam("fileId") int fileId,
                       @RequestParam("filename") String filename,
                       @RequestParam("fileSize") String fileSize,
+                      @RequestParam("fileSizeByte") long fileSizeByte,
                       @RequestParam("expirationTime") int expirationTime,
                       @RequestParam("downloadType") int downloadType,
                       @RequestParam("downloadNumber") int downloadNumber) {
     Users user = (Users) session.getAttribute("user");
     String shareCode =
-        service.FileShared(user.getUid(), fileId, filename, fileSize, expirationTime, downloadType, downloadNumber);
+        service.FileShared(user.getUid(), fileId, filename, fileSize, fileSizeByte, expirationTime, downloadType, downloadNumber);
     return new R(200, shareCode);
   }
 

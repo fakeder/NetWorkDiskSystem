@@ -21,12 +21,13 @@ public interface FileShareService {
    * @param uid 用户id
    * @param fileId 文件id
    * @param filename 文件名
-   * @param fileSize 文件大小
+   * @param fileSize 文件大小（B）
+   * @param fileSizeByte 文件大小（字节）
    * @param expirationTime 分享时间flag
    * @param downloadType  下载次数flag
    * @param downloadNumber 下载次数
    */
-  String FileShared(int uid,int fileId,String filename,String fileSize,int expirationTime,int downloadType,int downloadNumber);
+  String FileShared(int uid,int fileId,String filename,String fileSize,long fileSizeByte,int expirationTime,int downloadType,int downloadNumber);
 
   /**
    * 文件分享 查询用用户的所以分享记录.

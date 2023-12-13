@@ -38,7 +38,7 @@ public class FileShareServiceImpl implements FileShareService {
   }
 
   @Override
-  public String FileShared(int uid, int fileId, String filename, String fileSize, int expirationTime, int downloadType, int downloadNumber) {
+  public String FileShared(int uid, int fileId, String filename, String fileSize, long fileSizeByte,int expirationTime, int downloadType, int downloadNumber) {
     //当前时间
     Date now=new Date();
     SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -60,7 +60,7 @@ public class FileShareServiceImpl implements FileShareService {
       end=0;
     }
     //文件信息录入文件分享表
-    mapper.insertFileShareTable(uid,fileId,filename,fileSize,now,endTime,downloadNumber,expirationTime,downloadType);
+    mapper.insertFileShareTable(uid,fileId,filename,fileSize,fileSizeByte,now,endTime,downloadNumber,expirationTime,downloadType);
     //获取文件分享id
     int shareId = mapper.getSharedByUIdAndFid(uid, fileId).getShareId();
     //随机数
@@ -125,6 +125,7 @@ public class FileShareServiceImpl implements FileShareService {
       fileShareEntityOutput.setFileName(item.getFileName());
       //文件大小
       fileShareEntityOutput.setFileSize(item.getFileSize());
+      fileShareEntityOutput.setFileSizeByte(item.getFileSizeByte());
       //开始时间
       fileShareEntityOutput.setStartTime(DateToString.StringData(item.getStartTime()));
       //过期时间

@@ -31,5 +31,5 @@ public interface FileExtractionService {
      * @param tempPath 临时路径
      * @return
      */
-    int saveFile(String fileName,int mid,int uid,String fileSize,long usedSize,String HDFSFilePath1,String HDFSFilePath2,String tempPath);
+    int saveFile(String fileName,int mid,int uid,String fileSize, long fileSizeByte ,long usedSize,String HDFSFilePath1,String HDFSFilePath2,String tempPath);
 }

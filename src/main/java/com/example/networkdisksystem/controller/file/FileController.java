@@ -4,6 +4,7 @@ import com.example.networkdisksystem.config.FileConfig;
 import com.example.networkdisksystem.entity.FileEntity;
 import com.example.networkdisksystem.entity.R;
 import com.example.networkdisksystem.entity.Users;
+import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.util.Naming;
 import com.example.networkdisksystem.util.SizeChange;
@@ -39,6 +40,9 @@ public class FileController {
     @Autowired
     FileConfig fileConfig;
 
+    @Autowired
+    UserMapper userMapper;
+
     @Bean("multipartResolver") //注意这里Bean的名称是固定的，必须是multipartResolver
     public CommonsMultipartResolver commonsMultipartResolver(){
         CommonsMultipartResolver resolver=new CommonsMultipartResolver();
@@ -53,20 +57,20 @@ public class FileController {
     public R upload(@RequestParam("file") MultipartFile file, HttpSession session) throws IOException, URISyntaxException, InterruptedException {
         System.out.println("=============fileUpload=============");
         Users user = (Users) session.getAttribute("user");
+        user = userMapper.getUserById(user.getUid());
         int mid = (int) session.getAttribute("mid");
         //判断文件大小
         long size = file.getSize();//上传文件大小
         String fileSize=SizeChange.formatFileSize(size);
         System.out.println("上传文件大小:"+fileSize+"  字节大小"+size);
-        long usedSize =SizeChange.formatFileSizeReverse(user.getUsedSize());//用户已用容量
-        System.out.println("用户已用容量:"+user.getUsedSize()+"  字节大小:"+usedSize);
-        long totalSize = SizeChange.formatFileSizeReverse(user.getTotalSize());//用户总容量
-        System.out.println("用户总容量:"+user.getTotalSize()+"  字节大小:"+totalSize);
-        if(totalSize<usedSize+size) {
+        System.out.println("用户已用容量:"+user.getUsedSize()+"  字节大小:"+user.getUsedSizeByte());
+        System.out.println("用户总容量:"+user.getTotalSize()+"  字节大小:"+user.getTotalSizeByte());
+        long usedSize;
+        if(user.getTotalSizeByte()< user.getUsedSizeByte()+size) {
             System.out.println("该用户网盘容量已满！");
             return new R(400, "网盘容量已满，请购买网盘容量或充值VIP");
         }else {
-            usedSize=usedSize+size;
+            usedSize=user.getUsedSizeByte()+size;
         }
         //获取文件名
         String oldFilename = file.getOriginalFilename();
@@ -84,10 +88,12 @@ public class FileController {
         String HDFSFilePath=fileConfig.getHdfsUploadPath()+user.getUsername()+"/";
         //上传文件
         try{
-            service.pushFile(mid, filename, widowsFilePath, HDFSFilePath, fileSize,usedSize, user.getUid());
+            service.pushFile(mid, filename, widowsFilePath, HDFSFilePath, fileSize,size,usedSize, user.getUid());
             return new R(200,"文件上传成功！");
         } catch (Exception e){
             return new R(500,"文件上传失败!");
+        }finally {
+            session.setAttribute("user",user);
         }
     }
 
@@ -114,6 +120,7 @@ public class FileController {
     @ResponseBody
     public R delete(@RequestParam("fid") int fid,HttpSession session){
         Users user = (Users) session.getAttribute("user");
+        user=userMapper.getUserById(user.getUid());
         String username = user.getUsername();
         String HDFSFilePath=fileConfig.getHdfsUploadPath()+username+"/";
         try {
@@ -121,6 +128,8 @@ public class FileController {
             return new R(200, "删除成功！");
         }catch (Exception e){
             return new R(500, "删除失败！");
+        }finally {
+            session.setAttribute("user",user);
         }
     }
 

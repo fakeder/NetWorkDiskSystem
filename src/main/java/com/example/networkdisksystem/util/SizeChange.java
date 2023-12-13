@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 //文件大小转换 字节->B,KB,MB,GB,TB
 public class SizeChange {
     public static String formatFileSize(long size) {
+        if(size==0)return "0.00 B";
         String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
         int unitIndex = 0;
         long sz=1;
@@ -47,8 +48,8 @@ public class SizeChange {
     }
 
     public static void main(String[] args) {
-        System.out.println(formatFileSizeReverse("1.00 GB"));
-        System.out.println(formatFileSize(535855104));
+        //System.out.println(formatFileSizeReverse("1.00 GB"));
+        System.out.println(formatFileSize(0));
         //System.out.println(formatFileSize(1073741824));
         //System.out.println(500f/1024/1024);
     }

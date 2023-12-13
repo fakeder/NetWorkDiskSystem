@@ -76,6 +76,7 @@ public class FileExtractionServiceImpl implements FileExtractionService {
         fileExtraction.setUserImage(null);
         //文件大小
         fileExtraction.setFileSize(fileShareEntityInput.getFileSize());
+        fileExtraction.setFileSizeByte(fileShareEntityInput.getFileSizeByte());
         //到期时间
         String time=DateToString.StringData(fileShareEntityInput.getExpirationTime());
         fileExtraction.setTime(time);
@@ -121,13 +122,13 @@ public class FileExtractionServiceImpl implements FileExtractionService {
     }
 
     @Override
-    public int saveFile(String fileName, int mid, int uid, String fileSize,long usedSize,
+    public int saveFile(String fileName, int mid, int uid, String fileSize, long fileSizeByte,long usedSize,
                         String HDFSFilePath1,String HDFSFilePath2,String tempPath) {
         //文件表中插入信息
-        fileMapper.addFile(mid,fileName,fileSize,uid,new Date());
+        fileMapper.addFile(mid,fileName,fileSize,fileSizeByte,uid,new Date());
         //更新用户表信息
         String usedsize = SizeChange.formatFileSize(usedSize);
-        userMapper.updateUsedSizeByUid(uid,usedsize);
+        userMapper.updateUsedSizeByUid(uid,usedsize,usedSize);
         //获取文件id
         int fid = fileMapper.getFileIdByMidAndFileName(mid, fileName);
         //将文件上传到HDFS上
