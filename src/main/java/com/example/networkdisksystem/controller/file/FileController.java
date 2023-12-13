@@ -4,6 +4,7 @@ import com.example.networkdisksystem.config.FileConfig;
 import com.example.networkdisksystem.entity.FileEntity;
 import com.example.networkdisksystem.entity.R;
 import com.example.networkdisksystem.entity.Users;
+import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.util.Naming;
 import com.example.networkdisksystem.util.SizeChange;
@@ -39,6 +40,9 @@ public class FileController {
     @Autowired
     FileConfig fileConfig;
 
+    @Autowired
+    UserMapper userMapper;
+
     @Bean("multipartResolver") //注意这里Bean的名称是固定的，必须是multipartResolver
     public CommonsMultipartResolver commonsMultipartResolver(){
         CommonsMultipartResolver resolver=new CommonsMultipartResolver();
@@ -53,6 +57,7 @@ public class FileController {
     public R upload(@RequestParam("file") MultipartFile file, HttpSession session) throws IOException, URISyntaxException, InterruptedException {
         System.out.println("=============fileUpload=============");
         Users user = (Users) session.getAttribute("user");
+        user = userMapper.getUserById(user.getUid());
         int mid = (int) session.getAttribute("mid");
         //判断文件大小
         long size = file.getSize();//上传文件大小
@@ -87,6 +92,8 @@ public class FileController {
             return new R(200,"文件上传成功！");
         } catch (Exception e){
             return new R(500,"文件上传失败!");
+        }finally {
+            session.setAttribute("user",user);
         }
     }
 
@@ -113,6 +120,7 @@ public class FileController {
     @ResponseBody
     public R delete(@RequestParam("fid") int fid,HttpSession session){
         Users user = (Users) session.getAttribute("user");
+        user=userMapper.getUserById(user.getUid());
         String username = user.getUsername();
         String HDFSFilePath=fileConfig.getHdfsUploadPath()+username+"/";
         try {
@@ -120,6 +128,8 @@ public class FileController {
             return new R(200, "删除成功！");
         }catch (Exception e){
             return new R(500, "删除失败！");
+        }finally {
+            session.setAttribute("user",user);
         }
     }
 

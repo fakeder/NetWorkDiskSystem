@@ -5,10 +5,10 @@ import com.example.networkdisksystem.entity.FileEntity;
 import com.example.networkdisksystem.entity.FileExtractionEntity;
 import com.example.networkdisksystem.entity.R;
 import com.example.networkdisksystem.entity.Users;
+import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileExtractionService;
 import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.util.Naming;
-import com.example.networkdisksystem.util.SizeChange;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +33,9 @@ public class fileExtractionController {
 
     @Autowired
     FileService fileService;
+
+    @Autowired
+    UserMapper userMapper;
 
     /**
      * 文件提取码有效check
@@ -84,6 +87,7 @@ public class fileExtractionController {
         //long fileSizeByte = SizeChange.formatFileSizeReverse(fileSize);
         log.info("提取文件大小：{} | 转换成字节大小：{}",fileSize,fileSizeByte);
         Users user = (Users) session.getAttribute("user");
+        user=userMapper.getUserById(user.getUid());
         long usedSize = user.getUsedSizeByte();
         log.info("用户已使用：{} | 转换成字节大小：{}",user.getUsedSize(),usedSize);
         long totalSize = user.getTotalSizeByte();
@@ -106,6 +110,8 @@ public class fileExtractionController {
             return new R(200,"文件已成功保存到当前目录下");
         }catch (Exception e){
             return new R(500,"文件已保存到当前目录下发生未知错误,保存失败!");
+        }finally {
+            session.setAttribute("user",user);
         }
     }
 }
