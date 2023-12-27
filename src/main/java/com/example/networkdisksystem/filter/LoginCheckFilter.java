@@ -56,10 +56,10 @@ public class LoginCheckFilter implements Filter {
         String username=null;
         String password=null;
         for (Cookie cookie:cookies) {
-            if(cookie.getName().equals("username")){
+            if(cookie.getName().equals("NetWorkDiskSystem_username")){
                 username=cookie.getValue();
             }
-            if(cookie.getName().equals("password")){
+            if(cookie.getName().equals("NetWorkDiskSystem_password")){
                 password=cookie.getValue();
             }
         }

@@ -32,10 +32,10 @@ public class UserServiceImpl implements UserService {
                 session.setAttribute("mid",user.getMid());
                 //remember-me将用户名密码放入cookie中
                 if(rememberMe){
-                    Cookie cookie_username=new Cookie("username",username);
+                    Cookie cookie_username=new Cookie("NetWorkDiskSystem_username",username);
                     cookie_username.setMaxAge(60*60*24*7);//cookie保存时间7天
                     cookie_username.setPath("/");//设置为根路径
-                    Cookie cookie_password=new Cookie("password",password);
+                    Cookie cookie_password=new Cookie("NetWorkDiskSystem_password",user.getPassword());
                     cookie_password.setMaxAge(60*60*24*7);
                     cookie_password.setPath("/");
                     response.addCookie(cookie_username);
@@ -55,7 +55,8 @@ public class UserServiceImpl implements UserService {
         Users user = mapper.getUsersByUsername(username);
         if(!ObjectUtils.isEmpty(user)) {
             String MD5Password = user.getPassword();
-            boolean flag = new BCryptPasswordEncoder().matches(password, MD5Password);
+            //boolean flag = new BCryptPasswordEncoder().matches(password, MD5Password);
+            boolean flag=MD5Password.equals(password);
             if (flag) {
                 session.setAttribute("user", user);
                 session.setAttribute("mid",user.getMid());
