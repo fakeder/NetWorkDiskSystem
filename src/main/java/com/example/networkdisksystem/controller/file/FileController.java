@@ -20,14 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.rmi.RemoteException;
 import java.util.List;
 
 @Controller
@@ -77,18 +75,18 @@ public class FileController {
         //判断文件名是否重复
         List<FileEntity.FileInputEntity> fileNames = service.getFileNamesByMid(mid);
         String filename= Naming.fileNaming(fileNames,oldFilename);
-        //文件上传到服务器地址
+        //文件上传到服务器临时地址
         String filePath=fileConfig.getWindowsUploadPath();
         File fileObject=new File(filePath+filename);
         file.transferTo(fileObject);
         System.out.println("文件名："+file.getOriginalFilename());
         System.out.println("用户上传的文件保存到："+fileObject.getAbsolutePath());
 
-        String widowsFilePath=fileObject.getAbsolutePath();
-        String HDFSFilePath=fileConfig.getHdfsUploadPath()+user.getUsername()+"/";
+        String FileTempPath =fileObject.getAbsolutePath();
+        String FileSavePath=fileConfig.getUserFilePath()+user.getUsername()+"/";
         //上传文件
         try{
-            service.pushFile(mid, filename, widowsFilePath, HDFSFilePath, fileSize,size,usedSize, user.getUid());
+            service.pushFile(mid, filename, FileTempPath, FileSavePath, fileSize,size,usedSize, user.getUid());
             return new R(200,"文件上传成功！");
         } catch (Exception e){
             return new R(500,"文件上传失败!");

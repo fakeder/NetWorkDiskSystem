@@ -13,15 +13,15 @@ public interface FileService {
      * 上传文件.
      * @param mid 所属目录id
      * @param filename 文件名
-     * @param windowsFilePath 服务器路径
-     * @param HDFSFilePath hdfs路径
+     * @param FileTempPath 文件在服务器的临时路径
+     * @param FileSavePath 文件保存路径
      * @param fileSize 文件大小 （B）
      * @param fileSizeByte 文件大小 （字节）
      * @param usedSize 用户已使用的容量（字节）
      * @param uid uid
      * @return
      */
-    int pushFile(int mid,String filename,String windowsFilePath,String HDFSFilePath,String fileSize,long fileSizeByte,long usedSize,int uid);
+    int pushFile(int mid,String filename,String FileTempPath,String FileSavePath,String fileSize,long fileSizeByte,long usedSize,int uid);
 
     /**
      * 将文件下载到服务器端

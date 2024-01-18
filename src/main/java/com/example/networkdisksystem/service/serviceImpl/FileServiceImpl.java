@@ -44,7 +44,7 @@ public class FileServiceImpl implements FileService {
 
     @Transactional
     @Override
-    public int pushFile(int mid, String filename, String windowsFilePath, String HDFSFilePath,
+    public int pushFile(int mid, String filename, String FileTempPath, String FileSavePath,
                         String fileSize,long fileSizeByte,long usedSize,int uid) {//文件上传
         //文件表中插入数据
         fileMapper.addFile(mid,filename,fileSize,fileSizeByte,uid,new Date());
@@ -54,20 +54,21 @@ public class FileServiceImpl implements FileService {
         //获取文件id
         int fid = fileMapper.getFileIdByMidAndFileName(mid, filename);
 
-        //将文件上传到HDFS上
-            //将文件重命名为 /HDFS/用户名/fid
-        HDFSFilePath=HDFSFilePath+fid;
-        HadoopApi hadoopApi=new HadoopApi();
+        //将文件复制到用户文件路径下
+            //将文件重命名为 /用户文件存储路径/用户名/fid
+        FileSavePath=FileSavePath+fid;
         try {
-            hadoopApi.Uplaod(windowsFilePath,HDFSFilePath);
-            System.out.println("文件上传成功！文件上传到hdfs路径："+HDFSFilePath);
+            File tempFile=new File(FileTempPath);
+            File saveFile=new File(FileSavePath);
+            tempFile.renameTo(saveFile);
+            System.out.println("文件上传成功！文件上传路径："+FileSavePath);
         } catch (Exception e) {
-            System.out.println("文件上传到HDFS的过程中发生异常");
+            System.out.println("文件上传的过程中发生异常");
             e.printStackTrace();
-            throw new RuntimeException("文件上传到HDFS的过程中发生异常");
+            throw new RuntimeException("文件上传的过程中发生异常");
         }finally {
             // 指定要删除的文件路径
-            String filePath = windowsFilePath;
+            String filePath = FileTempPath;
             // 创建一个新的File对象
             File file = new File(filePath);
             // 检查文件是否存在
