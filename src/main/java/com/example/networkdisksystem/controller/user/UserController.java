@@ -54,7 +54,10 @@ public class UserController {
         System.out.println("=======do-register========");
         System.out.println(username+":"+password+":"+email);
         int checkEmail = userMapper.checkEmail(email);
-        if(checkEmail!=0)return new R(403,"邮箱已被注册！");
+        if(checkEmail!=0){
+          verifyService.deleteCode(email);
+          return new R(403,"邮箱已被注册！");
+        }
         int checkUserName = userMapper.checkUserName(username);
         if(checkUserName!=0)return new R(403,"用户名已存在！");
         int flag = verifyService.doVerify(email, verify);

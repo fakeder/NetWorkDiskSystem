@@ -48,4 +48,10 @@ public class VerifyServiceImpl implements VerifyService {
         template.delete("verify:code:"+mail);//验证成功后删除缓存中的验证码
         return 2;
     }
+
+  @Override
+  public void deleteCode(String mail) {
+    System.out.println("邮箱以被注册！！！");
+    template.delete("verify:code:"+mail);
+  }
 }

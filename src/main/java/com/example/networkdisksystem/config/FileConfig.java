@@ -27,4 +27,9 @@ public class FileConfig {
    * 文件大小
    */
   private int maxFileSize;
+
+  /**
+   * 用户文件目录地址
+   */
+  private String userFilePath = "";
 }
