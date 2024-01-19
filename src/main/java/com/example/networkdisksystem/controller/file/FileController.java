@@ -159,10 +159,8 @@ public class FileController {
                                        HttpServletRequest request,
                                        HttpServletResponse response){
         //hdfs文件名拼接
-        String HDFSFilePath=fileConfig.getHdfsUploadPath()+username+"/";
-        //将文件从hdfs下载到服务器端
-        String fileName = service.pullFile(HDFSFilePath, fid);
+        String filePath=fileConfig.getUserFilePath()+username+"/";
         //将文件从服务器端下载到客户端
-        //service.downloadToClient(request,response,fileName);
+        service.downloadToClient(request,response,filePath,fid);
     }
 }

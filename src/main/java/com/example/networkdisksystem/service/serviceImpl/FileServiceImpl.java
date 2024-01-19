@@ -117,9 +117,9 @@ public class FileServiceImpl implements FileService {
         if (deleteFile.exists()) {
           // 删除文件
           deleteFile.delete();
-          System.out.println("文件已成功删除.");
+          log.info("文件已成功删除.");
         } else {
-          System.out.println("文件不存在.");
+          log.warn("文件不存在.");
         }
         //2.更新用户表中的UsedSize
         FileEntity.FileInputEntity file= fileMapper.getFileById(fid);
