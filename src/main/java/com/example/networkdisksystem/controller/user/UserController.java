@@ -91,10 +91,10 @@ public class UserController {
         //删除session,cookie中的值
         session.removeAttribute("mid");
         session.removeAttribute("user");
-        Cookie cookie_username=new Cookie("username","");
+        Cookie cookie_username=new Cookie("NetWorkDiskSystem_username","");
         cookie_username.setMaxAge(0);//cookie保存时间清空
         cookie_username.setPath("/");
-        Cookie cookie_password=new Cookie("password","");
+        Cookie cookie_password=new Cookie("NetWorkDiskSystem_password","");
         cookie_password.setMaxAge(0);
         cookie_password.setPath("/");
         response.addCookie(cookie_username);
