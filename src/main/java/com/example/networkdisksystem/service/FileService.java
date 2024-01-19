@@ -41,11 +41,11 @@ public interface FileService {
     /**
      * 删除文件
      * @param fid fid
-     * @param HDFSFilePath hdfs地址
+     * @param filePath 文件目录地址
      * @param user 用户信息
      * @return
      */
-    int deleteFile(int fid, String HDFSFilePath, Users user);
+    int deleteFile(int fid, String filePath, Users user);
 
     /**
      * 文件重命名

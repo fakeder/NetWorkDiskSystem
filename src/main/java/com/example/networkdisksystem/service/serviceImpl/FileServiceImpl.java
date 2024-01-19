@@ -107,21 +107,22 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public int deleteFile(int fid, String HDFSFilePath, Users user) {//文件删除
-        //删除HDFS上的文件
-        FileEntity.FileInputEntity file= fileMapper.getFileById(fid);
-        HDFSFilePath=HDFSFilePath+fid;
-        System.out.println(HDFSFilePath+"================");
-        HadoopApi hadoopApi=new HadoopApi();
-        try {
-            hadoopApi.Del(HDFSFilePath);
-            System.out.println("hdfs文件删除成功！被删除文件为："+HDFSFilePath);
-        } catch (IOException e) {
-            System.out.println("hdfs文件删除失败！被删除文件为："+HDFSFilePath);
-            e.printStackTrace();
-            throw new RuntimeException("hdfs文件删除失败！被删除文件为："+HDFSFilePath);
+    public int deleteFile(int fid, String filePath, Users user) {//文件删除
+        //1.删除服务器上的文件
+        // 指定要删除的文件路径
+        filePath = filePath+fid;
+        // 创建一个新的File对象
+        File deleteFile = new File(filePath);
+        // 检查文件是否存在
+        if (deleteFile.exists()) {
+          // 删除文件
+          deleteFile.delete();
+          System.out.println("文件已成功删除.");
+        } else {
+          System.out.println("文件不存在.");
         }
-        //更新用户表中的UsedSize
+        //2.更新用户表中的UsedSize
+        FileEntity.FileInputEntity file= fileMapper.getFileById(fid);
         long userSizeByte = user.getUsedSizeByte();
         long fileSizeByte = file.getFileSizeByte();
         //已用大小-文件大小
@@ -129,7 +130,7 @@ public class FileServiceImpl implements FileService {
         //long -> string / 字节 -> B
         String usedSize=SizeChange.formatFileSize(userSizeByte);
         userMapper.updateUsedSizeByUid(user.getUid(),usedSize,userSizeByte);
-        //删除表中数据
+        //3.删除表中数据
         fileMapper.deleteFile(fid);
         return 1;
     }

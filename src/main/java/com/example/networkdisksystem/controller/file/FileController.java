@@ -120,13 +120,14 @@ public class FileController {
         Users user = (Users) session.getAttribute("user");
         user=userMapper.getUserById(user.getUid());
         String username = user.getUsername();
-        String HDFSFilePath=fileConfig.getHdfsUploadPath()+username+"/";
+        String filePath=fileConfig.getUserFilePath()+username+"/";
         try {
-            service.deleteFile(fid, HDFSFilePath, user);
+            service.deleteFile(fid, filePath, user);
             return new R(200, "删除成功！");
         }catch (Exception e){
             return new R(500, "删除失败！");
         }finally {
+            user=userMapper.getUserById(user.getUid());
             session.setAttribute("user",user);
         }
     }
