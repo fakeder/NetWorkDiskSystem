@@ -26,10 +26,10 @@ public interface FileExtractionService {
      * @param uid 用户id
      * @param fileSize 文件大小
      * @param usedSize 已使用大小
-     * @param HDFSFilePath1 提取文件用户地址
-     * @param HDFSFilePath2 分享文件用户地址
+     * @param filePath1 提取文件用户地址
+     * @param filePath2 分享文件用户地址
      * @param tempPath 临时路径
      * @return
      */
-    int saveFile(String fileName,int mid,int uid,String fileSize, long fileSizeByte ,long usedSize,String HDFSFilePath1,String HDFSFilePath2,String tempPath);
+    int saveFile(String fileName,int mid,int uid,String fileSize, long fileSizeByte ,long usedSize,String filePath1,String filePath2,String tempPath);
 }

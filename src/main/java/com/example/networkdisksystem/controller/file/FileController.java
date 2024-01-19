@@ -158,7 +158,7 @@ public class FileController {
                                        @RequestParam("username") String username,
                                        HttpServletRequest request,
                                        HttpServletResponse response){
-        //hdfs文件名拼接
+        //文件路径拼接
         String filePath=fileConfig.getUserFilePath()+username+"/";
         //将文件从服务器端下载到客户端
         service.downloadToClient(request,response,filePath,fid);

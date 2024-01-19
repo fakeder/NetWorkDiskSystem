@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Date;
 import java.util.Objects;
 
@@ -121,7 +123,7 @@ public class FileExtractionServiceImpl implements FileExtractionService {
 
     @Override
     public int saveFile(String fileName, int mid, int uid, String fileSize, long fileSizeByte,long usedSize,
-                        String HDFSFilePath1,String HDFSFilePath2,String tempPath) {
+                        String filePath1,String filePath2,String tempPath) {
         //文件表中插入信息
         fileMapper.addFile(mid,fileName,fileSize,fileSizeByte,uid,new Date());
         //更新用户表信息
@@ -129,18 +131,19 @@ public class FileExtractionServiceImpl implements FileExtractionService {
         userMapper.updateUsedSizeByUid(uid,usedsize,usedSize);
         //获取文件id
         int fid = fileMapper.getFileIdByMidAndFileName(mid, fileName);
-        //将文件上传到HDFS上
+        //将文件复制到用户目录下方
         //将文件重命名为 /HDFS/用户名/fid
-        HDFSFilePath1=HDFSFilePath1+fid;
-        //hdfs文件复制
-        HadoopApi hadoopApi=new HadoopApi();
-        try {
-            hadoopApi.copy(HDFSFilePath2, tempPath, HDFSFilePath1);
-            System.out.println("文件已成功复制到hdfs上");
-        } catch (Exception e) {
-            System.out.println("文件复制到hdfs上失败！");
-            e.printStackTrace();
-            throw new RuntimeException("文件复制到hdfs上失败！");
+        filePath1=filePath1+fid;
+        //文件复制
+        try(FileReader fileReader = new FileReader(filePath2);
+            FileWriter fileWriter = new FileWriter(filePath1)) {
+          char[] c = new char[16];
+          fileReader.read(c);
+          fileWriter.write(c);
+        }catch (Exception e) {
+          System.out.println("文件提取功能:将分享用户文件复制到提取用户时，文件复制失败！");
+          e.printStackTrace();
+          throw new RuntimeException("文件提取功能:将分享用户文件复制到提取用户时，文件复制失败！");
         }
         return 1;
     }

@@ -100,13 +100,13 @@ public class fileExtractionController {
         fileName= Naming.fileNaming(fileNames,fileName);
         //复制文件并向文件表中写入数据
         //提取文件用户地址
-        String HDFSFilePath1=fileConfig.getHdfsUploadPath()+user.getUsername()+"/";
+        String filePath1 =fileConfig.getUserFilePath()+user.getUsername()+"/";
         //分享文件用户地址
-        String HDFSFilePath2=fileConfig.getHdfsUploadPath()+username+"/"+fid;
+        String filePath2=fileConfig.getUserFilePath()+username+"/"+fid;
         //下载到服务器临时地址
         String tempPath=fileConfig.getWindowsUploadPath() +fileName;
         try{
-           service.saveFile(fileName, mid, user.getUid(), fileSize, fileSizeByte,usedSize, HDFSFilePath1, HDFSFilePath2, tempPath);
+           service.saveFile(fileName, mid, user.getUid(), fileSize, fileSizeByte,usedSize, filePath1, filePath2, tempPath);
             return new R(200,"文件已成功保存到当前目录下");
         }catch (Exception e){
             return new R(500,"文件已保存到当前目录下发生未知错误,保存失败!");
