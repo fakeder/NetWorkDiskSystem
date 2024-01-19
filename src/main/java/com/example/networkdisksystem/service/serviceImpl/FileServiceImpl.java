@@ -147,9 +147,9 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
-    public void downloadToClient(HttpServletRequest request, HttpServletResponse response,String fileName) {
-        String filePath = fileConfig.getWindowsUploadPath();
-        String filePathName = filePath + fileName;
+    public void downloadToClient(HttpServletRequest request, HttpServletResponse response,String filePath,int fid) {
+        String filePathName = filePath + fid;
+        String fileName = fileMapper.getFileNameByFid(fid);
         BufferedInputStream bins = null;
         BufferedOutputStream bouts = null;
         try {
@@ -184,28 +184,6 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             log.error("下载文件异常:{}", e.getMessage());
             e.printStackTrace();
-        } finally {
-            try {
-                if (bouts != null) {
-                    bouts.close();
-                }
-                if (bins != null) {
-                    bins.close();
-                }
-                // 创建一个新的File对象
-                File file = new File(filePathName);
-                // 检查文件是否存在
-                if (file.exists()) {
-                    // 删除文件
-                    file.delete();
-                    System.out.println("下载文件已成功删除.");
-                } else {
-                    System.out.println("文件不存在.");
-                }
-            } catch (IOException e) {
-                log.error("关闭流异常", e);
-                e.printStackTrace();
-            }
         }
     }
 

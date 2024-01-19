@@ -105,12 +105,12 @@ public class FileController {
         System.out.println("fid:"+fid);
         Users user = (Users) session.getAttribute("user");
         String username = user.getUsername();
-        //hdfs文件名拼接
-        String HDFSFilePath=fileConfig.getHdfsUploadPath()+username+"/";
+        //文件名拼接
+        String FilePath=fileConfig.getUserFilePath()+username+"/";
         //将文件从hdfs下载到服务器端
-        String fileName = service.pullFile(HDFSFilePath, fid);
+        //String fileName = service.pullFile(FilePath, fid);
         //将文件从服务器端下载到客户端
-        service.downloadToClient(request,response,fileName);
+        service.downloadToClient(request,response,FilePath,fid);
     }
 
     //删除文件
@@ -162,6 +162,6 @@ public class FileController {
         //将文件从hdfs下载到服务器端
         String fileName = service.pullFile(HDFSFilePath, fid);
         //将文件从服务器端下载到客户端
-        service.downloadToClient(request,response,fileName);
+        //service.downloadToClient(request,response,fileName);
     }
 }

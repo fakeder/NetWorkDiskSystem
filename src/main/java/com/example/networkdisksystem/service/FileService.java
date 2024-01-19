@@ -60,9 +60,10 @@ public interface FileService {
      * 将文件从服务器端下载到客户端
      * @param request
      * @param response
-     * @param fileName
+     * @param filePath 文件路径目录
+     * @param fid 文件id
      */
-    void downloadToClient(HttpServletRequest request, HttpServletResponse response,String fileName);
+    void downloadToClient(HttpServletRequest request, HttpServletResponse response,String filePath,int  fid);
 
     /**
      * DB录入/取得 -> 页面展示
