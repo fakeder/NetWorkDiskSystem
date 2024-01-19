@@ -1,6 +1,5 @@
 package com.example.networkdisksystem.service.serviceImpl;
 
-import com.example.networkdisksystem.API.HadoopApi;
 import com.example.networkdisksystem.config.FileConfig;
 import com.example.networkdisksystem.mapper.FolderMapper;
 import com.example.networkdisksystem.mapper.UserMapper;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 
 @Service

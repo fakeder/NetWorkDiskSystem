@@ -23,13 +23,6 @@ public interface FileService {
      */
     int pushFile(int mid,String filename,String FileTempPath,String FileSavePath,String fileSize,long fileSizeByte,long usedSize,int uid);
 
-    /**
-     * 将文件下载到服务器端
-     * @param HDFSFilePath hdfs路径
-     * @param fid fid
-     * @return 文件名
-     */
-    String pullFile(String HDFSFilePath, int fid);
 
     /**
      * 获取目录下的所以文件

@@ -103,14 +103,13 @@ public class fileExtractionController {
         String filePath1 =fileConfig.getUserFilePath()+user.getUsername()+"/";
         //分享文件用户地址
         String filePath2=fileConfig.getUserFilePath()+username+"/"+fid;
-        //下载到服务器临时地址
-        String tempPath=fileConfig.getWindowsUploadPath() +fileName;
         try{
-           service.saveFile(fileName, mid, user.getUid(), fileSize, fileSizeByte,usedSize, filePath1, filePath2, tempPath);
+           service.saveFile(fileName, mid, user.getUid(), fileSize, fileSizeByte,usedSize, filePath1, filePath2);
             return new R(200,"文件已成功保存到当前目录下");
         }catch (Exception e){
             return new R(500,"文件已保存到当前目录下发生未知错误,保存失败!");
         }finally {
+            user=userMapper.getUserById(user.getUid());
             session.setAttribute("user",user);
         }
     }

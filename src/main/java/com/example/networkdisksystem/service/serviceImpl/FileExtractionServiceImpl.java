@@ -1,7 +1,5 @@
 package com.example.networkdisksystem.service.serviceImpl;
 
-import com.example.networkdisksystem.API.HadoopApi;
-import com.example.networkdisksystem.config.FileConfig;
 import com.example.networkdisksystem.config.FileImage;
 import com.example.networkdisksystem.entity.FileExtractionEntity;
 import com.example.networkdisksystem.entity.FileShareEntity;
@@ -122,8 +120,8 @@ public class FileExtractionServiceImpl implements FileExtractionService {
     }
 
     @Override
-    public int saveFile(String fileName, int mid, int uid, String fileSize, long fileSizeByte,long usedSize,
-                        String filePath1,String filePath2,String tempPath) {
+    public int saveFile(String fileName, int mid, int uid, String fileSize,
+                        long fileSizeByte,long usedSize, String filePath1,String filePath2) {
         //文件表中插入信息
         fileMapper.addFile(mid,fileName,fileSize,fileSizeByte,uid,new Date());
         //更新用户表信息

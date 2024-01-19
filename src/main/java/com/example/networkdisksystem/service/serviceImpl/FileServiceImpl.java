@@ -1,6 +1,5 @@
 package com.example.networkdisksystem.service.serviceImpl;
 
-import com.example.networkdisksystem.API.HadoopApi;
 import com.example.networkdisksystem.config.FileConfig;
 import com.example.networkdisksystem.config.FileImage;
 import com.example.networkdisksystem.entity.FileEntity;
@@ -9,14 +8,12 @@ import com.example.networkdisksystem.mapper.FileMapper;
 import com.example.networkdisksystem.mapper.UserMapper;
 import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.util.DateToString;
-import com.example.networkdisksystem.util.Naming;
 import com.example.networkdisksystem.util.SizeChange;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -83,22 +80,6 @@ public class FileServiceImpl implements FileService {
         return 1;
     }
 
-    @Override
-    public String pullFile(String HDFSFilePath,int fid) {//文件下载
-        String fileName= fileMapper.getFileNameByFid(fid);
-        HDFSFilePath=HDFSFilePath+fid;
-        String windowsFilePath=fileConfig.getWindowsUploadPath()+fileName;
-        HadoopApi hadoopApi=new HadoopApi();
-        try {
-            hadoopApi.downlaod(HDFSFilePath,windowsFilePath);
-            System.out.println("hdfs文件下载到服务器路径："+windowsFilePath);
-        } catch (IOException e) {
-            System.out.println("hdfs文件下载到服务器失败！");
-            e.printStackTrace();
-            throw new RuntimeException("hdfs文件下载到服务器失败！");
-        }
-        return fileName;
-    }
 
     @Override
     public List<FileEntity.FileInputEntity> getFileNamesByMid(int mid) {//文件一览
