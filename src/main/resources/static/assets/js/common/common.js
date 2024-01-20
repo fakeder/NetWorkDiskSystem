@@ -1,5 +1,5 @@
 //ip地址
-const host="http://192.168.41.1:8080"
+const host="http://192.168.41.130:8080"
 
 function get(url, success){
     $.ajax({

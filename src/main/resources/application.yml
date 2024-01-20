@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: root
-    password: 321123
+    password: 123456
     url: jdbc:mysql://localhost:3306/networkdisk
     driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
@@ -18,7 +18,7 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 app:
   #服务器地址目录
-  windows-upload-path: F:\\IOtest\\HDFS\\download\\
+  windows-upload-path: /root/networkdisk/download/
   #HDFS地址目录
   hdfs-upload-path: /HDFS/
   #限制文件类型
@@ -26,4 +26,8 @@ app:
   #最大文件大小
   max-file-size: 8192
   #用户文件存放地址目录
-  user-file-path: F:\\IOtest\\HDFS\\User\\
+  user-file-path: /root/networkdisk/User/
+logging:
+    file:
+      name: /root/networkdisk/log/log4j.log
+      max-size: 512KB
