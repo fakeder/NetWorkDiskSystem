@@ -3,6 +3,7 @@ package com.example.networkdisksystem.filter;
 import com.example.networkdisksystem.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.*;
@@ -53,25 +54,26 @@ public class LoginCheckFilter implements Filter {
 
         //检查cookie中是否存了用户名密码
         Cookie[] cookies = request.getCookies();
-        String username=null;
-        String password=null;
-        for (Cookie cookie:cookies) {
-            if(cookie.getName().equals("NetWorkDiskSystem_username")){
-                username=cookie.getValue();
+        if(!ObjectUtils.isEmpty(cookies)) {
+          String username = null;
+          String password = null;
+          for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("NetWorkDiskSystem_username")) {
+              username = cookie.getValue();
             }
-            if(cookie.getName().equals("NetWorkDiskSystem_password")){
-                password=cookie.getValue();
+            if (cookie.getName().equals("NetWorkDiskSystem_password")) {
+              password = cookie.getValue();
             }
-        }
-        if(username!=null&&password!=null) {
+          }
+          if (username != null && password != null) {
             boolean loginCheck = userService.to_loginCheck(username, password);
             if (loginCheck) {
-                log.info("用户：{} -- 免密登录",username);
-                chain.doFilter(request, response);
-                return;
+              log.info("用户：{} -- 免密登录", username);
+              chain.doFilter(request, response);
+              return;
             }
+          }
         }
-
         log.info("用户未登录");
         response.sendRedirect("/user/login");
     }
