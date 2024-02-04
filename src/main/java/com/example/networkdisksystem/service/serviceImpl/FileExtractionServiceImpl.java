@@ -13,9 +13,8 @@ import com.example.networkdisksystem.util.SizeChange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Objects;
 
@@ -133,11 +132,8 @@ public class FileExtractionServiceImpl implements FileExtractionService {
         //将文件重命名为 /HDFS/用户名/fid
         filePath1=filePath1+fid;
         //文件复制
-        try(FileReader fileReader = new FileReader(filePath2);
-            FileWriter fileWriter = new FileWriter(filePath1)) {
-          char[] c = new char[16];
-          fileReader.read(c);
-          fileWriter.write(c);
+        try {
+            Files.copy(Paths.get(filePath2), Paths.get(filePath1));
         }catch (Exception e) {
           System.out.println("文件提取功能:将分享用户文件复制到提取用户时，文件复制失败！");
           e.printStackTrace();

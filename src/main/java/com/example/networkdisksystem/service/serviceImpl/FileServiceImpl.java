@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,9 +57,10 @@ public class FileServiceImpl implements FileService {
             //将文件重命名为 /用户文件存储路径/用户名/fid
         FileSavePath=FileSavePath+fid;
         try {
-            File tempFile=new File(FileTempPath);
+            /*File tempFile=new File(FileTempPath);
             File saveFile=new File(FileSavePath);
-            tempFile.renameTo(saveFile);
+            tempFile.renameTo(saveFile);*/
+            Files.copy(Paths.get(FileTempPath), Paths.get(FileSavePath));
             System.out.println("文件上传成功！文件上传路径："+FileSavePath);
         } catch (Exception e) {
             System.out.println("文件上传的过程中发生异常");
