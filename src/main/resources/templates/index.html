@@ -153,7 +153,7 @@
                         <div class="page-title-wrapper">
                           <div class="ad-breadcrumb ad-breadcrumb2 dd-flex">
                             <div class="form-group">
-                              <div class="ad-user-btn">
+                              <div class="int-search-wrapper">
                                 <input id="folder" name="folder" type="text" placeholder="新建文件夹" class="form-control" />
                               </div>
                             </div>
@@ -164,7 +164,7 @@
                           <div class="card-body dd-flex align-items-center"></div>
                           <div class="ad-breadcrumb ad-breadcrumb2 dd-flex">
                               <div class="form-group">
-                                <div class="ad-user-btn">
+                                <div class="int-search-wrapper">
                                   <input id="shareCode" class="form-control" type="text" placeholder="提取码">
                                 </div>
                               </div>
@@ -175,7 +175,7 @@
                           <div class="card-body dd-flex align-items-center"></div>
                           <div class="ad-breadcrumb ad-breadcrumb2 dd-flex">
                             <div class="form-group">
-                              <div class="ad-user-btn">
+                              <div class="int-search-wrapper">
                                 <input type="file" name="file" id="file" class="form-control">
                               </div>
                             </div>
@@ -188,12 +188,12 @@
                 </div>
                 <!-- Products Orders Start -->
                 <div class="row">
-                    <div>
-                        <a th:href="@{commonback}" class="return-button">
-                            <i class="fas fa-arrow-left"></i>
-                            返回
-                        </a>
-                    </div>
+                  <div class="col-sm-6 col-md-4 col-lg-3">
+                    <a th:href="@{commonback}" class="return-button">
+                      <i class="fas fa-reply"></i>
+                      <span class="icon-text">返回</span>
+                    </a>
+                  </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card chart-card">
                             <div class="card-header">
@@ -287,20 +287,23 @@
                                                                 </g>
                                                             </svg>
                                                         </a>
-                                                        <div class="action-option ">
+                                                        <div class="action-option " style="height: 115px; overflow: auto;">
                                                             <ul>
                                                                 <li>
-                                                                    <a th:href="'javascript:download(\''+${files.getFid()}+'\');'"><i class="far fa-edit mr-2 "></i>下载</a>
+                                                                    <a th:href="'javascript:download(\''+${files.getFid()}+'\');'"><i class="far fas fa-download mr-2"></i>下载</a>
                                                                 </li>
                                                                 <li>
-                                                                    <a th:href="'javascript:deleteFile(\''+${files.getFid()}+'\');'"><i class="far fa-trash-alt mr-2 "></i>删除</a>
+                                                                    <a th:href="'javascript:rename(\''+${files.getFid()}+'\');'"><i class="far fas fa-edit mr-2"></i>重命名</a>
                                                                 </li>
                                                                 <li>
-                                                                    <a th:href="'javascript:rename(\''+${files.getFid()}+'\');'"><i class="far fa-edit mr-2 "></i>重命名</a>
+                                                                    <a th:href="'javascript:move(\''+${files.getFid()}+'\');'"><i class="far fas fa-share-square mr-2"></i>移动</a>
                                                                 </li>
                                                                 <li>
-                                                                    <a th:href="'javascript:share(\''+${files.getFid()}+'\',\''+${files.getFileName()}+'\',\''+${files.getFileSize()}+'\',\''+${files.getFileSizeByte()}+'\');'"><i class="far fa-edit mr-2 ">分享</i></a>
+                                                                    <a th:href="'javascript:share(\''+${files.getFid()}+'\',\''+${files.getFileName()}+'\',\''+${files.getFileSize()}+'\',\''+${files.getFileSizeByte()}+'\');'"><i class="far fas fa-paper-plane mr-2">&nbsp;&nbsp;分享</i></a>
                                                                    <!-- <a th:href="|@{/fileShare?Fid=}${files.getFid()}&FileName=${files.getFileName}&FileSize=${files.getFileSize}|"> <i class="far fa-edit mr-2 ">分享</i></a>-->
+                                                                </li>
+                                                                <li>
+                                                                    <a th:href="'javascript:deleteFile(\''+${files.getFid()}+'\');'" class="danger"><i class="far fas fa-trash-alt mr-2"></i>&nbsp;删除</a>
                                                                 </li>
                                                             </ul>
                                                         </div>
