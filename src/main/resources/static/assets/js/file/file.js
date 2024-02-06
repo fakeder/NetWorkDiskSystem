@@ -38,7 +38,7 @@ function fileUpload(event){
         new Prompt("请选择要上传的文件！")
         return;
     }
-    $("#uploadBtn").text("上传中...");
+    $("#uploadBtn").html("<i class='fa fa-spin fa-spinner mr-2'></i>文件上传中");
     $("#uploadBtn").attr("disabled",true);
     $.ajax({
         url: host+'/file/fileUpload', // 请求的URL
