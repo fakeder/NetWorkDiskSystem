@@ -735,7 +735,6 @@ svg.default-size {
     left: -120px;
     background-color: var(--primary);
     width: 120px;
-    padding: 10px 0;
     text-align: left;
     border-radius: 3px;
     z-index: 100;
