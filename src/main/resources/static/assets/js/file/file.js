@@ -90,3 +90,28 @@ function deleteFile(fid){
 
     })
 }
+
+//文件移动
+function move(fid){
+    console.log("move_fid"+fid)
+    $("#fileMoveFid").val(fid)
+    get(host+"/folder/getMid",function (mid){
+        console.log("move_mid:"+mid)
+        $("#fileMoveMid").val(mid);
+        fileMoveGetFolder(mid,0)
+    })
+}
+//移动文件--确定
+function moveFileSure(){
+    let mid=$("#fileMoveMid").val();
+    let fid=$("#fileMoveFid").val();
+    post(host+"/file/moveFile", {
+        mid:mid,
+        fid:fid
+    },function (data) {
+        if(data.code === 200){
+            new Prompt(data.reason)
+            new TimeOutReload(1000);
+        }
+    })
+}

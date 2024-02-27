@@ -64,4 +64,12 @@ public interface FileService {
      * @return
      */
     List<FileEntity.FileOutputEntity> fileInputChangeToOutput(List<FileEntity.FileInputEntity> list);
+
+    /**
+     * 根据fid修改mid
+     * @param fid fid
+     * @param mid mid
+     * @return 0:失败 1:成功
+     */
+    int removeMidByFid(int fid,int mid);
 }

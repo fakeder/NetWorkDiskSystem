@@ -44,4 +44,8 @@
     <select id="getFileById" resultType="com.example.networkdisksystem.entity.FileEntity$FileInputEntity">
         select * from file_table where fid=#{fid}
     </select>
+
+    <update id="removeMidByFid">
+        update file_table set mid=#{mid} where fid=#{fid}
+    </update>
 </mapper>

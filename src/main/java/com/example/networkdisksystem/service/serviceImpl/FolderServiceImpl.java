@@ -88,4 +88,14 @@ public class FolderServiceImpl implements FolderService {
         }).collect(Collectors.toList());
         return folderEntityOutputList;
     }
+
+    @Override
+    public int getLastMid(int mid) {
+        return mapper.getUpFolderIdByMid(mid);
+    }
+
+    @Override
+    public String getFolderNameByMid(int mid) {
+        return mapper.getFolderNameByMid(mid);
+    }
 }

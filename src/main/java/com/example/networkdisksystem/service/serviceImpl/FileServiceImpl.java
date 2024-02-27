@@ -208,4 +208,9 @@ public class FileServiceImpl implements FileService {
         }).collect(Collectors.toList());
         return fileOutputEntityList;
     }
+
+    @Override
+    public int removeMidByFid(int fid, int mid) {
+        return fileMapper.removeMidByFid(fid,mid);
+    }
 }

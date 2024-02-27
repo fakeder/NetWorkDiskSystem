@@ -1,16 +1,18 @@
 package com.example.networkdisksystem.controller.folder;
 
+import com.example.networkdisksystem.entity.FolderEntity;
 import com.example.networkdisksystem.entity.R;
 import com.example.networkdisksystem.entity.Users;
+import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.service.FolderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/folder")
@@ -56,5 +58,47 @@ public class FolderController {
         int flag = folderService.folderRename(mid, folderName, UpFolderId);
         if(flag==1)return new R(200,"修改成功！");
         else return new R(400,"修改失败");
+    }
+
+    /**
+     * 获取当前页面mid
+     * @param session session
+     * @return mid
+     */
+    @RequestMapping("/getMid")
+    @ResponseBody
+    public int getMid(HttpSession session){
+        return (int) session.getAttribute("mid");
+    }
+    /**
+     *根据id获取当前目录list
+     * @param mid
+     */
+    @RequestMapping(value = "/folderShow",method = RequestMethod.GET)
+    @ResponseBody
+    public List<FolderEntity.FolderEntityOutput> fileShow(@RequestParam("mid") int mid){
+        //目录
+        List<FolderEntity.FolderEntityInput> folders = folderService.getFolderByUpFolderId(mid);
+        //目录 DB录入/取得 -> 页面展示
+        List<FolderEntity.FolderEntityOutput> outputList = folderService.FolderInputChangeToOutput(folders);
+        return outputList;
+    }
+
+    /**
+     * 根据mid获取上一级目录id
+     * @param mid
+     * @return
+     */
+    @RequestMapping("/getLastMid")
+    @ResponseBody
+    public int getLastMid(@RequestParam("mid") int mid){
+        return folderService.getLastMid(mid);
+    }
+
+    @RequestMapping(value = "/getFolderName",method = RequestMethod.GET)
+    @ResponseBody
+    public String getFolderNameByMid(@RequestParam("mid") int mid){
+        String folderName=folderService.getFolderNameByMid(mid);
+        return folderName;
     }
 }

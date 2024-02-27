@@ -77,4 +77,12 @@ public interface FileMapper {
      * @return 文件信息
      */
     FileEntity.FileInputEntity getFileById(int fid);
+
+    /**
+     * 根据fid修改mid
+     * @param fid fid
+     * @param mid mid
+     * @return 0:失败 1:成功
+     */
+    int removeMidByFid(@Param("fid") int fid,@Param("mid") int mid);
 }
