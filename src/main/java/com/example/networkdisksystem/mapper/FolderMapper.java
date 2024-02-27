@@ -69,4 +69,11 @@ public interface FolderMapper {
      * @return 目录
      */
     List<FolderEntity.FolderEntityInput> getFolderByIdAndFolderName(@Param("uid") int uid ,@Param("FolderName") String FolderName);
+
+    /**
+     * 根据mid获取目录名称
+     * @param mid mid
+     * @return 目录名称
+     */
+    String getFolderNameByMid(@Param("mid")int mid);
 }

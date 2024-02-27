@@ -296,7 +296,7 @@
                                                                     <a th:href="'javascript:rename(\''+${files.getFid()}+'\');'"><i class="far fas fa-edit mr-2"></i>重命名</a>
                                                                 </li>
                                                                 <li>
-                                                                    <a th:href="'javascript:move(\''+${files.getFid()}+'\');'"><i class="far fas fa-share-square mr-2"></i>移动</a>
+                                                                    <a th:href="'javascript:move(\''+${files.getFid()}+'\');'"><i class="far fas fa-file-export mr-2"></i>移动</a>
                                                                 </li>
                                                                 <li>
                                                                     <a th:href="'javascript:share(\''+${files.getFid()}+'\',\''+${files.getFileName()}+'\',\''+${files.getFileSize()}+'\',\''+${files.getFileSizeByte()}+'\');'"><i class="far fas fa-paper-plane mr-2">&nbsp;&nbsp;分享</i></a>
@@ -434,7 +434,7 @@
       </div>
     </div>
   </div>
-  <!-- -->
+  <!--文件提取框-->
   <div class="modal fade" id="fileExtraction" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -487,6 +487,62 @@
           <input type="hidden" id="fileExtractionFid">
           <button type="button" class="effect-btn btn btn-success mt-2 mr-2" data-dismiss="modal" onclick="fileExtractionDownload()">下载到本地</button>
           <button type="button" class="effect-btn btn btn-primary mt-2 mr-2" data-dismiss="modal" onclick="fileExtractionSave()">保存到网盘当前目录下</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--移动文件-->
+  <div class="modal fade" id="moveFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content" style="width: 800px">
+        <div class="modal-header">
+          <h5 class="modal-title" id="move-Message-title">
+            <a  style="text-align: start" href='javascript:returnLastFolder()'>
+              <i class="fas fa-reply" >上一级目录</i>
+              <input type="hidden" id="fileMoveLastMid">
+            </a>
+          </h5>
+          <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前目录:</h3>
+          <h3 style=" display: flex; justify-content: center;" id="folderName">Message内容</h3>
+          <button type="button" class="close" style="color: lawngreen"  onclick="moveFileSure()">
+            <input type="hidden" id="fileMoveMid">
+            <input type="hidden" id="fileMoveFid">
+            <i class="fas fa-check" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-styled mb-0">
+            <thead>
+            <tr>
+              <th>文件名</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody id="move_folders">
+            <!--目录-->
+            <!--<tr th:each="move_folders:${move_folders}">
+              <td>
+                &lt;!&ndash;<span class="img-thumb ">
+                  <img src="../static/assets/images/my_images/文件夹.png" alt=" ">
+                </span>&ndash;&gt;
+                <a th:id="|m${move_folders.getMid()}|"
+                   th:href="'javascript:fileMoveGetFolder(\''+${move_folders.getMid()}+'\');'"
+                   th:text="${move_folders.getFolderName()}" type="text"></a>
+              </td>
+              <td>
+              </td>
+              <td></td>
+              <td th:text="${move_folders.getStartTime()}">-</td>
+              <td th:text="${move_folders.getLastModifiedTime()}">-</td>
+              <td>文件夹</td>
+              <td>-</td>
+            </tr>-->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

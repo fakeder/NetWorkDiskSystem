@@ -35,9 +35,11 @@ public class UserServiceImpl implements UserService {
                     Cookie cookie_username=new Cookie("NetWorkDiskSystem_username",username);
                     cookie_username.setMaxAge(60*60*24*7);//cookie保存时间7天
                     cookie_username.setPath("/");//设置为根路径
+                    cookie_username.setHttpOnly(true);//设置只有http请求可以访问cookie
                     Cookie cookie_password=new Cookie("NetWorkDiskSystem_password",user.getPassword());
                     cookie_password.setMaxAge(60*60*24*7);
                     cookie_password.setPath("/");
+                    cookie_username.setHttpOnly(true);
                     response.addCookie(cookie_username);
                     response.addCookie(cookie_password);
                 }

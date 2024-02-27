@@ -166,4 +166,20 @@ public class FileController {
         //将文件从服务器端下载到客户端
         service.downloadToClient(request,response,fileName);
     }
+
+
+    /**
+     * 根据fid修改mid
+     * @param fid fid
+     * @param mid mid
+     * @return 0:失败 1:成功
+     */
+    @RequestMapping(value = "/moveFile",method = RequestMethod.POST)
+    @ResponseBody
+    public R fileMove(@RequestParam("mid") int mid,
+                      @RequestParam("fid") int fid){
+        int flag=service.removeMidByFid(fid,mid);
+        if(flag != 0)return new R(200,"文件移动成功！");
+        else return new R(500,"未知原因,文件移动失败");
+    }
 }
