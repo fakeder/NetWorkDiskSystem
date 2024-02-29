@@ -93,4 +93,9 @@ public class FolderServiceImpl implements FolderService {
     public FolderEntity.FolderEntityInput getFolderNameAndUpFolderIdByMid(int mid) {
         return mapper.getFolderNameAndUpFolderIdByMid(mid);
     }
+
+    @Override
+    public int removeUpFolderIdByMid(int upFolderId, int mid) {
+        return mapper.removeUpFolderIdByMid(upFolderId,mid);
+    }
 }

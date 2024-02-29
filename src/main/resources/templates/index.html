@@ -249,10 +249,13 @@
                                                     <div class="action-option ">
                                                         <ul>
                                                             <li>
-                                                                <a th:href="'javascript:folderRename(\''+${folders.getMid()}+'\');'"><i class="far fa-edit mr-2 "></i>重命名</a>
+                                                                <a th:href="'javascript:folderRename(\''+${folders.getMid()}+'\');'"><i class="far fas fa-edit mr-2"></i>重命名</a>
                                                             </li>
                                                             <li>
-                                                                <a th:href="'javascript:deleteFolder(\''+${folders.getMid()}+'\');'" ><i class="far fa-trash-alt mr-2 "></i>删除</a>
+                                                              <a th:href="'javascript:move(\''+${folders.getMid()}+'\',\''+1+'\');'"><i class="far fas fa-file-export mr-2"></i>移动</a>
+                                                            </li>
+                                                            <li>
+                                                                <a th:href="'javascript:deleteFolder(\''+${folders.getMid()}+'\');'"  class="danger" ><i class="far fa-trash-alt mr-2 "></i>删除</a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -296,7 +299,7 @@
                                                                     <a th:href="'javascript:rename(\''+${files.getFid()}+'\');'"><i class="far fas fa-edit mr-2"></i>重命名</a>
                                                                 </li>
                                                                 <li>
-                                                                    <a th:href="'javascript:move(\''+${files.getFid()}+'\');'"><i class="far fas fa-file-export mr-2"></i>移动</a>
+                                                                    <a th:href="'javascript:move(\''+${files.getFid()}+'\',\''+0+'\');'"><i class="far fas fa-file-export mr-2"></i>移动</a>
                                                                 </li>
                                                                 <li>
                                                                     <a th:href="'javascript:share(\''+${files.getFid()}+'\',\''+${files.getFileName()}+'\',\''+${files.getFileSize()}+'\',\''+${files.getFileSizeByte()}+'\');'"><i class="far fas fa-paper-plane mr-2">&nbsp;&nbsp;分享</i></a>
@@ -491,7 +494,7 @@
       </div>
     </div>
   </div>
-  <!--移动文件-->
+  <!--移动文件/目录-->
   <div class="modal fade" id="moveFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content" style="width: 800px">
@@ -499,14 +502,16 @@
           <h5 class="modal-title" id="move-Message-title">
             <a  style="text-align: start" href='javascript:returnLastFolder()'>
               <i class="fas fa-reply" >上一级目录</i>
-              <input type="hidden" id="fileMoveLastMid">
+              <input type="hidden" id="moveLastMid">
             </a>
           </h5>
           <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前目录:</h3>
           <h3 style=" display: flex; justify-content: center;" id="folderName">Message内容</h3>
           <button type="button" class="close" style="color: lawngreen"  onclick="moveFileSure()">
-            <input type="hidden" id="fileMoveMid">
+            <input type="hidden" id="moveMid">
             <input type="hidden" id="fileMoveFid">
+            <input type="hidden" id="folderMoveMid">
+            <input type="hidden" id="fileOrFolderFlag">
             <i class="fas fa-check" aria-hidden="true"></i>
           </button>
         </div>
@@ -514,7 +519,7 @@
           <table class="table table-styled mb-0">
             <thead>
             <tr>
-              <th>文件名</th>
+              <th>文件夹</th>
               <th></th>
               <th></th>
               <th></th>
@@ -530,7 +535,7 @@
                   <img src="../static/assets/images/my_images/文件夹.png" alt=" ">
                 </span>&ndash;&gt;
                 <a th:id="|m${move_folders.getMid()}|"
-                   th:href="'javascript:fileMoveGetFolder(\''+${move_folders.getMid()}+'\');'"
+                   th:href="'javascript:moveGetFolder(\''+${move_folders.getMid()}+'\');'"
                    th:text="${move_folders.getFolderName()}" type="text"></a>
               </td>
               <td>

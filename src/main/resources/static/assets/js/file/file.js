@@ -91,32 +91,31 @@ function deleteFile(fid){
     })
 }
 
-//文件移动
-function move(fid){
-    console.log("move_fid"+fid)
-    $("#fileMoveFid").val(fid)
-    get(host+"/folder/getMidAndFolderNameAndUpFolderId",function (data){
-        console.log(data)
-        if(data.upFolderId === -1){
-            data.folderName='/'
-        }
-        $("#fileMoveMid").val(data.mid);
-        $("#fileMoveLastMid").val(data.upFolderId)
-        $("#folderName").text(data.folderName)
-        fileMoveGetFolder(data.mid)
-    })
-}
-//移动文件--确定
+//移动文件/目录--确定
 function moveFileSure(){
-    let mid=$("#fileMoveMid").val();
-    let fid=$("#fileMoveFid").val();
-    post(host+"/file/moveFile", {
-        mid:mid,
-        fid:fid
-    },function (data) {
-        if(data.code === 200){
-            new Prompt(data.reason)
-            new TimeOutReload(1000);
-        }
-    })
+    let mid=$("#moveMid").val();
+    let flag=$("#fileOrFolderFlag").val()
+    if(flag === 0){
+        let fid=$("#fileMoveFid").val();
+        post(host+"/file/moveFile", {
+            mid:mid,
+            fid:fid
+        },function (data) {
+            if(data.code === 200){
+                new Prompt(data.reason)
+                new TimeOutReload(1000);
+            }
+        })
+    }else {
+        let folderId=$("#folderMoveMid").val()
+        post(host+"/folder/moveFolder",{
+            upFolderId:mid,
+            mid:folderId
+        },function (data){
+            if(data.code === 200){
+                new Prompt(data.reason)
+                new TimeOutReload(1000);
+            }
+        })
+    }
 }
