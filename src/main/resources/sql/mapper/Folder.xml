@@ -36,4 +36,8 @@
     <select id="getFolderNameAndUpFolderIdByMid" resultType="com.example.networkdisksystem.entity.FolderEntity$FolderEntityInput">
         select mid,FolderName,UpFolderId from mkdir_table where mid=#{mid}
     </select>
+    
+    <update id="removeUpFolderIdByMid">
+        update mkdir_table set UpFolderId = #{upFolderId} where mid=#{mid}
+    </update>
 </mapper>

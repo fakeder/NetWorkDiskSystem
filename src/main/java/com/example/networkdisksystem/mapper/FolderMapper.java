@@ -68,4 +68,12 @@ public interface FolderMapper {
      * @return 目录名称
      */
     FolderEntity.FolderEntityInput getFolderNameAndUpFolderIdByMid(@Param("mid")int mid);
+
+    /**
+     * 修改目录的上级目录id
+     * @param upFolderId 上级目录id
+     * @param mid 目录id
+     * @return 0:修改成功 1:修改失败
+     */
+    int removeUpFolderIdByMid(@Param("upFolderId") int upFolderId,@Param("mid") int mid);
 }

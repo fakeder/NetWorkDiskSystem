@@ -67,15 +67,40 @@ function deleteFolder(mid){
     })
 }
 
+//文件/目录 移动
+function move(id,flag){
+    console.log("move_id"+id)
+    //0:文件移动 1:目录移动
+    if(flag == 0){
+        //移动的文件id
+        $("#fileMoveFid").val(id)
+        $("#fileOrFolderFlag").val(0)
+    }else {
+        //移动的目录id
+        $("#folderMoveMid").val(id)
+        $("#fileOrFolderFlag").val(1)
+    }
+    get(host+"/folder/getMidAndFolderNameAndUpFolderId",function (data){
+        console.log(data)
+        if(data.upFolderId === -1){
+            data.folderName='/'
+        }
+        $("#moveMid").val(data.mid);
+        $("#moveLastMid").val(data.upFolderId)
+        $("#folderName").text(data.folderName)
+        moveGetFolder(data.mid,flag)
+    })
+}
+
 //移动目录——切换目录
-function fileMoveGetFolder(mid){
+function moveGetFolder(mid,flag){
     console.log("mid:"+mid)
     get(host+"/folder/getMidAndFolderNameAndUpFolderId?mid="+mid,function (data) {
         if (data.upFolderId === -1) {
             data.folderName = '/'
         }
-        $("#fileMoveMid").val(data.mid);
-        $("#fileMoveLastMid").val(data.upFolderId)
+        $("#moveMid").val(data.mid);
+        $("#moveLastMid").val(data.upFolderId)
         $("#folderName").text(data.folderName)
     })
 
@@ -85,12 +110,13 @@ function fileMoveGetFolder(mid){
         modal.find('#move_folders').empty();
         //遍历传入的list，将list中的目录信息
         $.each(list, function (index, item) {
+            if(flag == 1 && item.mid == $("#folderMoveMid").val()) return;
             //创建<tr>
-            let listItem = $('<tr>').attr('onclick', 'fileMoveGetFolder(' + item.mid + ')')
+            let listItem = $('<tr>').attr('onclick', 'moveGetFolder(' + item.mid +','+flag+ ')')
             //创建<td>
             let td1 = $('<td>');
             //创建<a>,添加href,id属性
-            let a = $('<a>').text(item.folderName).attr('href', 'javascript:fileMoveGetFolder(' + item.mid + ')').attr('id', item.mid)
+            let a = $('<a>').text(item.folderName).attr('href', 'javascript:moveGetFolder(' + item.mid + ','+flag+ ')').attr('id', item.mid)
             //将<a>标签添加到td1标签内部
             td1.append(a);
             //将td1放入<tr>标签内部
@@ -107,6 +133,7 @@ function fileMoveGetFolder(mid){
             listItem.append(td4);
             listItem.append(td5);
             listItem.append(td6);
+            //向动态列表中添加元素
             modal.find('#move_folders').append(listItem);
         });
         $("#moveFile").modal('show');
@@ -116,8 +143,8 @@ function fileMoveGetFolder(mid){
 //移动目录--返回上一级目录
 function returnLastFolder(){
     //获取上一级目录id
-    let lastMid=$("#fileMoveLastMid").val();
+    let lastMid=$("#moveLastMid").val();
     if(lastMid >0){
-        fileMoveGetFolder(lastMid)
+        moveGetFolder(lastMid)
     }
 }

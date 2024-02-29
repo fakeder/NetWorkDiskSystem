@@ -81,4 +81,17 @@ public class FolderController {
         List<FolderEntity.FolderEntityOutput> outputList = folderService.FolderInputChangeToOutput(folders);
         return outputList;
     }
+
+    @RequestMapping(value = "/moveFolder",method = RequestMethod.POST)
+    @ResponseBody
+    public R moveFolder(@RequestParam("upFolderId") int upFolderId,
+                        @RequestParam("mid") int mid){
+
+        int flag=folderService.removeUpFolderIdByMid(upFolderId,mid);
+        if(flag>0){
+            return new R(200,"目录移动成功！");
+        }else {
+            return new R(500,"未知原因移动失败！");
+        }
+    }
 }
