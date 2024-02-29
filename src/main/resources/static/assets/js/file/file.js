@@ -95,7 +95,7 @@ function deleteFile(fid){
 function moveFileSure(){
     let mid=$("#moveMid").val();
     let flag=$("#fileOrFolderFlag").val()
-    if(flag === 0){
+    if(flag == 0){
         let fid=$("#fileMoveFid").val();
         post(host+"/file/moveFile", {
             mid:mid,
