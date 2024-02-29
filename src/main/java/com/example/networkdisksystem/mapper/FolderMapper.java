@@ -55,14 +55,6 @@ public interface FolderMapper {
     int rename(@Param("mid") int mid,@Param("FolderName") String FolderName);
 
     /**
-     * 通过当前目录的mid获取上一级目录的mid.
-     * @param mid mid
-     * @return
-     */
-    int getUpFolderIdByMid(int mid);
-
-
-    /**
      * 根据uid对目录id进行模糊匹配获取FolderEntity
      * @param uid uid
      * @param FolderName 目录名称
@@ -75,5 +67,5 @@ public interface FolderMapper {
      * @param mid mid
      * @return 目录名称
      */
-    String getFolderNameByMid(@Param("mid")int mid);
+    FolderEntity.FolderEntityInput getFolderNameAndUpFolderIdByMid(@Param("mid")int mid);
 }
