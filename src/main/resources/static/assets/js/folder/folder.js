@@ -68,27 +68,17 @@ function deleteFolder(mid){
 }
 
 //移动目录——切换目录
-function fileMoveGetFolder(mid,flag){
+function fileMoveGetFolder(mid){
     console.log("mid:"+mid)
-
-    let folderName=getFolderName(mid,flag);
-    $("#folderName").text(folderName)
-    //返回上一级
-    if(flag === 1){
-        get(host+"/folder/getLastMid?mid="+mid,function (data) {
-            $("#fileMoveMid").val(mid);
-            $("#fileMoveLastMid").val(data);
-        })
-    }else {//下一级目录
-        //获取上目录一个mid
-        let lastMid=$("#fileMoveMid").val();
-        if(lastMid != mid){
-            //将当前目录的id赋值
-            $("#fileMoveMid").val(mid);
-            //将上级目录的id赋值
-            $("#fileMoveLastMid").val(lastMid);
+    get(host+"/folder/getMidAndFolderNameAndUpFolderId?mid="+mid,function (data) {
+        if (data.upFolderId === -1) {
+            data.folderName = '/'
         }
-    }
+        $("#fileMoveMid").val(data.mid);
+        $("#fileMoveLastMid").val(data.upFolderId)
+        $("#folderName").text(data.folderName)
+    })
+
     get(host+"/folder/folderShow?mid="+mid,function (list) {
         let modal = $("div#moveFile.modal.fade");
         // 清空动态列表
@@ -127,24 +117,7 @@ function fileMoveGetFolder(mid,flag){
 function returnLastFolder(){
     //获取上一级目录id
     let lastMid=$("#fileMoveLastMid").val();
-    if( lastMid == ''){
-        let mid=$("#fileMoveMid").val()
-        get(host+"/folder/getLastMid?mid="+mid,function (data) {
-            lastMid = data
-        })
-    }
     if(lastMid >0){
-        fileMoveGetFolder(lastMid,1)
-    }
-}
-
-//移动文件--获取目录名称
-function getFolderName(mid,flag) {
-    if(flag === 0){
-       return  "/";
-    }else {
-        get(host+"/folder/getFolderName?mid="+mid, function (data) {
-           return ""+data;
-        })
+        fileMoveGetFolder(lastMid)
     }
 }

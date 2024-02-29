@@ -90,12 +90,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public int getLastMid(int mid) {
-        return mapper.getUpFolderIdByMid(mid);
-    }
-
-    @Override
-    public String getFolderNameByMid(int mid) {
-        return mapper.getFolderNameByMid(mid);
+    public FolderEntity.FolderEntityInput getFolderNameAndUpFolderIdByMid(int mid) {
+        return mapper.getFolderNameAndUpFolderIdByMid(mid);
     }
 }

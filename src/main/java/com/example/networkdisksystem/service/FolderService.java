@@ -47,16 +47,9 @@ public interface FolderService {
     List<FolderEntity.FolderEntityOutput> FolderInputChangeToOutput(List<FolderEntity.FolderEntityInput> list);
 
     /**
-     * 根据mid获取上一级目录id
-     * @param mid
-     * @return
-     */
-    int getLastMid(int mid);
-
-    /**
      * 根据mid获取目录名称
      * @param mid mid
      * @return 目录名称
      */
-    String getFolderNameByMid(int mid);
+    FolderEntity.FolderEntityInput getFolderNameAndUpFolderIdByMid(int mid);
 }

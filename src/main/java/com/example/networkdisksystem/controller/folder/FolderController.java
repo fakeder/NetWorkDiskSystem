@@ -3,11 +3,8 @@ package com.example.networkdisksystem.controller.folder;
 import com.example.networkdisksystem.entity.FolderEntity;
 import com.example.networkdisksystem.entity.R;
 import com.example.networkdisksystem.entity.Users;
-import com.example.networkdisksystem.service.FileService;
 import com.example.networkdisksystem.service.FolderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -61,14 +58,15 @@ public class FolderController {
     }
 
     /**
-     * 获取当前页面mid
+     * 获取当前页面mid,目录名称，上级目录id
      * @param session session
      * @return mid
      */
-    @RequestMapping("/getMid")
+    @RequestMapping(value = "/getMidAndFolderNameAndUpFolderId",method = RequestMethod.GET)
     @ResponseBody
-    public int getMid(HttpSession session){
-        return (int) session.getAttribute("mid");
+    public FolderEntity.FolderEntityInput getMid(HttpSession session,@RequestParam(value = "mid",defaultValue = "0") int mid){
+        if(mid ==0) mid= (int) session.getAttribute("mid");
+        return folderService.getFolderNameAndUpFolderIdByMid(mid);
     }
     /**
      *根据id获取当前目录list
@@ -82,23 +80,5 @@ public class FolderController {
         //目录 DB录入/取得 -> 页面展示
         List<FolderEntity.FolderEntityOutput> outputList = folderService.FolderInputChangeToOutput(folders);
         return outputList;
-    }
-
-    /**
-     * 根据mid获取上一级目录id
-     * @param mid
-     * @return
-     */
-    @RequestMapping("/getLastMid")
-    @ResponseBody
-    public int getLastMid(@RequestParam("mid") int mid){
-        return folderService.getLastMid(mid);
-    }
-
-    @RequestMapping(value = "/getFolderName",method = RequestMethod.GET)
-    @ResponseBody
-    public String getFolderNameByMid(@RequestParam("mid") int mid){
-        String folderName=folderService.getFolderNameByMid(mid);
-        return folderName;
     }
 }

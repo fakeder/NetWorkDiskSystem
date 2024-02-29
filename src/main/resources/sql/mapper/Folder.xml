@@ -29,15 +29,11 @@
         update mkdir_table set FolderName=#{FolderName} where mid=#{mid}
     </update>
 
-    <select id="getUpFolderIdByMid" resultType="integer">
-        select UpFolderId from mkdir_table where mid=#{mid}
-    </select>
-
     <select id="getFolderByIdAndFolderName" resultType="com.example.networkdisksystem.entity.FolderEntity$FolderEntityInput">
         select * from mkdir_table where uid=#{uid} and FolderName like CONCAT('%',#{FolderName},'%')
     </select>
 
-    <select id="getFolderNameByMid" resultType="string">
-        select FolderName from mkdir_table where mid=#{mid}
+    <select id="getFolderNameAndUpFolderIdByMid" resultType="com.example.networkdisksystem.entity.FolderEntity$FolderEntityInput">
+        select mid,FolderName,UpFolderId from mkdir_table where mid=#{mid}
     </select>
 </mapper>

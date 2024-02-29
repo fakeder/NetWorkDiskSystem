@@ -95,10 +95,15 @@ function deleteFile(fid){
 function move(fid){
     console.log("move_fid"+fid)
     $("#fileMoveFid").val(fid)
-    get(host+"/folder/getMid",function (mid){
-        console.log("move_mid:"+mid)
-        $("#fileMoveMid").val(mid);
-        fileMoveGetFolder(mid,0)
+    get(host+"/folder/getMidAndFolderNameAndUpFolderId",function (data){
+        console.log(data)
+        if(data.upFolderId === -1){
+            data.folderName='/'
+        }
+        $("#fileMoveMid").val(data.mid);
+        $("#fileMoveLastMid").val(data.upFolderId)
+        $("#folderName").text(data.folderName)
+        fileMoveGetFolder(data.mid)
     })
 }
 //移动文件--确定

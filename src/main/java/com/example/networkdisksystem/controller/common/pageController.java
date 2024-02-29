@@ -83,9 +83,9 @@ public class pageController {
         //获取当前目录的mid
         int mid = (int) session.getAttribute("mid");
         //通过当前目录的mid获取上一级目录的mid
-        int upFolderIdByMid = mapper.getUpFolderIdByMid(mid);
-        System.out.println("上一级目录："+upFolderIdByMid);
-        return "redirect:index?mid="+upFolderIdByMid;
+        FolderEntity.FolderEntityInput folderEntityInput = folderService.getFolderNameAndUpFolderIdByMid(mid);
+        System.out.println("上一级目录："+folderEntityInput.getUpFolderId());
+        return "redirect:index?mid="+folderEntityInput.getUpFolderId();
     }
 
     //文件（夹）查询
