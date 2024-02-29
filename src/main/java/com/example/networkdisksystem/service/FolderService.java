@@ -52,4 +52,13 @@ public interface FolderService {
      * @return 目录名称
      */
     FolderEntity.FolderEntityInput getFolderNameAndUpFolderIdByMid(int mid);
+
+
+    /**
+     * 修改目录的上级目录id
+     * @param upFolderId 上级目录id
+     * @param mid 目录id
+     * @return 0:修改成功 1:修改失败
+     */
+    int removeUpFolderIdByMid(int upFolderId,int mid);
 }
