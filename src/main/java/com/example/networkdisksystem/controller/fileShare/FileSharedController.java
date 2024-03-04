@@ -106,7 +106,7 @@ public class FileSharedController {
      * @param fids  fid_list
      * @return
      */
-  @RequestMapping("/checkFidListIsShare")
+  @RequestMapping(value = "/checkFidListIsShare",method = RequestMethod.POST)
   @ResponseBody
   public R checkFidListIsShare(@RequestParam("fid_list") String fids){
       System.out.println(fids);

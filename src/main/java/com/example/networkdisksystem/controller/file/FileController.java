@@ -183,7 +183,7 @@ public class FileController {
      * @param midList mid_list
      * @return fid_list
      */
-    @RequestMapping("/getFidListByMidList")
+    @RequestMapping(value = "/getFidListByMidList",method = RequestMethod.POST)
     @ResponseBody
     public List<Integer> getFidListByMidList(@RequestParam("mid_list") String midList){
         System.out.println(midList);
@@ -198,7 +198,13 @@ public class FileController {
         return fidListByMidList;
     }
 
-    @RequestMapping("/recursionDeleteFile")
+    /**
+     * 删除fid_list中的文件
+     * @param fids fid_list
+     * @param session HttpSession
+     * @return
+     */
+    @RequestMapping(value = "/recursionDeleteFile",method = RequestMethod.POST)
     @ResponseBody
     public R recursionDeleteFile(@RequestParam("fid_list") String fids,HttpSession session){
         System.out.println(fids);
