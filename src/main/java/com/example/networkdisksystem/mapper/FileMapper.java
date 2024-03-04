@@ -85,4 +85,11 @@ public interface FileMapper {
      * @return 0:失败 1:成功
      */
     int removeMidByFid(@Param("fid") int fid,@Param("mid") int mid);
+
+    /**
+     * 根据mid_list获取fid_list
+     * @param mid_list mid_list
+     * @return fid_list
+     */
+    List<Integer> getFidListByMidList(List<Integer> mid_list);
 }

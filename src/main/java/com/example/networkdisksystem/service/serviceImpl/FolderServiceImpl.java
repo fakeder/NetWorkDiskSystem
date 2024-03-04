@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -97,5 +98,25 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public int removeUpFolderIdByMid(int upFolderId, int mid) {
         return mapper.removeUpFolderIdByMid(upFolderId,mid);
+    }
+
+    //getDeleteFolderIdList返回的list
+    private static List<Integer> mid_list=new ArrayList<>();
+    @Override
+    public List<Integer> getDeleteFolderIdList(int mid) {
+        //将mid放入list中
+        mid_list.add(mid);
+        //查询该mid下的目录
+        List<FolderEntity.FolderEntityInput> list = mapper.getFolderByUpMkdirId(mid);
+        for (FolderEntity.FolderEntityInput l:list) {
+            //递归调用
+            getDeleteFolderIdList(l.getMid());
+        }
+        return mid_list;
+    }
+
+    @Override
+    public int deleteFolderList(List<Integer> mid_list) {
+        return mapper.deleteFolderList(mid_list);
     }
 }

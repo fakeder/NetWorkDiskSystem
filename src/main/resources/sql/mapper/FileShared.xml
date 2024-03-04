@@ -62,4 +62,11 @@
     <update id="updateNumberOfDownload">
         update file_share set numberOfDownload=#{numberOfDownload} where shareId=#{shareId}
     </update>
+
+    <select id="getShareCodeListByFidList" parameterType="java.util.List" resultType="string">
+        select shareCode from file_share where `condition` = '0' and fid IN
+        <foreach item="fid" collection="list" open="(" separator="," close=")">
+            #{fid}
+        </foreach>
+    </select>
 </mapper>

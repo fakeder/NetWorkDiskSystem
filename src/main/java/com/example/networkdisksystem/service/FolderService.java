@@ -61,4 +61,18 @@ public interface FolderService {
      * @return 0:修改成功 1:修改失败
      */
     int removeUpFolderIdByMid(int upFolderId,int mid);
+
+    /**
+     * 递归获取mid下所有的mid的list
+     * @param mid mid
+     * @return mid下所有（包含）的mid——list
+     */
+    List<Integer> getDeleteFolderIdList(int mid);
+
+    /**
+     * 删除mid_list
+     * @param mid_list mid_list
+     * @return
+     */
+    int deleteFolderList(List<Integer> mid_list);
 }

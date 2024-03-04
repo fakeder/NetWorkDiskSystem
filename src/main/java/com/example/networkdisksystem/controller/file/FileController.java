@@ -13,10 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
@@ -26,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -166,7 +164,7 @@ public class FileController {
 
 
     /**
-     * 根据fid修改mid
+     * 修改文件的mid
      * @param fid fid
      * @param mid mid
      * @return 0:失败 1:成功
@@ -178,5 +176,56 @@ public class FileController {
         int flag=service.removeMidByFid(fid,mid);
         if(flag != 0)return new R(200,"文件移动成功！");
         else return new R(500,"未知原因,文件移动失败");
+    }
+
+    /**
+     * 根据mid_list获取fid_list
+     * @param midList mid_list
+     * @return fid_list
+     */
+    @RequestMapping("/getFidListByMidList")
+    @ResponseBody
+    public List<Integer> getFidListByMidList(@RequestParam("mid_list") String midList){
+        System.out.println(midList);
+        midList=midList.substring(1,midList.length()-1);
+        System.out.println(midList);
+        String[] numberStrings = midList.split(",");
+        List<Integer>mid_list = new ArrayList<>();
+        for (int i = 0; i < numberStrings.length; i++) {
+            mid_list.add(Integer.parseInt(numberStrings[i]));
+        }
+        List<Integer> fidListByMidList = service.getFidListByMidList(mid_list);
+        return fidListByMidList;
+    }
+
+    @RequestMapping("/recursionDeleteFile")
+    @ResponseBody
+    public R recursionDeleteFile(@RequestParam("fid_list") String fids,HttpSession session){
+        System.out.println(fids);
+        fids=fids.substring(1,fids.length()-1);
+        String[] numberStrings = fids.split(",");
+        List<Integer> fid_list = new ArrayList<>();
+        for (int i = 0; i < numberStrings.length; i++) {
+            fid_list.add(Integer.parseInt(numberStrings[i]));
+        }
+        boolean flag=true;
+        for (int fid:fid_list) {
+            Users user = (Users) session.getAttribute("user");
+            user=userMapper.getUserById(user.getUid());
+            String username = user.getUsername();
+            String filePath=fileConfig.getUserFilePath()+username+"/";
+            try {
+                service.deleteFile(fid, filePath, user);
+                System.out.println("fid:"+fid+"删除成功！");
+            }catch (Exception e){
+                System.err.println("fid:"+fid+"删除失败！");
+                flag=false;
+            }finally {
+                user=userMapper.getUserById(user.getUid());
+                session.setAttribute("user",user);
+            }
+        }
+        if(flag) return new R(200,"删除成功！");
+        else return new R(500,"服务器错误，文件递归删除失败！");
     }
 }

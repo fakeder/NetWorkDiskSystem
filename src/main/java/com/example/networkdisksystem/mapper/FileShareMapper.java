@@ -97,4 +97,12 @@ public interface FileShareMapper {
      */
   int updateNumberOfDownload(@Param("numberOfDownload") int numberOfDownload,
                              @Param("shareId") int shareId);
+
+
+    /**
+     * 根据fid_list获取正在分享中的shareCode_list
+     * @param fid_list fid_list
+     * @return shareCode_list
+     */
+  List<String> getShareCodeListByFidList(List<Integer> fid_list);
 }

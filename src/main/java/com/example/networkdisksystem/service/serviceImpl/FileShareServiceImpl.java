@@ -105,8 +105,13 @@ public class FileShareServiceImpl implements FileShareService {
     return mapper.delShareById(shareId);
   }
 
+    @Override
+    public List<String> getShareCodeListByFidList(List<Integer> fid_list) {
+        return mapper.getShareCodeListByFidList(fid_list);
+    }
 
-  /**
+
+    /**
    * 将FileShareEntityInput转化成FileShareEntityOutput
    * @param list FileShareEntityInput
    * @return FileShareEntityOutput
