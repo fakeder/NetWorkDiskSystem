@@ -114,6 +114,11 @@ public class FolderController {
         return mid_list;
     }
 
+    /**
+     * 批量删除目录
+     * @param midList midList
+     * @return
+     */
     @RequestMapping(value = "/recursionDeleteFolderList",method = RequestMethod.POST)
     @ResponseBody
     public R recursionDeleteFolderList(@RequestParam("mid_list") String midList){
