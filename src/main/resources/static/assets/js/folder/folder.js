@@ -60,51 +60,46 @@ function deleteFolder(mid){
             post(host + "/file/getFidListByMidList", {
                 mid_list: JSON.stringify(list)
             }, function (fid_list) {
-                //判断文件是否可以删除
-                post(host + "/fileShare/checkFidListIsShare", {
-                    fid_list: JSON.stringify(fid_list)
-                }, function (data) {
-                    //没有处于分享中的文件，递归所有文件和目录
-                    if (data.code == 200) {
-                        //递归删除文件
-                        post(host + "/file/recursionDeleteFile", {
-                            fid_list: JSON.stringify(fid_list)
-                        }, function (data) {
-                            if (data.code == 200) {
-                                //递归删除目录
-                                post(host + "/folder/recursionDeleteFolderList", {
-                                    mid_list: JSON.stringify(list)
-                                }, function (data) {
-                                    Prompt(data.reason);
-                                    new TimeOutReload(1000)
-                                })
-                            } else {
-                                Prompt(data.reason);
-                            }
-                        })
-                    } else {
+                //目录下方没有文件
+                if(fid_list.length === 0){
+                    //递归删除目录
+                    post(host + "/folder/recursionDeleteFolderList", {
+                        mid_list: JSON.stringify(list)
+                    }, function (data) {
                         Prompt(data.reason);
-                    }
-                })
+                        new TimeOutReload(1000)
+                    })
+                }else {
+                    //判断文件是否可以删除
+                    post(host + "/fileShare/checkFidListIsShare", {
+                        fid_list: JSON.stringify(fid_list)
+                    }, function (data) {
+                        //没有处于分享中的文件，递归所有文件和目录
+                        if (data.code == 200) {
+                            //递归删除文件
+                            post(host + "/file/recursionDeleteFile", {
+                                fid_list: JSON.stringify(fid_list)
+                            }, function (data) {
+                                if (data.code == 200) {
+                                    //递归删除目录
+                                    post(host + "/folder/recursionDeleteFolderList", {
+                                        mid_list: JSON.stringify(list)
+                                    }, function (data) {
+                                        Prompt(data.reason);
+                                        new TimeOutReload(1000)
+                                    })
+                                } else {
+                                    Prompt(data.reason);
+                                }
+                            })
+                        } else {
+                            Prompt(data.reason);
+                        }
+                    })
+                }
             })
         })
     })
-   /* new Warning("删除目录","确定删除该目录吗？",function (){
-        post(host+'/folder/deleteFolder', {
-            mid: mid
-        }, function (data) {
-            //目录下没有别的目录和文件
-            if (data.code === 200) {
-                new Prompt(data.reason)
-                new TimeOutReload(1000)
-            //目录下方有目录或文件
-            } else if (data.code === 400) {
-
-            } else {
-                new Prompt(data.reason)
-            }
-        })
-    })*/
 }
 
 //文件/目录 移动
