@@ -51,20 +51,60 @@ function folderRename(mid){
 
 //文件夹删除
 function deleteFolder(mid){
-    new Warning("删除目录","确定删除该目录吗？",function (){
+    new Warning("删除目录","确定删除该目录下所有目录及文件吗？",function () {
+        //根据目录id获取目录下方所以的目录id
+        post(host + '/folder/recursionDeleteFolder', {
+            mid: mid
+        }, function (list) {
+            //根据所以的目录id获取所有的文件id
+            post(host + "/file/getFidListByMidList", {
+                mid_list: JSON.stringify(list)
+            }, function (fid_list) {
+                //判断文件是否可以删除
+                post(host + "/fileShare/checkFidListIsShare", {
+                    fid_list: JSON.stringify(fid_list)
+                }, function (data) {
+                    //没有处于分享中的文件，递归所有文件和目录
+                    if (data.code == 200) {
+                        //递归删除文件
+                        post(host + "/file/recursionDeleteFile", {
+                            fid_list: JSON.stringify(fid_list)
+                        }, function (data) {
+                            if (data.code == 200) {
+                                //递归删除目录
+                                post(host + "/folder/recursionDeleteFolderList", {
+                                    mid_list: JSON.stringify(list)
+                                }, function (data) {
+                                    Prompt(data.reason);
+                                    new TimeOutReload(1000)
+                                })
+                            } else {
+                                Prompt(data.reason);
+                            }
+                        })
+                    } else {
+                        Prompt(data.reason);
+                    }
+                })
+            })
+        })
+    })
+   /* new Warning("删除目录","确定删除该目录吗？",function (){
         post(host+'/folder/deleteFolder', {
             mid: mid
         }, function (data) {
+            //目录下没有别的目录和文件
             if (data.code === 200) {
                 new Prompt(data.reason)
                 new TimeOutReload(1000)
+            //目录下方有目录或文件
             } else if (data.code === 400) {
-                new Prompt(data.reason)
+
             } else {
                 new Prompt(data.reason)
             }
         })
-    })
+    })*/
 }
 
 //文件/目录 移动

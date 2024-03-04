@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -82,6 +83,12 @@ public class FolderController {
         return outputList;
     }
 
+    /**
+     * 移动目录
+     * @param upFolderId
+     * @param mid
+     * @return
+     */
     @RequestMapping(value = "/moveFolder",method = RequestMethod.POST)
     @ResponseBody
     public R moveFolder(@RequestParam("upFolderId") int upFolderId,
@@ -93,5 +100,38 @@ public class FolderController {
         }else {
             return new R(500,"未知原因移动失败！");
         }
+    }
+
+    /**
+     * 返回当前目录id下的所以目录id（包含当前目录id）
+     * @param mid mid
+     * @return mid_list
+     */
+    @RequestMapping(value = "/recursionDeleteFolder",method = RequestMethod.POST)
+    @ResponseBody
+    public List<Integer> recursionDeleteFolder(@RequestParam("mid") int mid){
+        List<Integer> mid_list = folderService.getDeleteFolderIdList(mid);
+        return mid_list;
+    }
+
+    @RequestMapping(value = "/recursionDeleteFolderList",method = RequestMethod.POST)
+    @ResponseBody
+    public R recursionDeleteFolderList(@RequestParam("mid_list") String midList){
+        System.out.println(midList);
+        midList=midList.substring(1,midList.length()-1);
+        System.out.println(midList);
+        String[] numberStrings = midList.split(",");
+        List<Integer>mid_list = new ArrayList<>();
+        for (int i = 0; i < numberStrings.length; i++) {
+            mid_list.add(Integer.parseInt(numberStrings[i]));
+        }
+        try {
+            folderService.deleteFolderList(mid_list);
+            return new R(200,"删除成功！");
+        }catch (Exception e){
+            System.err.println("目录递归删除失败");
+            return new R(500,"删除失败！");
+        }
+
     }
 }

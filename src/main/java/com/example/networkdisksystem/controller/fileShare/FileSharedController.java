@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -96,5 +98,33 @@ public class FileSharedController {
   public R delShare(int shareId){
     service.delShare(shareId);
     return new R(200,"删除成功！");
+  }
+
+
+    /**
+     * 判断fid_list中是否有处于分享中的文件
+     * @param fids  fid_list
+     * @return
+     */
+  @RequestMapping("/checkFidListIsShare")
+  @ResponseBody
+  public R checkFidListIsShare(@RequestParam("fid_list") String fids){
+      System.out.println(fids);
+      fids=fids.substring(1,fids.length()-1);
+      System.out.println(fids);
+      String[] numberStrings = fids.split(",");
+      List<Integer> fid_list = new ArrayList<>();
+      for (int i = 0; i < numberStrings.length; i++) {
+          fid_list.add(Integer.parseInt(numberStrings[i]));
+      }
+      List<String> shareCode_list = service.getShareCodeListByFidList(fid_list);
+      if(shareCode_list.isEmpty()) return new R(200,"沒有文件在分享中，可以刪除！");
+      else {
+          String massage="";
+          for (String shareCode:shareCode_list) {
+              massage=massage+"\n"+shareCode;
+          }
+          return new R(400,"该目录有正在分享中的文件！分享码为:"+massage);
+      }
   }
 }

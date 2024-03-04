@@ -48,4 +48,11 @@
     <update id="removeMidByFid">
         update file_table set mid=#{mid} where fid=#{fid}
     </update>
+
+    <select id="getFidListByMidList" parameterType="java.util.List" resultType="integer">
+        SELECT fid FROM file_table WHERE mid IN
+        <foreach item="mid" collection="list" open="(" separator="," close=")">
+            #{mid}
+        </foreach>
+    </select>
 </mapper>

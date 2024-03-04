@@ -40,4 +40,11 @@
     <update id="removeUpFolderIdByMid">
         update mkdir_table set UpFolderId = #{upFolderId} where mid=#{mid}
     </update>
+
+    <delete id="deleteFolderList" parameterType="java.util.List">
+        delete from mkdir_table where mid IN
+        <foreach item="mid" collection="list" open="(" separator="," close=")">
+            #{mid}
+        </foreach>
+    </delete>
 </mapper>

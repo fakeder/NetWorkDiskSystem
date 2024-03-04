@@ -249,4 +249,9 @@ public class FileServiceImpl implements FileService {
     public int removeMidByFid(int fid, int mid) {
         return fileMapper.removeMidByFid(fid,mid);
     }
+
+    @Override
+    public List<Integer> getFidListByMidList(List<Integer> mid_list) {
+        return fileMapper.getFidListByMidList(mid_list);
+    }
 }

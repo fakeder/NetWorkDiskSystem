@@ -76,4 +76,11 @@ public interface FolderMapper {
      * @return 0:修改成功 1:修改失败
      */
     int removeUpFolderIdByMid(@Param("upFolderId") int upFolderId,@Param("mid") int mid);
+
+    /**
+     * 删除mid_list
+     * @param mid_list mid_list
+     * @return
+     */
+    int deleteFolderList(List<Integer> mid_list);
 }
