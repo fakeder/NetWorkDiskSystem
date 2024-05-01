@@ -14,4 +14,5 @@ public class Users {
     String usedSize;
     long usedSizeByte;
     int VIPFlag;
+    int condition;
 }

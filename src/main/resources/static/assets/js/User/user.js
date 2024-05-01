@@ -18,7 +18,7 @@ function login(){
         if(data.code === 200){
             window.location=host+"/common/index"
         }else {
-            new Prompt("用户名或密码错误！")
+            new Prompt(data.reason)
             $("#username").val(username);
             $("#password").val('');
         }

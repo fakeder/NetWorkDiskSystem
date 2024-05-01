@@ -77,11 +77,15 @@ public class UserController {
     @RequestMapping(value = "/do-login",method = RequestMethod.POST)
     @ResponseBody
     public R do_login(String username,String password,boolean rememberMe,HttpServletResponse response) {
-        boolean loginCheck = userService.LoginCheck(username, password, rememberMe, response);
-        if (loginCheck){
+        int loginCheck = userService.LoginCheck(username, password, rememberMe, response);
+        if (loginCheck == 2){
             return new R(200,"登录成功！");
-        } else {
+        } else if (loginCheck == 1){
             return new R(400,"用户名或密码错误！");
+        }else if (loginCheck == 0){
+            return new R(403,"用户被禁用！");
+        }else {
+            return new R(500,"系统异常！");
         }
     }
 
