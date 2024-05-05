@@ -29,7 +29,10 @@ public class LoginCheckFilter implements Filter {
     public static final AntPathMatcher PATH_MATCHER=new AntPathMatcher();
     public static String[] URL={
             "/static/**",
-            "/user/**"
+            "/user/**",
+            "/admin/login",
+            "/admin/do-login",
+            "/favicon.ico"
     };
 
     @Override
@@ -45,6 +48,17 @@ public class LoginCheckFilter implements Filter {
             return;
         }
 
+        //获取session中的admin信息判断admin是否登录
+        Object admin = request.getSession().getAttribute("admin");
+        if(!ObjectUtils.isEmpty(admin)){
+            long id = Thread.currentThread().getId();
+            log.info("管理员已登录，放行！");
+            log.info("{}的线程ID为：{}",url,id);
+            if(PATH_MATCHER.match("/admin/**", url)){
+                chain.doFilter(request,response);
+                return;
+            }
+        }
         //获取session中的用户信息判断是否登录
         if(request.getSession().getAttribute("user")!= null){
             //判断用户状态
