@@ -42,4 +42,16 @@
     <select id="getUserById" resultType="com.example.networkdisksystem.entity.Users">
         select * from user where uid=#{uid}
     </select>
+  
+    <update id="changeCondition">
+        update user set `condition`=#{condition} where uid=#{uid}
+    </update>
+    
+    <delete id="deleteUserByUid">
+        delete from user where uid=#{uid}
+    </delete>
+    
+    <update id="updateVipLevel">
+        update user set VIPFlag = #{level}, totalSize =#{totalSize}, totalSizeByte =#{totalSizeByte} where uid = #{uid}
+    </update>
 </mapper>

@@ -47,4 +47,8 @@
             #{mid}
         </foreach>
     </delete>
+    
+    <delete id="deleteFolderByUid">
+        delete from mkdir_table where uid = #{uid}
+    </delete>
 </mapper>

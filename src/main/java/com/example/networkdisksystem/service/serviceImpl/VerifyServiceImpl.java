@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Random;
@@ -28,14 +29,14 @@ public class VerifyServiceImpl implements VerifyService {
         Random random=new Random();//随机数
         int code=random.nextInt(899999)+100000;//899999内的随机数加上100000保证验证码code是六位数
         System.out.println("验证码为："+code);
-        //将验证码放入Redis数据库中，设置过期时间为五分钟
-        template.opsForValue().set("verify:code:"+mail,""+code,5,TimeUnit.MINUTES);
         //编写发送邮件
-        message.setSubject("[xxx网盘系统]您的注册验证码");
+        message.setSubject("[HDFS网盘系统]您的注册验证码");
         message.setText("您的注册验证码为:"+code+",五分钟内有效,请及时完成注册!若非本人操作,请忽略。");
         message.setTo(mail);
         message.setFrom(from);
         sender.send(message);
+        //将验证码放入Redis数据库中，设置过期时间为五分钟
+        template.opsForValue().set("verify:code:"+mail,""+code,5,TimeUnit.MINUTES);
     }
 
     @Override

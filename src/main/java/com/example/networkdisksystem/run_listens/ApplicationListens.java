@@ -13,7 +13,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-@Component
+//@Component
 public class ApplicationListens implements CommandLineRunner, DisposableBean {
     @Autowired
     private HadoopConfig hadoopConfig;
@@ -28,7 +28,7 @@ public class ApplicationListens implements CommandLineRunner, DisposableBean {
     }
 
     /**
-     * hadoop自启和关闭
+     * hadoop、zookeeper自启和关闭
      * @param s start/stop
      * @throws JSchException
      */
@@ -46,10 +46,10 @@ public class ApplicationListens implements CommandLineRunner, DisposableBean {
 
         // 执行脚本命令
         try {
-            String scriptPath = hadoopConfig.getScriptPath()[0];
-            String command = scriptPath + " "+s;
+            String hadoopPath = hadoopConfig.getScriptPath()[0];
+            String hadoopShell = hadoopPath + " "+s;
             ChannelExec channelExec = (ChannelExec) session.openChannel("exec");
-            channelExec.setCommand(command);
+            channelExec.setCommand(hadoopShell);
             channelExec.connect();
             // 读取脚本输出
             InputStream in = channelExec.getInputStream();
@@ -58,6 +58,19 @@ public class ApplicationListens implements CommandLineRunner, DisposableBean {
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
+
+
+          String zkPath = hadoopConfig.getScriptPath()[1];
+          String zkShell = zkPath + " "+s;
+          channelExec = (ChannelExec) session.openChannel("exec");
+          channelExec.setCommand(zkShell);
+          channelExec.connect();
+          // 读取脚本输出
+          InputStream zkIn = channelExec.getInputStream();
+          BufferedReader zkReader = new BufferedReader(new InputStreamReader(zkIn));
+          while ((line = zkReader.readLine()) != null) {
+            System.out.println(line);
+          }
             // 关闭连接
             channelExec.disconnect();
             session.disconnect();

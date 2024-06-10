@@ -83,4 +83,10 @@ public interface FolderMapper {
      * @return
      */
     int deleteFolderList(List<Integer> mid_list);
+
+  /**
+   * 删除用户的文件夹表数据
+   * @param uid uid
+   */
+  int deleteFolderByUid(int uid);
 }

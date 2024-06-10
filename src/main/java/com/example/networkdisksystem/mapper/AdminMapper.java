@@ -2,6 +2,7 @@ package com.example.networkdisksystem.mapper;
 
 import com.example.networkdisksystem.entity.Users;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,4 +34,12 @@ public interface AdminMapper {
      * 会员
      */
     int countVIP();
+
+    /**
+      * 统计用户文件、文件夹个数
+      * @param table 表名
+      * @param uid 用户名
+      * @return 统计数量
+      */
+    int countByUid(@Param("table") String table,@Param("uid") int uid);
 }

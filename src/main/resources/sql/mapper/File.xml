@@ -55,4 +55,10 @@
             #{mid}
         </foreach>
     </select>
+    
+    <delete id="deleteFileByUid">
+        delete from file_table where uid=#{uid}
+    </delete>
+    
+
 </mapper>

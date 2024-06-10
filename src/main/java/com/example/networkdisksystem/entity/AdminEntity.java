@@ -30,4 +30,14 @@ public class AdminEntity {
      * 用户列表.
      */
     List<Users> usersList;
+
+    /**
+     * 用户详细信息类.
+     */
+    @Data
+    public static class UserDetail extends Users {
+      int fileCount;
+      int folderCount;
+      int fileShareCount;
+    }
 }

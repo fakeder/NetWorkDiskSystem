@@ -105,4 +105,18 @@ public interface FileShareMapper {
      * @return shareCode_list
      */
   List<String> getShareCodeListByFidList(List<Integer> fid_list);
+
+
+  /**
+   * 获取用户正在分享中的分享文件list
+   * @param uid uid
+   * @retur fileShare_list
+   */
+  List<FileShareEntity.FileShareEntityInput> getFileShareListByUid(int uid);
+
+  /**
+   * 删除用户的文件分享记录
+   * @param uid uid
+   */
+  int deleteFileShareByUid(int uid);
 }

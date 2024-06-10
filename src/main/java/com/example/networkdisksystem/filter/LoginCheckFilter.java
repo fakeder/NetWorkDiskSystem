@@ -48,80 +48,83 @@ public class LoginCheckFilter implements Filter {
             return;
         }
 
-        //获取session中的admin信息判断admin是否登录
-        Object admin = request.getSession().getAttribute("admin");
-        if(!ObjectUtils.isEmpty(admin)){
-            long id = Thread.currentThread().getId();
-            log.info("管理员已登录，放行！");
-            log.info("{}的线程ID为：{}",url,id);
-            if(PATH_MATCHER.match("/admin/**", url)){
-                chain.doFilter(request,response);
-                return;
-            }
-        }
-        //获取session中的用户信息判断是否登录
-        if(request.getSession().getAttribute("user")!= null){
+        if(PATH_MATCHER.match("/admin/**", url)){
+          //获取session中的admin信息判断admin是否登录
+          Object admin = request.getSession().getAttribute("admin");
+          if(!ObjectUtils.isEmpty(admin)){
+              long id = Thread.currentThread().getId();
+              log.info("管理员已登录，放行！");
+              log.info("{}的线程ID为：{}",url,id);
+              chain.doFilter(request,response);
+          } else {
+              log.info("管理员未登录");
+              response.sendRedirect("/admin/login");
+          }
+        } else {
+          //获取session中的用户信息判断是否登录
+          if (request.getSession().getAttribute("user") != null) {
             //判断用户状态
-            Users users= (Users) request.getSession().getAttribute("user");
+            Users users = (Users) request.getSession().getAttribute("user");
             String condition = template.opsForValue().get("userCondition" + users.getUid());
             //状态过期
-            if(ObjectUtils.isEmpty(condition)){
-                //重新获取状态
-                int loginCheck = userService.to_loginCheck(users.getUsername(), users.getPassword());
-                if (loginCheck == 2) {
-                    log.info("用户：{} -- 免密登录", users.getUsername());
-                    chain.doFilter(request, response);
-                    return;
-                }else if (loginCheck == 1){
-                    log.info("用户：{} -- 用户名密码错误", users.getUsername());
-                }else if (loginCheck == 0){
-                    log.info("用户：{} -- 禁用中！", users.getUsername());
-                }else {
-                    log.info("系统异常");
-                }
-            }else {
-                if(condition.equals("0")){
-                    log.info("用户被禁用！");
-                }else {
-                    long id = Thread.currentThread().getId();
-                    log.info("用户已登录，放行！");
-                    log.info("{}的线程ID为：{}",url,id);
-                    chain.doFilter(request,response);
-                    return;
-                }
+            if (ObjectUtils.isEmpty(condition)) {
+              //重新获取状态
+              int loginCheck = userService.to_loginCheck(users.getUsername(), users.getPassword());
+              if (loginCheck == 2) {
+                log.info("用户：{} -- 免密登录", users.getUsername());
+                chain.doFilter(request, response);
+                return;
+              } else if (loginCheck == 1) {
+                log.info("用户：{} -- 用户名密码错误", users.getUsername());
+              } else if (loginCheck == 0) {
+                log.info("用户：{} -- 禁用中！", users.getUsername());
+              } else {
+                log.info("系统异常");
+              }
+            } else {
+              if (condition.equals("0")) {
+                log.info("用户被禁用！");
+              } else {
+                long id = Thread.currentThread().getId();
+                log.info("用户已登录，放行！");
+                log.info("{}的线程ID为：{}", url, id);
+                chain.doFilter(request, response);
+                return;
+              }
             }
             response.sendRedirect("/user/login");
             return;
-        }
+          }
 
-        //检查cookie中是否存了用户名密码
-        Cookie[] cookies = request.getCookies();
-        if(!ObjectUtils.isEmpty(cookies)) {
-          String username = null;
-          String password = null;
-          for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("NetWorkDiskSystem_username")) {
-              username = cookie.getValue();
+          //检查cookie中是否存了用户名密码
+          Cookie[] cookies = request.getCookies();
+          if (!ObjectUtils.isEmpty(cookies)) {
+            String username = null;
+            String password = null;
+            for (Cookie cookie : cookies) {
+              if (cookie.getName().equals("NetWorkDiskSystem_username")) {
+                username = cookie.getValue();
+              }
+              if (cookie.getName().equals("NetWorkDiskSystem_password")) {
+                password = cookie.getValue();
+              }
             }
-            if (cookie.getName().equals("NetWorkDiskSystem_password")) {
-              password = cookie.getValue();
-            }
-          }
-          if (username != null && password != null) {
-            int loginCheck = userService.to_loginCheck(username, password);
-            if (loginCheck == 2) {
-              log.info("用户：{} -- 免密登录", username);
-              chain.doFilter(request, response);
-              return;
-            }else if (loginCheck == 1){
+            if (username != null && password != null) {
+              int loginCheck = userService.to_loginCheck(username, password);
+              if (loginCheck == 2) {
+                log.info("用户：{} -- 免密登录", username);
+                chain.doFilter(request, response);
+                return;
+              } else if (loginCheck == 1) {
                 log.info("用户：{} -- 用户名密码错误", username);
-            }else if (loginCheck == 0){
+              } else if (loginCheck == 0) {
                 log.info("用户：{} -- 禁用中！", username);
+              }
             }
           }
+          log.info("用户未登录");
+          response.sendRedirect("/user/login");
         }
-        log.info("用户未登录");
-        response.sendRedirect("/user/login");
     }
 
     //判断传入的url是否在URL中

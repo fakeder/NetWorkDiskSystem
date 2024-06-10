@@ -28,7 +28,7 @@ public class HadoopApi {
 
     public void Del(String HDFSFilePath) throws IOException { //删除文件
         Path del=new Path(HDFSFilePath);
-        hdfs.delete(del);
+        hdfs.delete(del,true);
         System.out.println("删除成功");
     }
     public void Uplaod(String windowsFilePath,String HDFSFilePath) throws IOException { //将本地window文件上传到hdfs上

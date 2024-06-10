@@ -95,7 +95,7 @@
                   </div>
                   <ul>
                     <li>
-                      <a href="javascript:logout()">
+                      <a href="javascript:adminLogout()">
                         <i class="fas fa-sign-out-alt"></i> 退出登录
                       </a>
                     </li>
@@ -130,7 +130,7 @@
                             </a>
                           </li>
                             <li>
-                                <a th:href="@{/admin/monitor}">
+                                <a th:href="@{/admin/systemLister}">
                                     <span class="icon-dash">
                                     </span>
                                     <span class="menu-text">
@@ -329,26 +329,31 @@
                                             <tbody th:each="user:${admin.getUsersList()}">
                                                 <tr>
                                                     <td th:if="${user.getCondition()} == '1'">
-                                                      <label th:text="${user.getUsername()}">用户名</label>
+                                                      <a th:href="|javascript:catUserDetail(${user.getUid()})|">
+                                                        <label th:text="${user.getUsername()}">用户名</label>
+                                                      </a>
                                                     </td>
                                                     <td th:if="${user.getCondition()} == '0'">
-                                                      <del th:text="${user.getUsername()}">用户名</del>
+                                                      <a th:href="|javascript:catUserDetail(${user.getUid()})|">
+                                                        <del th:text="${user.getUsername()}">用户名</del>
+                                                      </a>
                                                     </td>
                                                     <td></td>
                                                     <td th:text="${user.getEmail()}">注册邮箱</td>
                                                     <td th:text="${user.getTotalSize()}">用户网盘容量</td>
                                                     <td th:text="${user.getUsedSize()}">用户网盘已使用容量</td>
-                                                    <td th:if="${user.getVIPFlag()} == 1">是</td>
+                                                    <td th:if="${user.getVIPFlag()} !=0 ">是</td>
                                                     <td th:if="${user.getVIPFlag()} == 0">否</td>
                                                     <td>
-                                                        <label th:if="${user.getCondition()} == 1">启用中</label>
-                                                        <label th:if="${user.getCondition()} == 0">禁用中</label>
+                                                        <label th:if="${user.getCondition()} == 1" class="mb-0 badge badge-success">启用中</label>
+                                                        <label th:if="${user.getCondition()} == 0" class="mb-0 badge badge-danger">禁用中</label>
                                                     </td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td><button th:if="${user.getCondition() == 1}">禁用</button>
-                                                        <button th:if="${user.getCondition() == 0}">启用</button>
-                                                        <button>删除用户</button></td>
+                                                    <td><button th:if="${user.getCondition() == 1}" th:onclick="|changeCondition(${user.getUid()},${user.getCondition()})|"  class="mb-0 badge badge-warning">禁用</button>
+                                                        <button th:if="${user.getCondition() == 0}" th:onclick="|changeCondition(${user.getUid()},${user.getCondition()})|"  class="mb-0 badge badge-success">启用</button>
+                                                        <button th:if="${user.getCondition() == 0}" th:onclick="|deleteUser(${user.getUid()})|"  class="mb-0 badge badge-danger">删除用户</button>
+                                                    </td>
                                                 </tr>
 
                                             </tbody>
@@ -398,6 +403,121 @@
       </div>
     </div>
   </div>
+  <!--用户详细页面弹窗-->
+  <div class="modal fade bd-example-modal-lg" id="userDetailPage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel02">用户详细信息</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-12">
+              <form class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                      <div class="mb-5">
+                        <h3>用户名:<label class="form-label" id="username">杀马特</label></h3>
+                        <input type="hidden" id="userId" class="form-control" placeholder="ID">
+                      </div>
+                    </div>
+
+                    <div class="col-sm-2 col-md-2"></div>
+
+                    <div class="col-sm-6 col-md-6">
+                      <div class="mb-5">
+                        <h3>邮箱:<label class="form-label" id="email">1813890249@qq.com</label></h3>
+                      </div>
+                    </div>
+
+                    
+                    <div class="col-sm-6 col-md-4">
+                      <div class="mb-3">
+                        <h4>容量:<label class="h3" id="totalSize">1 GB</label></h4>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4"></div>
+
+                    <div class="col-sm-6 col-md-4">
+                      <div class="mb-3">
+                        <h4>已使用容量:<label class="h3" id="usedSize">300 KB</label></h4>
+                      </div>
+                    </div>
+                    
+                    <div class="col-sm-6 col-md-4">
+                      <div class="mb-3">
+                        <h4>用户文件个数:
+                        <label class="h3" id="fileCount">100</label></h4>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                      <div class="mb-3">
+                        <h4>用户文件夹个数:
+                        <label class="h3" id="folderCount">10</label></h4>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                      <div class="mb-3">
+                        <h4><label class="h3" id="fileShareCount">15</label>
+                        个文件处于分享中</h4>
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="col-sm-6 col-md-5">
+                      <div class="mb-3">
+                        <h4><label class="form-label">会员</label></h4>
+                        <select id="VIPFlag" class="form-control btn-square" onchange="VIPChange()">
+                          <option value="0">否</option>
+                          <option value="1">是</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-2 col-md-2"></div>
+                    
+                    <div class="col-sm-6 col-md-5">
+                      <div class="mb-3">
+                        <h4><label class="form-label">会员等级</label></h4>
+                        <select id="VIPLevel" class="h4" onchange="netWorkSizeChange()" disabled>
+                          <option value="0">无</option>
+                          <option value="1">I</option>
+                          <option value="2">II</option>
+                          <option value="3">III</option>
+                          <option value="4">IV</option>
+                          <option value="5">V</option>
+                        </select>
+                        <input hidden id="VIPLevelOld">
+                        <select id="netWorkSize" class="h4" disabled>
+                          <option value="0">1.00 GB</option>
+                          <option value="1">5.00 GB</option>
+                          <option value="2">10.00 GB</option>
+                          <option value="3">50.00 GB</option>
+                          <option value="4">75.00 GB</option>
+                          <option value="5">100.00 GB</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="userLevelChange()">确定</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Slide Setting Box -->
   <div class="slide-setting-box">
     <div class="slide-setting-holder">
@@ -539,7 +659,7 @@
   <script src="../static/assets/js/custom.js"></script>
   <!--My js -->
   <script src="../static/assets/js/common/common.js"></script>
-  <script src="../static/assets/js/fileShare/fileSharingHistory.js"></script>
+  <script src="../static/assets/js/admin/admin.js"></script>
 </body>
 
 </html>

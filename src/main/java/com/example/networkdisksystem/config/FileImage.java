@@ -1,6 +1,5 @@
 package com.example.networkdisksystem.config;
 
-import lombok.Data;
 import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;

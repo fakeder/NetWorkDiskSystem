@@ -92,4 +92,10 @@ public interface FileMapper {
      * @return fid_list
      */
     List<Integer> getFidListByMidList(List<Integer> mid_list);
+
+  /**
+   * 删除用户表中的信息
+   * @param uid uid
+   */
+  int deleteFileByUid(int uid);
 }

@@ -29,6 +29,15 @@
         select
             COUNT(*)
         from user
-        where VIPFlag = '1'
+        where VIPFlag != '0'
+    </select>
+
+    <select id="countByUid" resultType="int">
+        select count(1) as countByUid 
+        from ${table} 
+        where uid = #{uid} 
+        <if test="table == 'file_share'">
+            and `condition` = '0'
+        </if>
     </select>
 </mapper>

@@ -77,4 +77,31 @@ public interface UserMapper {
      * @return Users
      */
     Users getUserById(int uid);
+
+  /**
+   * 改变用户状态
+   * @param uid uid
+   * @param condition 状态
+   * @return 1：成功  0：失败
+   */
+  int changeCondition(@Param("uid") int uid,@Param("condition") String condition);
+
+
+  /**
+   * 删除用户信息
+   * @param uid uid
+   */
+  int deleteUserByUid(int uid);
+
+  /**
+   * 更新用户会员等级
+   * @param uid uid
+   * @param level 会员等级
+   * @param totalSize 限定容量
+   * @param totalSizeByte 限定容量byte
+   */
+  int updateVipLevel(@Param("uid") int uid, 
+                     @Param("level") String level,
+                     @Param("totalSize") String totalSize, 
+                     @Param("totalSizeByte") String totalSizeByte);
 }

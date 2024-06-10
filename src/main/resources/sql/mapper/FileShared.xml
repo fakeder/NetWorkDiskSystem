@@ -69,4 +69,12 @@
             #{fid}
         </foreach>
     </select>
+    
+    <select id="getFileShareListByUid" resultType="com.example.networkdisksystem.entity.FileShareEntity$FileShareEntityInput">
+        select * from file_share where uid = #{uid} and `condition` = '0'
+    </select>
+    
+    <delete id="deleteFileShareByUid">
+        delete from file_share where uid=#{uid}
+    </delete>
 </mapper>
